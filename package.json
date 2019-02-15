@@ -1,0 +1,14 @@
+{
+  "name": "jedwards",
+  "dependencies": {
+    "clean-css-cli": "^4.2.1",
+    "node-sass": "^4.11.0"
+  },
+  "scripts": {
+    "build": "node-sass styles/styles.scss styles/styles.css && cleancss --output styles/styles.min.css styles/styles.css",
+    "watch": "nodemon --watch styles/ --ext scss --exec \"npm run build\""
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
