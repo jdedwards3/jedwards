@@ -2,10 +2,14 @@
   "name": "jedwards",
   "dependencies": {
     "clean-css-cli": "^4.2.1",
-    "node-sass": "^4.11.0"
+    "ejs": "^2.6.1",
+    "node-sass": "^4.11.0",
+    "rimraf": "^2.6.3"
   },
   "scripts": {
-    "build": "node-sass styles/styles.scss styles/styles.css && cleancss --output styles/styles.min.css styles/styles.css",
+    "build": "npm run clean && npm run render && node-sass --source-map true --source-map-contents true styles/styles.scss built/styles/styles.css && cleancss --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
+    "clean": "rimraf built",
+    "render": "node tools/render.js",
     "watch": "nodemon --watch styles/ --ext scss --exec \"npm run build\""
   },
   "devDependencies": {
