@@ -2,13 +2,16 @@
   "name": "jedwards",
   "dependencies": {
     "clean-css-cli": "^4.2.1",
+    "cross-env": "^5.2.0",
     "ejs": "^2.6.1",
     "node-sass": "^4.11.0",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "shx": "^0.3.2"
   },
   "scripts": {
-    "build": "npm run clean && npm run render && node-sass --source-map true --source-map-contents true styles/styles.scss built/styles/styles.css && cleancss --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
+    "build": "npm run clean && npm run render && node-sass --source-map true --source-map-contents true styles/styles.scss built/styles/styles.css && cleancss --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css && npm run copy-assets",
     "clean": "rimraf built",
+    "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/",
     "render": "node tools/render.js",
     "watch": "nodemon --watch styles/ --ext scss --exec \"npm run build\""
   },
