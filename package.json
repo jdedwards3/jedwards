@@ -9,13 +9,18 @@
     "shx": "^0.3.2"
   },
   "scripts": {
-    "build": "npm run clean && npm run render && node-sass --source-map true --source-map-contents true styles/styles.scss built/styles/styles.css && cleancss --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css && npm run copy-assets",
+    "build": "npm run clean && npm run compile-build-tools && npm run render && npm run copy-assets && npm run compile-styles && npm run css-minify",
     "clean": "rimraf built",
-    "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/",
-    "render": "node tools/render.js",
-    "watch": "nodemon --watch styles/ --ext scss --exec \"npm run build\""
+    "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 styles/styles.scss built/styles/styles.css",
+    "compile-build-tools": "cross-env-shell tsc",
+    "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/ && cross-env-shell shx cp -r styles/ built/",
+    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
+    "render": "node built/tools/render.js",
+    "watch-styles": "nodemon --watch styles/ --ext scss --exec \"npm run build\""
   },
   "devDependencies": {
+    "@types/ejs": "^2.6.2",
+    "@types/node": "^11.9.4",
     "nodemon": "^1.18.10"
   }
 }
