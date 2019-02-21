@@ -1,5 +1,5 @@
-const ejs = require("ejs");
-const fs = require("fs");
+import ejs = require("ejs");
+import fs = require("fs");
 
 ejs.renderFile("views/index.ejs", function(err, html) {
   if (err) {
