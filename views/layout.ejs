@@ -1,58 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+  <!-- head -->
   <%- include('partials/head'); -%>
   <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="masthead">
-        <div class="inner">
-          <h3 class="masthead-brand">JDE3</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="https://github.com/jdedwards3">GitHub</a>
-            <a
-              class="nav-link"
-              href="https://www.linkedin.com/in/jamesdedwards3"
-              >LinkedIn</a
-            >
-          </nav>
-        </div>
-      </header>
-      <main role="main" class="inner cover">
-        <h1 class="cover-heading mb-5">James Edwards</h1>
-        <svg
-          class="img-thumbnail mb-3"
-          width="200"
-          height="200"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice"
-          focusable="false"
-          role="img"
-          aria-label="james edwards picture"
-        >
-          <defs>
-            <pattern
-              id="jamespic"
-              patternUnits="userSpaceOnUse"
-              width="200"
-              height="200"
-            >
-              <image
-                xlink:href="assets/james.jpg"
-                x="0"
-                y="0"
-                width="200"
-                height="200"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#jamespic)"></rect>
-        </svg>
-        <p class="lead">
-          Highly motivated and reliable Software Developer always looking to
-          improve and expand my skill set.
-        </p>
-      </main>
+      <!-- header -->
+      <%- include('partials/header'); -%>
+      <!-- main -->
+      <%- main %>
+      <!-- footer -->
       <%- include('partials/footer'); -%>
     </div>
+    <!-- scripts -->
     <%- include('partials/scripts'); -%>
   </body>
 </html>
