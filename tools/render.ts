@@ -19,7 +19,8 @@ const viewDataPath = "./viewData";
     })
   ]).then(paths => paths);
 
-  await mkdir("built/", { recursive: true });
+  await mkdir("built/api/pages", { recursive: true });
+  await mkdir("built/api/posts", { recursive: true });
 
   await Promise.all(
     filePaths.map(async path => {
@@ -42,6 +43,15 @@ const viewDataPath = "./viewData";
           { rmWhitespace: true }
         )
         .then(output => output);
+
+      pageModel.partialHtml = partialHtml;
+
+      //this is writing the original json file to include partial html to built
+      await writeFile(
+        `built/api/${path.split(".")[0]}.json`,
+        JSON.stringify(pageModel),
+        "utf8"
+      );
 
       await writeFile(
         `built/${path.split("/")[1].split(".")[0]}.html`,
