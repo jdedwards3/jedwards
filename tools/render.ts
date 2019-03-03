@@ -4,9 +4,11 @@ import globstd = require("glob");
 import util = require("util");
 const glob = util.promisify(globstd);
 const mkdir = util.promisify(fs.mkdir);
+const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
 const viewsPath = "./views";
+const viewDataPath = "./viewData";
 
 (async function initialize() {
   const [indexPath, filePaths]: [string[], string[]] = await Promise.all([
@@ -25,10 +27,18 @@ const viewsPath = "./views";
         .renderFile(`${viewsPath}/${path}`)
         .then(output => output);
 
+      const pageModel = await readFile(
+        `${viewDataPath}/${path.split(".")[0]}.json`,
+        "utf8"
+      ).then(model => JSON.parse(model));
+
       const renderedFile = await ejs
         .renderFile(
           `${viewsPath}/${indexPath[0]}`,
-          { main: partialHtml },
+          {
+            main: partialHtml,
+            model: pageModel
+          },
           { rmWhitespace: true }
         )
         .then(output => output);
