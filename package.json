@@ -18,7 +18,7 @@
     "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/ && cross-env-shell shx cp -r styles/ built/",
     "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
     "render": "node built/tools/render.js",
-    "serve": "http-server \"./built\"",
+    "serve": "http-server \"./built\" -c-1",
     "watch-styles": "nodemon --watch styles/ --ext scss --exec \"npm run build\""
   },
   "devDependencies": {
