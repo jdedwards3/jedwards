@@ -10,10 +10,11 @@
     "shx": "^0.3.2"
   },
   "scripts": {
-    "build": "npm run clean && npm run compile-build-tools && npm run render && npm run copy-assets && npm run compile-styles && npm run css-minify",
+    "build": "npm run clean && npm run compile-build-tools && npm run compile-client && npm run render && npm run copy-assets && npm run compile-styles && npm run css-minify",
     "clean": "rimraf built",
     "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 styles/styles.scss built/styles/styles.css",
-    "compile-build-tools": "cross-env-shell tsc",
+    "compile-build-tools": "cross-env-shell tsc --p tsconfig.node.json",
+    "compile-client": "cross-env-shell tsc --p tsconfig.client.json",
     "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/ && cross-env-shell shx cp -r styles/ built/",
     "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
     "render": "node built/tools/render.js",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/ejs": "^2.6.2",
     "@types/glob": "^7.1.1",
+    "@types/jquery": "^3.3.29",
     "@types/node": "^11.9.4",
     "http-server": "^0.11.1",
     "nodemon": "^1.18.10"
