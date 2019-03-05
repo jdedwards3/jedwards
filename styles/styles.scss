@@ -100,3 +100,20 @@ body {
 .mastfoot {
   color: rgba(255, 255, 255, 0.5);
 }
+
+.blog-links {
+  a {
+    color: #212529;
+  }
+  a:hover {
+    text-decoration: none;
+    .card-body {
+      .card-title {
+        text-decoration: underline;
+      }
+      .card-text {
+        text-decoration: none;
+      }
+    }
+  }
+}
