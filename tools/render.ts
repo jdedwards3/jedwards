@@ -19,8 +19,7 @@ const viewDataPath = "./viewData";
     })
   ]).then(paths => paths);
 
-  await mkdir("built/api/pages", { recursive: true });
-  await mkdir("built/api/posts", { recursive: true });
+  await mkdir("built/api", { recursive: true });
 
   await Promise.all(
     filePaths.map(async path => {
@@ -48,7 +47,7 @@ const viewDataPath = "./viewData";
 
       //this is writing the original json file to include partial html to built
       await writeFile(
-        `built/api/${path.split(".")[0]}.json`,
+        `built/api/${path.split("/")[1].split(".")[0]}.json`,
         JSON.stringify(pageModel),
         "utf8"
       );
