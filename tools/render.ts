@@ -23,14 +23,14 @@ const viewDataPath = "./viewData";
 
   await Promise.all(
     filePaths.map(async path => {
-      const partialHtml = await ejs
-        .renderFile(`${viewsPath}/${path}`)
-        .then(output => output);
-
       const pageModel = await readFile(
         `${viewDataPath}/${path.split(".")[0]}.json`,
         "utf8"
       ).then(model => JSON.parse(model));
+
+      const partialHtml = await ejs
+        .renderFile(`${viewsPath}/${path}`, { model: pageModel })
+        .then(output => output);
 
       const renderedFile = await ejs
         .renderFile(
@@ -45,18 +45,20 @@ const viewDataPath = "./viewData";
 
       pageModel.partialHtml = partialHtml;
 
-      //this is writing the original json file to include partial html to built
-      await writeFile(
-        `built/api/${path.split("/")[1].split(".")[0]}.json`,
-        JSON.stringify(pageModel),
-        "utf8"
-      );
-
-      await writeFile(
-        `built/${path.split("/")[1].split(".")[0]}.html`,
-        renderedFile,
-        "utf8"
-      );
+      await Promise.all([
+        //this is writing the original json file to include partial html to built
+        await writeFile(
+          `built/api/${path.split("/")[1].split(".")[0]}.json`,
+          JSON.stringify(pageModel),
+          "utf8"
+        ),
+        //this is writing the actual html file
+        await writeFile(
+          `built/${path.split("/")[1].split(".")[0]}.html`,
+          renderedFile,
+          "utf8"
+        )
+      ]);
     })
   );
 })();
