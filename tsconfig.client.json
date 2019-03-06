@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -12,10 +9,6 @@
     "inlineSources": true,
     "outDir": "./built/scripts"
   },
-  "inclue": [
-    "scripts/**/*"
-  ],
-  "exclude": [
-    "tools/**/*"
-  ]
+  "inclue": ["scripts/**/*"],
+  "exclude": ["tools/**/*", "node_modules"]
 }

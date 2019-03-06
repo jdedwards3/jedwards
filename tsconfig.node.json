@@ -2,19 +2,14 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
     "outDir": "built/",
     "rootDir": "./"
   },
-  "files": [
-    "tools/render.ts"
-  ]
+  "include": ["tools/**/*.ts"],
+  "exclude": ["scripts/**/*", "node_modules"]
 }
