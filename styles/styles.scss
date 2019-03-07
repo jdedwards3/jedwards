@@ -123,4 +123,8 @@ body {
   a {
     text-decoration: underline;
   }
+  pre,
+  code {
+    text-shadow: none;
+  }
 }
