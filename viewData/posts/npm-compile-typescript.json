@@ -1,1 +1,3 @@
-{ "title": "Compile TypeScript with NPM" }
+{
+  "title": "Compile TypeScript with npm package.json script"
+}
