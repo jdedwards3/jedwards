@@ -32,6 +32,8 @@ const viewDataPath = "./viewData";
         .renderFile(`${viewsPath}/${path}`, { model: pageModel })
         .then(output => output);
 
+      pageModel.slug = `${path.split("/")[1].split(".")[0]}`;
+
       const renderedFile = await ejs
         .renderFile(
           `${viewsPath}/${indexPath[0]}`,
