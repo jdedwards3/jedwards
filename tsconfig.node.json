@@ -8,7 +8,8 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "built/",
-    "rootDir": "./"
+    "rootDir": "./",
+    "sourceMap": true
   },
   "include": ["tools/**/*.ts"],
   "exclude": ["scripts/**/*", "node_modules"]
