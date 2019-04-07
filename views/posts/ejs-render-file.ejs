@@ -1,0 +1,325 @@
+<h1 class="cover-heading mb-5"><%= model.title %></h1>
+
+<div class="text-left blog-post-text">
+  <p class="mb-4">
+    <a href="https://ejs.co/">EJS</a> is a templating language that uses
+    JavaScript to generate HTML. This post will illustrate how to use Node.js
+    with TypeScript to render an EJS file into HTML markup. Please make sure you
+    have <a href="https://nodejs.org/en/">Node.js</a> and
+    <a href="https://docs.npmjs.com/downloading-and-installing-node-js-and-npm"
+      >npm</a
+    >
+    installed first. If you are unfamiliar with Typescript please read my post
+    describing how to
+    <a href="npm-compile-typescript">compile TypeScript with npm</a>.
+  </p>
+
+  <h2>1) Create an EJS file</h2>
+
+  <p>
+    Begin by creating a new EJS file named index.ejs. This file will be the
+    template used to generate index.html. If the model is passed into the
+    template it will render the content as a paragraph.
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>    
+    &lt;p&gt;Sample Page&lt;/p&gt;
+    &lt;h1&gt;Index&lt;/h1&gt;
+    <%% if (model) { %>        
+      &lt;p&gt;<%%= model.content %>&lt;/p&gt; 
+    <%% } %>            
+    </code>
+  </pre>
+
+  <h2>2) Add dependencies to package.json</h2>
+
+  <p>
+    If you don't already have a package.json created you can create one by
+    running the command <kbd>npm init</kbd> and following the prompts.
+  </p>
+
+  <p>You will need your package.json to include these packages:</p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    {
+      "name": "package-name-goes-here",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@types/ejs": "^2.6.2",
+        "@types/node": "^11.9.4",
+        "ejs": "^2.6.1",
+        "typescript": "^3.3.3333"
+      }
+    }
+    </code>
+  </pre>
+
+  <p>
+    You can also copy the devDependecies section and run
+    <kdb>npm install</kdb> instead of installing one at a time.
+  </p>
+
+  <h2>3) Create a Node.js script</h2>
+  <p>
+    Create a new TypeScript file named render.ts. Then add the following code to
+    import the modules that we'll use.
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    //imports
+    import util = require("util");
+    import fs = require("fs");
+    import ejs = require("ejs")
+
+    //promisify
+    const mkdir = util.promisify(fs.mkdir);
+    const readFile = util.promisify(fs.readFile);
+    const writeFile = util.promisify(fs.writeFile);
+    </code>
+  </pre>
+
+  <p>
+    The first import is the
+    <a href="https://nodejs.org/api/util.html">util</a> module so that we can
+    use the
+    <a
+      href="https://nodejs.org/dist/latest-v8.x/docs/api/util.html#util_util_promisify_original"
+      >promisify</a
+    >
+    function. Then import the
+    <a href="https://nodejs.org/api/util.html">fs</a> module for file system
+    access. Before using three of the functions from the fs module we can
+    promisify them allowing for the use of async/await instead of nested
+    callbacks. The last is for EJS, and since the render file function returns a
+    promise by default we do not need to use promisify.
+  </p>
+
+  <p>
+    Below the import statements add an async function named render. This is
+    where the HTML output will be generated and written to a file named
+    index.html. It needs to be marked as an async function so that the keyword
+    await can be used. Then make sure to call the function so the code that is
+    about to be added will execute.
+  </p>
+
+  <pre class="border rounded bg-light">
+  <code> 
+    async function render() {       
+      try{
+
+      }catch(error){
+        console.log(error);
+      }    
+    }
+    render();
+  </code>
+  </pre>
+
+  <p>
+    Before rendering our EJS file we will need a folder to put the output. So
+    add the following to our render function:
+  </p>
+
+  <pre class="border rounded bg-light">
+  <code>
+    await mkdir("dist", {recursive: true});
+  </code>
+  </pre>
+
+  <p>
+    This will create a new directory named dist where the html output will be
+    saved. By passing the recursive property we can ensure parent folders are
+    created even if none are necessary. After creating the dist folder we can
+    use EJS to render the index.ejs template to HTML. The resulting HTML string
+    is then written to a file named index.html in the dist folder.
+  </p>
+
+  <p>
+    At this point your index.ts file should look like this:
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    //imports
+    import util = require("util");
+    import fs = require("fs");
+    import ejs = require("ejs")
+
+    //promisify
+    const mkdir = util.promisify(fs.mkdir);
+    const readFile = util.promisify(fs.readFile);
+    const writeFile = util.promisify(fs.writeFile);
+
+    async function render() {
+      try{        
+        //create output directory
+        await mkdir("dist", {recursive: true});
+    
+        //render ejs template to html string
+        const html = await ejs
+          .renderFile("index.ejs", {model: false })
+          .then(output => output);
+
+        //create file and write html
+        await writeFile("dist/index.html", html, "utf8");
+
+      }catch(error){
+        console.log(error);
+      }
+    }
+    render();
+    </code>
+  </pre>
+
+  <p>
+    In order to run this script we need to add a tsconfig.json file to configure
+    the TypeScript compiler. This will compile the TypeScript into JavaScript so
+    that it can be used by node.js. Add the tsconfig file to the same folder as
+    the render.js script.
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    {
+      "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "rootDir": "./",
+        "outDir": "./dist",
+        "sourceMap": true
+      },
+      "inclue": ["render.js"],
+    }
+    </code>
+  </pre>
+
+  <p>
+    We also need to add a script to the package.json file created earlier. This
+    script will compile render.ts and then run it using node. Your package.json
+    should look like this:
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    {
+      "name": "package-name-goes-here",
+      "version": "0.0.0",
+      "scripts": {
+        "render": "tsc && node dist/render.js"
+      },
+      "devDependencies": {
+        "@types/ejs": "^2.6.2",
+        "@types/node": "^11.9.4",
+        "ejs": "^2.6.1",
+        "typescript": "^3.3.3333"
+      }
+    }
+    </code>
+  </pre>
+
+  <h2>4) Generate HTML output</h2>
+
+  <p>
+    The render script can be run in a terminal window by typing
+    <kbd>npm run render</kbd>. Make sure to run this command from the directory
+    where your package.json is located. After running the render script you
+    should now see a folder named dist containing a file named index.html.
+  </p>
+
+  <p>The contents of index.html should look like this:</p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    &lt;p&gt;Sample Page&lt;/p&gt;     
+    </code>
+  </pre>
+
+  <p>
+    Notice that the conditional block containing the model content, in the
+    index.ejs template, is not included in the html output. This is because in
+    the render script the model was passed in as false. Now we'll create an
+    object to pass in as the model with some sample content to the sample page.
+  </p>
+
+  <p>
+    In the render.ts file previously created, after the import statements,
+    create an object and add a property to it called content with the value set
+    to a sample of content.
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    const pageModel = {
+      content: "This is some sample content. Located on the sample page."
+    };
+    </code>
+  </pre>
+
+  <p>
+    Then pass this object in to the ejs.renderFile function instead of false.
+    The render.ts file should look like this:
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    //imports
+    import util = require("util");
+    import fs = require("fs");
+    import ejs = require("ejs")
+
+    //promisify
+    const mkdir = util.promisify(fs.mkdir);
+    const readFile = util.promisify(fs.readFile);
+    const writeFile = util.promisify(fs.writeFile);
+    
+    const pageModel = {
+      content: "This is some sample content. Located on the sample page."
+    };
+
+    async function render() {
+      try{        
+        //create output directory
+        await mkdir("dist", {recursive: true});
+    
+        //render ejs template to html string
+        //pass pageModel in to render content 
+        const html = await ejs
+          .renderFile("index.ejs", {model: pageModel })
+          .then(output => output);
+
+        //create file and write html
+        await writeFile("dist/index.html", html, "utf8");
+
+      }catch(error){
+        console.log(error);
+      }
+    }
+    render();
+    </code>
+  </pre>
+
+  <p>
+    With the model object passed into the template we should now see the
+    conditional block rendered in the index.html output file. Run the command
+    <kbd>npm run render</kbd> once more.
+  </p>
+
+  <p>The index.html file in the dist folder should now look like this:</p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    &lt;p&gt;Sample Page&lt;/p&gt;    
+    &lt;p&gt;This is some sample content. Located on the sample page.&lt;/p&gt;      
+    </code>
+  </pre>
+
+  <p>
+    The index.ejs template can now render dynamic HTML content according to the
+    model object configured in the render.ts file and by running
+    <kbd>npm run render</kbd> after each change to generate an updated
+    index.html file.
+  </p>
+</div>
