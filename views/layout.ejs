@@ -2,12 +2,15 @@
 <html lang="en">
   <!-- head -->
   <%- include('partials/head'); -%>
+  <!-- body -->
   <body class="text-center">
     <div class="cover-container d-flex w-100 p-3 mx-auto flex-column">
       <!-- header -->
       <%- include('partials/header'); -%>
       <!-- main -->
-      <%- main %>
+      <main role="main" data-bind="html: mainContent">
+        <%- mainContent %>
+      </main>
       <!-- footer -->
       <%- include('partials/footer'); -%>
     </div>
