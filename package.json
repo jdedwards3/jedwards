@@ -19,20 +19,20 @@
     "watch-view-data": "nodemon --watch viewData/ --ext json --exec \"npm run render\""
   },
   "devDependencies": {
-    "@types/ejs": "^2.6.2",
+    "@types/ejs": "^2.6.3",
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.29",
-    "@types/node": "^11.9.4",
-    "clean-css-cli": "^4.2.1",
+    "@types/node": "^11.13.10",
+    "clean-css-cli": "^4.3.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "ejs": "^2.6.1",
-    "glob": "^7.1.3",
+    "glob": "^7.1.4",
     "http-server": "^0.11.1",
-    "node-sass": "^4.11.0",
-    "nodemon": "^1.18.10",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.0",
     "rimraf": "^2.6.3",
     "shx": "^0.3.2",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.4.5"
   }
 }
