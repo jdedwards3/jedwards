@@ -34,11 +34,13 @@ const viewDataPath = "./viewData";
 
       pageModel.slug = `${path.split("/")[1].split(".")[0]}`;
 
+      pageModel.footerYear = new Date().getFullYear();
+
       const renderedFile = await ejs
         .renderFile(
           `${viewsPath}/${indexPath[0]}`,
           {
-            main: partialHtml,
+            mainContent: partialHtml,
             model: pageModel
           },
           { rmWhitespace: true }
