@@ -1,5 +1,5 @@
 .vscode
 built
 node_modules
-*.min.css
 *.css
+*.js
