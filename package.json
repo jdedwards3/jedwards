@@ -22,7 +22,7 @@
     "@types/ejs": "^2.6.3",
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.29",
-    "@types/node": "^11.13.10",
+    "@types/node": "^11.13.11",
     "clean-css-cli": "^4.3.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
