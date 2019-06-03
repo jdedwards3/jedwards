@@ -7,7 +7,7 @@
     "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 styles/styles.scss built/styles/styles.css",
     "compile-build-tools": "cross-env-shell tsc --p tsconfig.node.json",
     "compile-client": "cross-env-shell tsc --p tsconfig.client.json",
-    "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/ && cross-env-shell shx cp -r styles/ built/",
+    "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && cross-env-shell shx cp -r assets/ built/ && cross-env-shell shx cp -r styles/ built/ && cross-env-shell shx cp ads.txt built/",
     "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
     "render": "node built/tools/render.js",
     "serve": "http-server \"./built\" -c-1",
