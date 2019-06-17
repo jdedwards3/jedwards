@@ -1,14 +1,23 @@
+import { config } from "../config";
 import ejs = require("ejs");
 import fs = require("fs");
 import globstd = require("glob");
 import util = require("util");
+import uuidv4 = require("uuid/v4");
 const glob = util.promisify(globstd);
 const mkdir = util.promisify(fs.mkdir);
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
-
 const viewsPath = "./views";
 const viewDataPath = "./viewData";
+
+async function writeSiteMap(paths: string[]) {
+  await writeFile(
+    "sitemap.txt",
+    paths.map(path => (path = config.domain + path)).join("\n"),
+    "utf8"
+  );
+}
 
 (async function initialize() {
   const [indexPath, filePaths]: [string[], string[]] = await Promise.all([
@@ -21,7 +30,10 @@ const viewDataPath = "./viewData";
 
   await mkdir("built/api", { recursive: true });
 
-  await Promise.all(
+  await Promise.all([
+    await writeSiteMap(
+      [...indexPath, ...filePaths].map(item => item.split(".")[0])
+    ),
     filePaths.map(async path => {
       const pageModel = await readFile(
         `${viewDataPath}/${path.split(".")[0]}.json`,
@@ -64,5 +76,5 @@ const viewDataPath = "./viewData";
         )
       ]);
     })
-  );
+  ]);
 })();
