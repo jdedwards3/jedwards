@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "lib": ["es6", "dom"],
-    "noImplicitAny": true,
+    "target": "es6",
+    "strict": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "target": "es6",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "outDir": "./built/scripts"
+    "outDir": "built/scripts"
   },
-  "inclue": ["scripts/**/*"],
-  "exclude": ["tools/**/*", "node_modules"]
+  "inclue": ["scripts/**/*.ts"],
+  "exclude": ["*.ts", "tools/**/*.ts", "node_modules/**/*.ts"]
 }

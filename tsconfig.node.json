@@ -2,15 +2,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "lib": ["es6", "dom"],
-    "noImplicitAny": true,
+    "strict": true,
     "moduleResolution": "node",
     "removeComments": true,
     "preserveConstEnums": true,
     "outDir": "built/",
-    "rootDir": "./",
     "sourceMap": true
   },
   "include": ["tools/**/*.ts"],
-  "exclude": ["scripts/**/*", "node_modules"]
+  "exclude": ["*.ts", "scripts/**/*.ts", "node_modules/**/*.ts"]
 }
