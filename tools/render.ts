@@ -34,6 +34,7 @@ async function writeSiteMap(paths: string[]) {
     await writeSiteMap(
       [...indexPath, ...filePaths].map(item => item.split(".")[0])
     ),
+    await Promise.all(
     filePaths.map(async path => {
       const pageModel = await readFile(
         `${viewDataPath}/${path.split(".")[0]}.json`,
@@ -76,5 +77,6 @@ async function writeSiteMap(paths: string[]) {
         )
       ]);
     })
+    )
   ]);
 })();
