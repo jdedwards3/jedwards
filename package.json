@@ -22,17 +22,19 @@
     "@types/ejs": "^2.6.3",
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.29",
-    "@types/node": "^11.13.11",
+    "@types/node": "^11.13.14",
+    "@types/uuid": "^3.4.4",
     "clean-css-cli": "^4.3.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
-    "ejs": "^2.6.1",
+    "ejs": "^2.6.2",
     "glob": "^7.1.4",
     "http-server": "^0.11.1",
     "node-sass": "^4.12.0",
-    "nodemon": "^1.19.0",
+    "nodemon": "^1.19.1",
     "rimraf": "^2.6.3",
     "shx": "^0.3.2",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.2",
+    "uuid": "^3.3.2"
   }
 }
