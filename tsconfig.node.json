@@ -10,5 +10,10 @@
     "sourceMap": true
   },
   "include": ["tools/**/*.ts"],
-  "exclude": ["*.ts", "scripts/**/*.ts", "node_modules/**/*.ts"]
+  "exclude": [
+    "*.ts",
+    "scripts/**/*.ts",
+    "node_modules/**/*.ts",
+    "fucntions/**/*.ts"
+  ]
 }

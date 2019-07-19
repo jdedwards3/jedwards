@@ -10,5 +10,10 @@
     "outDir": "built/scripts"
   },
   "inclue": ["scripts/**/*.ts"],
-  "exclude": ["*.ts", "tools/**/*.ts", "node_modules/**/*.ts"]
+  "exclude": [
+    "*.ts",
+    "tools/**/*.ts",
+    "node_modules/**/*.ts",
+    "functions/**/*.ts"
+  ]
 }
