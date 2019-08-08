@@ -1,11 +1,9 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "strict": true,
     "moduleResolution": "node",
-    "removeComments": true,
-    "preserveConstEnums": true,
     "outDir": "built/",
     "sourceMap": true
   },
@@ -14,6 +12,6 @@
     "*.ts",
     "scripts/**/*.ts",
     "node_modules/**/*.ts",
-    "fucntions/**/*.ts"
+    "functions/**/*.ts"
   ]
 }
