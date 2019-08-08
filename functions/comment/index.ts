@@ -113,6 +113,8 @@ const httpTrigger: AzureFunction = async function(
       }
     };
 
+    await createTableIfNotExists(tableService, tableName);
+
     //getting all comments for now since they are actually needed
     const sasToken = tableService.generateSharedAccessSignature(
       "comments",
