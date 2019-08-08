@@ -15,7 +15,8 @@
       "name": "Launch tsc",
       "program": "${workspaceFolder}/tools/render.ts",
       "preLaunchTask": "tsc: build - tsconfig.node.json",
-      "outFiles": ["${workspaceFolder}/built/tools/render.js"]
+      "outFiles": ["${workspaceFolder}/built/tools/render.js"],
+      "env": { "environment": "local" }
     },
     {
       "name": "Attach to Node Functions",
