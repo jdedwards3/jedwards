@@ -106,12 +106,15 @@ async function getComments() {
           );
         }
 
-        //todo: get real comments
+        // reverse assuming comments are in chronological order
+        // todo: sort by timestamp
         const commentModel = {
-          comments: comments.filter(
-            comment =>
-              comment.PartitionKey == pageModel.guid && comment.status == 1
-          )
+          comments: comments
+            .reverse()
+            .filter(
+              comment =>
+                comment.PartitionKey == pageModel.guid && comment.status == 1
+            )
         };
 
         const commentsTemplate = await ejs
