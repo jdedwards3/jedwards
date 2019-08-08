@@ -5,7 +5,7 @@ export const config: any = {
   },
   staging: {
     domain: "https://jedwards-staging.azureedge.net",
-    functionsUrl: "https://jedwards-staging.azure-websites.net/api"
+    functionsUrl: "https://jedwards-staging.azurewebsites.net/api"
   },
   production: {
     domain: "https://www.jamesedwards.name",
