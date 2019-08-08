@@ -14,6 +14,9 @@
   "dependencies": {},
   "devDependencies": {
     "@azure/functions": "^1.0.2-beta2",
+    "@sendgrid/mail": "^6.4.0",
+    "@types/node": "^12.6.8",
+    "azure-storage": "^2.10.3",
     "typescript": "^3.3.3"
   }
 }
