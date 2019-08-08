@@ -1,3 +1,14 @@
-export const config = {
-  domain: "https://www.jamesedwards.name/"
+export const config: any = {
+  local: {
+    domain: "http://localhost:8080",
+    functionsUrl: "http://localhost:7071/api"
+  },
+  staging: {
+    domain: "https://jedwards-staging.azureedge.net",
+    functionsUrl: "https://jedwards-staging.azure-websites.net/api"
+  },
+  production: {
+    domain: "https://www.jamesedwards.name",
+    functionsUrl: ""
+  }
 };
