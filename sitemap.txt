@@ -1,6 +1,0 @@
-https://www.jamesedwards.name/index
-https://www.jamesedwards.name/pages/about
-https://www.jamesedwards.name/posts/ejs-render-file
-https://www.jamesedwards.name/posts/first-post
-https://www.jamesedwards.name/posts/index
-https://www.jamesedwards.name/posts/npm-compile-typescript
