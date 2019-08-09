@@ -83,7 +83,11 @@ const httpTrigger: AzureFunction = async function(
         to: process.env["AdminEmail"],
         from: "noreply@jamesedwards.name",
         subject: "New comment posted!",
-        text: "A new comment has been posted. Update status to approve."
+        html: `A new comment has been posted. 
+        <div>from: ${body.authorName}</div>
+        <div>email: ${body.authorEmail}</div>
+        <div>comment: ${body.comment}</div>
+        Update status to approve.`
       };
 
       await Promise.all([SendGrid.send(userEmail), SendGrid.send(adminEmail)]);
