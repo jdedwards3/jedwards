@@ -27,9 +27,9 @@ async function writeSiteMap(paths: string[]) {
     "built/sitemap.txt",
     paths
       .map(path =>
-        path == "index"
-          ? config[environment].domain
-          : config[environment].domain + path
+        path.indexOf("index") > 0
+          ? `${config[environment].domain}/`
+          : `${config[environment].domain}/${path.split("/")[1]}`
       )
       .join("\n"),
     "utf8"
@@ -79,9 +79,7 @@ async function getComments() {
 
   await mkdir("built/api", { recursive: true });
   await Promise.all([
-    writeSiteMap(
-      [...index, ...pages, ...posts].map(item => item.split(".")[0])
-    ),
+    writeSiteMap([...pages, ...posts].map(item => item.split(".")[0])),
     Promise.all(
       [...pages, ...posts].map(async path => {
         // todo: create json file with default props if not exists
