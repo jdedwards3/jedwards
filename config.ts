@@ -9,6 +9,6 @@ export const config: any = {
   },
   production: {
     domain: "https://www.jamesedwards.name",
-    functionsUrl: ""
+    functionsUrl: "https://jedwards.azurewebsites.net/api"
   }
 };
