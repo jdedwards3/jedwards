@@ -78,8 +78,6 @@ async function getComments() {
   ] = await Promise.all([getComments(), getPaths()]);
 
   await mkdir("built/api", { recursive: true });
-
-  console.warn(environment);
   await Promise.all([
     writeSiteMap(
       [...index, ...pages, ...posts].map(item => item.split(".")[0])
@@ -128,7 +126,10 @@ async function getComments() {
           .renderFile(`${viewsPath}/${path}`, { model: pageModel })
           .then(output => output);
 
-        pageModel.slug = `${path.split("/")[1].split(".")[0]}`;
+        pageModel.slug =
+          path.indexOf(index[0]) > 0
+            ? ""
+            : `${path.split("/")[1].split(".")[0]}`;
 
         pageModel.footerYear = new Date().getFullYear();
 
