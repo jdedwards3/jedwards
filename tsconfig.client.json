@@ -6,7 +6,7 @@
     "target": "es6",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "outDir": "built/scripts"
+    "outDir": "built/dist"
   },
   "inclue": ["scripts/**/*.ts"],
   "exclude": [

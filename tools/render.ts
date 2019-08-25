@@ -1,6 +1,7 @@
 import { config } from "../config";
 import ejs = require("ejs");
 import fs = require("fs");
+import fsExtra = require("fs-extra");
 import globstd = require("glob");
 import fetch from "node-fetch";
 import util = require("util");
@@ -78,6 +79,12 @@ async function getComments() {
   ] = await Promise.all([getComments(), getPaths()]);
 
   await mkdir("built/api", { recursive: true });
+
+  // cache bust es modules
+  await fsExtra.move(`built/dist`, `built/scripts/${config.version}`, {
+    overwrite: true
+  });
+
   await Promise.all([
     writeSiteMap([...pages, ...posts].map(item => item.split(".")[0])),
     Promise.all(
@@ -130,6 +137,8 @@ async function getComments() {
             : `${path.split("/")[1].split(".")[0]}`;
 
         pageModel.footerYear = new Date().getFullYear();
+
+        pageModel.version = config.version;
 
         // only want a comment form on non-index posts
         const renderedFile = await ejs

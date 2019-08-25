@@ -10,5 +10,6 @@ export const config: any = {
   production: {
     domain: "https://www.jamesedwards.name",
     functionsUrl: "https://jedwards.azurewebsites.net/api"
-  }
+  },
+  version: "1.0.2"
 };
