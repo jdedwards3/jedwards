@@ -20,7 +20,6 @@
     method="post"
   >
     <input
-      required
       id="postGuid"
       type="hidden"
       name="postGuid"
@@ -32,18 +31,31 @@
         required
         class="form-control"
         rows="5"
+        id="comment"
         name="comment"
       ></textarea>
     </div>
 
     <div class="form-group">
       <label for="authorName">name</label>
-      <input required class="form-control" type="text" name="authorName" />
+      <input
+        required
+        class="form-control"
+        type="text"
+        id="authorName"
+        name="authorName"
+      />
     </div>
 
     <div class="form-group mb-5">
       <label for="authorEmail">email</label>
-      <input required class="form-control" type="email" name="authorEmail" />
+      <input
+        required
+        class="form-control"
+        type="email"
+        id="authorEmail"
+        name="authorEmail"
+      />
     </div>
 
     <button class="btn btn-primary" type="submit">Submit</button>

@@ -26,9 +26,9 @@
     <code>    
     &lt;p&gt;Sample Page&lt;/p&gt;
     &lt;h1&gt;Index&lt;/h1&gt;
-    <%% if (model) { %>        
-      &lt;p&gt;<%%= model.content %>&lt;/p&gt; 
-    <%% } %>            
+    &lt;% if (model) { %&gt;        
+      &lt;p&gt;&lt;%%= model.content %&gt;&lt;/p&gt; 
+    &lt;% } %&gt; 
     </code>
   </pre>
 
@@ -58,7 +58,7 @@
 
   <p>
     You can also copy the devDependecies section and run
-    <kdb>npm install</kdb> instead of installing one at a time.
+    <kbd>npm install</kbd> instead of installing one at a time.
   </p>
 
   <h2>3) Create a Node.js script</h2>
