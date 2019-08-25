@@ -4,6 +4,9 @@ export class CommentForm {
   constructor() {
     document.body.addEventListener("submit", async function(event) {
       event.preventDefault();
+      const statusMsgElement = document.getElementById("form-submit-msg");
+
+      statusMsgElement!.innerText = "Submitting reply... Please wait.";
 
       const form = event.target as HTMLFormElement;
 
@@ -20,9 +23,7 @@ export class CommentForm {
         .then(json => json)
         .catch(errorLogger);
 
-      const resultMsg = document.getElementById("form-submit-msg");
-
-      resultMsg!.innerText = result.message;
+      statusMsgElement!.innerText = result.message;
     });
   }
 }
