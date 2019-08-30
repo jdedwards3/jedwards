@@ -15,6 +15,8 @@ const viewDataPath = "./viewData";
 
 const environment = process.env.environment as string;
 
+config.version = environment == "local" ? uuidv4() : config.version;
+
 interface IComment {
   PartitionKey: string;
   RowKey: string;
@@ -80,10 +82,14 @@ async function getComments() {
 
   await mkdir("built/api", { recursive: true });
 
-  // cache bust es modules
-  await fsExtra.move(`built/dist`, `built/scripts/${config.version}`, {
-    overwrite: true
-  });
+  try {
+    // cache bust es modules
+    await fsExtra.move(`built/dist`, `built/scripts/${config.version}`, {
+      overwrite: true
+    });
+  } catch (error) {
+    console.warn("warning: scripts already processed");
+  }
 
   await Promise.all([
     writeSiteMap([...pages, ...posts].map(item => item.split(".")[0])),
