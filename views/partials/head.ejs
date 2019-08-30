@@ -10,7 +10,7 @@
   <title><%= model.title %></title>
   <link
     rel="canonical"
-    href="https://www.jamesedwards.name/<%= model.slug %>"
+    href="<%= model.environment[Object.keys(model.environment)].domain %>/<%= model.slug %>"
   />
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script

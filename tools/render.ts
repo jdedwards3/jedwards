@@ -95,8 +95,6 @@ async function getComments() {
           "utf8"
         ).then(model => JSON.parse(model));
 
-        pageModel.environment = config[environment];
-
         if (!pageModel.guid) {
           //add guid to any new pages/posts
           pageModel.guid = uuidv4();
@@ -109,6 +107,16 @@ async function getComments() {
           );
         }
 
+        pageModel.environment = { [environment]: config[environment] };
+
+        pageModel.slug =
+          path.indexOf(index[0]) > 0
+            ? ""
+            : `${path.split("/")[1].split(".")[0]}`;
+
+        pageModel.footerYear = new Date().getFullYear();
+
+        pageModel.version = config.version;
         // reverse assuming comments are in chronological order
         // todo: sort by timestamp
         const commentModel = {
@@ -130,15 +138,6 @@ async function getComments() {
         const partialHtml = await ejs
           .renderFile(`${viewsPath}/${path}`, { model: pageModel })
           .then(output => output);
-
-        pageModel.slug =
-          path.indexOf(index[0]) > 0
-            ? ""
-            : `${path.split("/")[1].split(".")[0]}`;
-
-        pageModel.footerYear = new Date().getFullYear();
-
-        pageModel.version = config.version;
 
         // only want a comment form on non-index posts
         const renderedFile = await ejs

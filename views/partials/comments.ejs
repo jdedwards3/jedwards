@@ -16,7 +16,7 @@
   <h2 class="pt-3 mb-4 border-top border-secondary">Leave a Reply</h2>
   <form
     id="commentForm"
-    action="<%= pageModel.environment.functionsUrl %>/comment"
+    action="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>/comment"
     method="post"
   >
     <input
