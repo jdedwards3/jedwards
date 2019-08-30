@@ -12,6 +12,7 @@
     rel="canonical"
     href="<%= model.environment[Object.keys(model.environment)].domain %>/<%= model.slug %>"
   />
+  <% if (model.environment.production) { %>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script
     async
@@ -38,6 +39,7 @@
       enable_page_level_ads: true
     });
   </script>
+  <% } %>
   <!-- Bootstrap CSS -->
   <link
     rel="stylesheet"
