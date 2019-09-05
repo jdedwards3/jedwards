@@ -49,4 +49,14 @@
   />
   <!-- Custom styles -->
   <link href="styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
+  <link
+    rel="preload"
+    href="scripts/<%= model.version %>/script.js"
+    as="script"
+  />
+  <link
+    rel="preload"
+    href="scripts/<%= model.version %>/commentForm.js"
+    as="script"
+  />
 </head>
