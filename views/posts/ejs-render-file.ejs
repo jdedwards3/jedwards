@@ -14,7 +14,7 @@
     <a href="npm-compile-typescript">compile TypeScript with npm</a>.
   </p>
 
-  <h2>1) Create an EJS file</h2>
+  <h2>EJS</h2>
 
   <p>
     Begin by creating a new EJS file named index.ejs. This file will be the
@@ -27,12 +27,12 @@
     &lt;p&gt;Sample Page&lt;/p&gt;
     &lt;h1&gt;Index&lt;/h1&gt;
     &lt;% if (model) { %&gt;        
-      &lt;p&gt;&lt;%%= model.content %&gt;&lt;/p&gt; 
+      &lt;p&gt;&lt;%= model.content %&gt;&lt;/p&gt; 
     &lt;% } %&gt; 
     </code>
   </pre>
 
-  <h2>2) Add dependencies to package.json</h2>
+  <h2>package.json</h2>
 
   <p>
     If you don't already have a package.json created you can create one by
@@ -61,7 +61,7 @@
     <kbd>npm install</kbd> instead of installing one at a time.
   </p>
 
-  <h2>3) Create a Node.js script</h2>
+  <h2>Node.js</h2>
   <p>
     Create a new TypeScript file named render.ts. Then add the following code to
     import the modules that we'll use.
@@ -220,7 +220,7 @@
     </code>
   </pre>
 
-  <h2>4) Generate HTML output</h2>
+  <h2>HTML</h2>
 
   <p>
     The render script can be run in a terminal window by typing
