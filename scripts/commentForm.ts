@@ -14,9 +14,7 @@ export class CommentForm {
       // sending body as x-www-form-url-encoded
       const result = await fetch(form.action, {
         method: form.method,
-        body: new URLSearchParams(Array.from(new FormData(
-          form
-        ) as any) as string[][])
+        body: new URLSearchParams(new FormData(form) as any)
       })
         .then(errorHandler)
         .then((response: Response) => response.json())
