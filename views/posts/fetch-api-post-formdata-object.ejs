@@ -19,7 +19,7 @@
     <a href="npm-compile-typescript">compile TypeScript with npm</a>.
   </p>
 
-  <h2>HTML</h2>
+  <h2>HTML Form</h2>
 
   <p>
     First we need to create an html file, let's call it index.html, with a form
@@ -41,7 +41,7 @@
         &lt;!-- this input is hidden with a value already set --&gt;
         &lt;input type="hidden" id="userId" name="userId" value="3"/&gt;  
 
-        &lt;label for="firstName"&gt;&lt;/label&gt;
+        &lt;label for="firstName"&gt;first name&lt;/label&gt;
         &lt;input type="text" id="firstName" name="firstName"/&gt;
 
         &lt;button type="submit"&gt;Submit&lt;/button&gt;
@@ -61,7 +61,7 @@
     HTTP post method.
   </p>
 
-  <h2>Typescript</h2>
+  <h2>Typescript Form Submit</h2>
 
   <p>
     Next we'll need to write form.ts so the TypeScript compiler can generate the
@@ -142,6 +142,8 @@
       });      
     </code>
   </pre>
+
+  <h2>Await Fetch API Post</h2>
 
   <p>
     Then the result variable is created and it is used to store the response
