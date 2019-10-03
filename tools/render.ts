@@ -15,8 +15,6 @@ const viewDataPath = "./viewData";
 
 const environment = process.env.environment as string;
 
-config.version = environment == "local" ? uuidv4() : config.version;
-
 interface IComment {
   PartitionKey: string;
   RowKey: string;
