@@ -4,15 +4,61 @@
   <%- include('partials/head'); -%>
   <!-- body -->
   <body class="text-center">
-    <div class="cover-container d-flex w-100 p-3 mx-auto flex-column">
+    <div class="d-flex w-100 p-3 mx-auto flex-column">
       <!-- header -->
       <%- include('partials/header'); -%>
-      <!-- main -->
-      <main class="mb-5">
-        <%- mainContent %>
-        <!-- comments -->
-        <%- comments %>
-      </main>
+
+      <h1 class="cover-heading mb-5"><%= model.title %></h1>
+
+      <div class="container">
+        <div class="row">
+          <!-- main -->
+          <main class="col-md-8">
+            <%- mainContent %>
+          </main>
+          <!-- aside -->
+          <aside class="col-md-4">
+            <ins
+              class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6747903070938911"
+              data-ad-slot="4081932233"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <ins
+              class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6747903070938911"
+              data-ad-slot="6448282379"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <ins
+              class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6747903070938911"
+              data-ad-slot="1388088773"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <ins
+              class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6747903070938911"
+              data-ad-slot="7326811165"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </aside>
+        </div>
+        <div class="row mb-5">
+          <div class="col-md-8">
+            <!-- comments -->
+            <%- comments %>
+          </div>
+        </div>
+      </div>
       <!-- footer -->
       <%- include('partials/footer'); -%>
     </div>
