@@ -1,6 +1,6 @@
 <div class="text-left pt-4">
   <% if(model.comments.length){ %>
-  <h2 class="pt-3 mb-4 border-top border-secondary">Comments</h2>
+  <h3 class="pt-3 mb-4 border-top border-secondary">Comments</h3>
 
   <ul class="list-group">
     <% model.comments.forEach(function(comment){ %>
@@ -13,7 +13,7 @@
     <% }); %>
   </ul>
   <% } %>
-  <h2 class="pt-3 mb-4 border-top border-secondary">Leave a Reply</h2>
+  <h3 class="pt-3 mb-4 border-top border-secondary">Leave a Reply</h3>
   <form
     id="commentForm"
     action="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>/comment"
