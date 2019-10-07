@@ -1,38 +1,13 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as querystring from "querystring";
-import * as azure from "azure-storage";
 import uuidv4 = require("uuid/v4");
 import * as SendGrid from "@sendgrid/mail";
+import {
+  azure,
+  createTableIfNotExists,
+  insertEntity
+} from "../common/storageHelpers";
 SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
-
-const createTableIfNotExists = (
-  tableService: azure.TableService,
-  tableName: string
-) =>
-  new Promise((resolve, reject) => {
-    tableService.createTableIfNotExists(tableName, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve({ result: result });
-      }
-    });
-  });
-
-const insertEntity = (
-  tableService: azure.TableService,
-  tableName: string,
-  entity: any
-) =>
-  new Promise((resolve, reject) => {
-    tableService.insertEntity(tableName, entity, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve({ result: result });
-      }
-    });
-  });
 
 const httpTrigger: AzureFunction = async function(
   context: Context,
