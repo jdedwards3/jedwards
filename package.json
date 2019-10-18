@@ -12,7 +12,7 @@
     "compile-client": "cross-env-shell tsc --p tsconfig.client.json",
     "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && concurrently \"cross-env-shell shx cp -r assets/ built/\" \"cross-env-shell shx cp -r styles/ built/\" \"cross-env-shell shx cp ads.txt built/\"",
     "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
-    "render": "npm run compile-client && node built/tools/render.js",
+    "render": "node built/tools/render.js",
     "serve": "http-server \"./built\" -c-1 -o",
     "watch": "npm run build:local && concurrently \"npm run serve\" \"npm run watch-styles\" \"npm run watch-build-tools\" \"npm run watch-client\" \"npm run watch-ejs\" \"npm run watch-view-data\"",
     "watch-build-tools": "nodemon --watch tools/ --ext ts --exec \"npm run compile-build-tools\"",
