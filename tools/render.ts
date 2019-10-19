@@ -113,6 +113,9 @@ async function getComments() {
 
         pageModel.environment = { [environment]: config[environment] };
 
+        // prevent duplicate content
+        pageModel.canonical = config.production.domain;
+
         pageModel.slug =
           path.indexOf(index[0]) > 0
             ? ""

@@ -11,10 +11,7 @@
   />
   <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
   <title><%= model.title %></title>
-  <link
-    rel="canonical"
-    href="<%= model.environment[Object.keys(model.environment)].domain %>/<%= model.slug %>"
-  />
+  <link rel="canonical" href="<%= model.canonical %>/<%= model.slug %>" />
   <% if (model.environment.production) { %>
   <!-- adSense-->
   <script
