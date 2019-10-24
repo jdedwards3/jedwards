@@ -1,6 +1,6 @@
 import { errorHandler, errorLogger } from "./errorHandler.js";
 
-export class CommentForm {
+export class FormHandler {
   constructor() {
     document.body.addEventListener("submit", async function(event) {
       event.preventDefault();

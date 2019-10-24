@@ -1,5 +1,5 @@
-import { CommentForm } from "./commentForm.js";
+import { FormHandler } from "./formHandler.js";
 
 window.onload = function() {
-  new CommentForm();
+  new FormHandler();
 };
