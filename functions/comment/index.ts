@@ -19,15 +19,21 @@ const httpTrigger: AzureFunction = async function(
 
   const tableName = "comments";
 
-  const tableService = azure.createTableService(process.env[
-    "TableStorageConnection"
-  ] as string);
+  const tableService = azure.createTableService(
+    process.env["TableStorageConnection"] as string
+  );
 
   if (req.method == "POST") {
     const body = querystring.parse(req.body);
 
-    //todo: validate
+    // spam check
     if (
+      (body && body.password_honeyBadger === undefined) ||
+      body.password_honeyBadger.length
+    ) {
+      // todo log malicious request
+      context.res!.status = 200;
+    } else if (
       body &&
       body.comment &&
       body.postGuid &&

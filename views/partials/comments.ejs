@@ -35,7 +35,6 @@
         name="comment"
       ></textarea>
     </div>
-
     <div class="form-group">
       <label for="authorName">name</label>
       <input
@@ -46,7 +45,6 @@
         name="authorName"
       />
     </div>
-
     <div class="form-group mb-5">
       <label for="authorEmail">email</label>
       <input
@@ -57,8 +55,17 @@
         name="authorEmail"
       />
     </div>
-
     <button class="btn btn-primary" type="submit">Submit</button>
+    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+      <input
+        id="password_honeyBadger"
+        type="text"
+        name="password_honeyBadger"
+        tabindex="-1"
+        value=""
+        autocomplete="off"
+      />
+    </div>
   </form>
   <div class="pt-4" id="form-submit-msg"></div>
 </div>
