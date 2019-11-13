@@ -14,6 +14,20 @@ const httpTrigger: AzureFunction = async function(
 ): Promise<void> {
   context.log("HTTP trigger function processed a request.");
 
+  const body = querystring.parse(req.body);
+
+  // spam check
+  if (
+    body &&
+    (body.password_honeyBadger === undefined ||
+      body.password_honeyBadger.length ||
+      body.legitimate !== "1")
+  ) {
+    // todo log malicious request
+    context.res!.status = 200;
+    return;
+  }
+
   context.res!.headers["Content-Type"] = "application/json";
 
   const tableName = "contactForm";
@@ -22,22 +36,7 @@ const httpTrigger: AzureFunction = async function(
     process.env["TableStorageConnection"] as string
   );
 
-  const body = querystring.parse(req.body);
-
-  //spam check
-  if (
-    (body && body.password_honeyBadger === undefined) ||
-    body.password_honeyBadger.length
-  ) {
-    // todo log malicious request
-    context.res!.status = 200;
-  } else if (
-    body &&
-    body.firstName &&
-    body.lastName &&
-    body.email &&
-    body.message
-  ) {
+  if (body && body.firstName && body.lastName && body.email && body.message) {
     await createTableIfNotExists(tableService, tableName);
 
     const contactFormEntity = {
