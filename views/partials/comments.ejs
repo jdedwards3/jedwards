@@ -18,6 +18,7 @@
     id="commentForm"
     action="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>/comment"
     method="post"
+    data-form-token="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>/formToken"
   >
     <input
       id="postGuid"

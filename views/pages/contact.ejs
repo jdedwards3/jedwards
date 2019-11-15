@@ -3,6 +3,7 @@
     id="contactForm"
     action="<%= model.environment[Object.keys(model.environment)].functionsUrl %>/contact"
     method="post"
+    data-form-token="<%= model.environment[Object.keys(model.environment)].functionsUrl %>/formToken"
   >
     <div class="form-group">
       <label for="firstName">first name</label>
