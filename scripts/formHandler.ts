@@ -13,15 +13,24 @@ export class FormHandler {
 
       const formData = new FormData(form);
 
-      // make sure
-      formData.append("legitimate", "1");
-
-      // casting to any here to satisfy tsc
-      // sending body as x-www-form-url-encoded
-      const result = await fetch(form.action, {
-        method: form.method,
-        body: new URLSearchParams(formData as any)
-      })
+      const result = await fetch(
+        `${form.dataset.formToken}/${new Date().valueOf()}` as string
+      )
+        .then(errorHandler)
+        .then((response: Response) => response.json())
+        .then(data => {
+          // anti-forgery
+          formData.append("_csrf", data.token);
+        })
+        .then(
+          async () =>
+            // casting to any here to satisfy tsc
+            // sending body as x-www-form-url-encoded
+            await fetch(form.action, {
+              method: form.method,
+              body: new URLSearchParams(formData as any)
+            })
+        )
         .then(errorHandler)
         .then((response: Response) => response.json())
         .then(json => json)
