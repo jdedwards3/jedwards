@@ -1,12 +1,13 @@
 import * as azureStorage from "azure-storage";
 
-const tableService = azureStorage.createTableService(
-  process.env["TableStorageConnection"] as string
-);
+const tableService = () =>
+  azureStorage.createTableService(
+    process.env["TableStorageConnection"] as string
+  );
 
 const createTableIfNotExists = (tableName: string) =>
   new Promise((resolve, reject) => {
-    tableService.createTableIfNotExists(tableName, (error, result) => {
+    tableService().createTableIfNotExists(tableName, (error, result) => {
       if (error) {
         reject(error);
       } else {
@@ -17,7 +18,7 @@ const createTableIfNotExists = (tableName: string) =>
 
 const insertEntity = (tableName: string, entity: any) =>
   new Promise((resolve, reject) => {
-    tableService.insertEntity(tableName, entity, (error, result) => {
+    tableService().insertEntity(tableName, entity, (error, result) => {
       if (error) {
         reject(error);
       } else {
@@ -32,7 +33,7 @@ const retrieveEntity = (
   rowKey: string
 ): Promise<any> =>
   new Promise((resolve, reject) => {
-    tableService.retrieveEntity(
+    tableService().retrieveEntity(
       tableName,
       partitionKey,
       rowKey,
@@ -48,7 +49,7 @@ const retrieveEntity = (
 
 const deleteEntity = (tableName: string, entity: any): Promise<any> =>
   new Promise((resolve, reject) => {
-    tableService.deleteEntity(tableName, entity, (error, result) => {
+    tableService().deleteEntity(tableName, entity, (error, result) => {
       if (error) {
         reject(error);
       } else {

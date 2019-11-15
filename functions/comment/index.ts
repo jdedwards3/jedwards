@@ -80,12 +80,14 @@ const httpTrigger: AzureFunction = async function(
     await storageHelpers.createTableIfNotExists(commentTable);
 
     //getting all comments for now since they are actually needed
-    const sasToken = storageHelpers.tableService.generateSharedAccessSignature(
-      commentTable,
-      storageHelpers.getSharedAccessPolicy()
-    );
+    const sasToken = storageHelpers
+      .tableService()
+      .generateSharedAccessSignature(
+        commentTable,
+        storageHelpers.getSharedAccessPolicy()
+      );
 
-    const sasUrl = storageHelpers.tableService.getUrl("comments", sasToken);
+    const sasUrl = storageHelpers.tableService().getUrl("comments", sasToken);
 
     context.res!.status = 200;
     context.res!.body = { sasUrl };
