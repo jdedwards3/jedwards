@@ -11,5 +11,5 @@ export const config: any = {
     domain: "https://www.jamesedwards.name",
     functionsUrl: "https://jedwards.azurewebsites.net/api"
   },
-  version: "1.4.0"
+  version: "1.4.1"
 };
