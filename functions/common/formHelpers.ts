@@ -1,23 +1,18 @@
 import * as csrf from "csrf";
 import { storageHelpers } from "../common/storageHelpers";
-import { Context } from "@azure/functions";
 import { ParsedUrlQuery } from "querystring";
-
 const csrfTable = "csrf";
 
-const spamChecker = async (context: Context, body: ParsedUrlQuery) => {
+const verifiedRequestBody = async (body: ParsedUrlQuery) => {
   if (
     body &&
     (body.password_honeyBadger === undefined ||
       body.password_honeyBadger.length ||
       !(await verifyToken(body)))
   ) {
-    context.res!.status = 400;
-    context.res!.body = {
-      message: "invalid request"
-    };
-    return;
+    return true;
   }
+  return false;
 };
 
 const createToken = async () => {
@@ -59,6 +54,6 @@ const verifyToken = async (body: ParsedUrlQuery) => {
   return false;
 };
 
-const formHelpers = { spamChecker, createToken, verifyToken };
+const formHelpers = { verifiedRequestBody, createToken, verifyToken };
 
 export { formHelpers };

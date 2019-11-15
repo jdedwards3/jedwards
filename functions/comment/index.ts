@@ -2,12 +2,10 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as querystring from "querystring";
 import uuidv4 = require("uuid/v4");
 import * as SendGrid from "@sendgrid/mail";
-import {
-  azure,
-  createTableIfNotExists,
-  insertEntity
-} from "../common/storageHelpers";
+import { storageHelpers } from "../common/storageHelpers";
+import { formHelpers } from "../common/formHelpers";
 SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
+const commentTable = "comments";
 
 const httpTrigger: AzureFunction = async function(
   context: Context,
@@ -15,29 +13,19 @@ const httpTrigger: AzureFunction = async function(
 ): Promise<void> {
   context.log("HTTP trigger function processed a request.");
 
-  const body = querystring.parse(req.body);
-
-  // spam check
-  if (
-    body &&
-    (body.password_honeyBadger === undefined ||
-      body.password_honeyBadger.length ||
-      body.legitimate !== "1")
-  ) {
-    // todo log malicious request
-    context.res!.status = 200;
-    return;
-  }
-
   context.res!.headers["Content-Type"] = "application/json";
 
-  const tableName = "comments";
-
-  const tableService = azure.createTableService(
-    process.env["TableStorageConnection"] as string
-  );
+  const body = querystring.parse(req.body);
 
   if (req.method == "POST") {
+    if (!formHelpers.verifiedRequestBody(body)) {
+      context.res!.status = 400;
+      context.res!.body = {
+        message: "invalid request"
+      };
+      return;
+    }
+
     if (
       body &&
       body.comment &&
@@ -45,7 +33,7 @@ const httpTrigger: AzureFunction = async function(
       body.authorEmail &&
       body.authorName
     ) {
-      await createTableIfNotExists(tableService, tableName);
+      await storageHelpers.createTableIfNotExists(commentTable);
 
       const commentEntity = {
         PartitionKey: body.postGuid,
@@ -56,7 +44,7 @@ const httpTrigger: AzureFunction = async function(
         bodyText: body.comment
       };
 
-      await insertEntity(tableService, tableName, commentEntity);
+      await storageHelpers.insertEntity(commentTable, commentEntity);
 
       const userEmail = {
         to: body.authorEmail,
@@ -89,29 +77,15 @@ const httpTrigger: AzureFunction = async function(
       };
     }
   } else if (req.method == "GET") {
-    const startDate = new Date();
-    const expiryDate = new Date(startDate);
-
-    expiryDate.setMinutes(startDate.getMinutes() + 15);
-    startDate.setMinutes(startDate.getMinutes() - 15);
-
-    const sharedAccessPolicy: azure.TableService.TableSharedAccessPolicy = {
-      AccessPolicy: {
-        Permissions: azure.TableUtilities.SharedAccessPermissions.QUERY,
-        Start: startDate,
-        Expiry: expiryDate
-      }
-    };
-
-    await createTableIfNotExists(tableService, tableName);
+    await storageHelpers.createTableIfNotExists(commentTable);
 
     //getting all comments for now since they are actually needed
-    const sasToken = tableService.generateSharedAccessSignature(
-      "comments",
-      sharedAccessPolicy
+    const sasToken = storageHelpers.tableService.generateSharedAccessSignature(
+      commentTable,
+      storageHelpers.getSharedAccessPolicy()
     );
 
-    const sasUrl = tableService.getUrl("comments", sasToken);
+    const sasUrl = storageHelpers.tableService.getUrl("comments", sasToken);
 
     context.res!.status = 200;
     context.res!.body = { sasUrl };
