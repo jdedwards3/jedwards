@@ -100,7 +100,7 @@ async function getComments() {
         ).then(model => JSON.parse(model));
 
         if (!pageModel.guid) {
-          //add guid to any new pages/posts
+          // add guid to any new pages/posts
           pageModel.guid = uuidv4();
 
           // keep this json formatted same as on save b/c stored in git
@@ -165,13 +165,13 @@ async function getComments() {
         pageModel.partialHtml = partialHtml;
 
         await Promise.all([
-          //this is writing the original json file to include partial html to built
+          // this is writing the original json file to include partial html to built
           writeFile(
             `built/api/${path.split("/")[1].split(".")[0]}.json`,
             JSON.stringify(pageModel),
             "utf8"
           ),
-          //this is writing the actual html file
+          // this is writing the actual html file
           writeFile(
             `built/${path.split("/")[1].split(".")[0]}.html`,
             renderedFile,
