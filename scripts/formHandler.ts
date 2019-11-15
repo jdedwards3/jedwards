@@ -14,7 +14,9 @@ export class FormHandler {
       const formData = new FormData(form);
 
       const result = await fetch(
-        `${form.dataset.formToken}/${new Date().valueOf()}` as string
+        `${form.dataset.formToken}/${new Date(
+          new Date().toUTCString()
+        ).getTime()}`
       )
         .then(errorHandler)
         .then((response: Response) => response.json())

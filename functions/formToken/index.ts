@@ -7,21 +7,26 @@ const httpTrigger: AzureFunction = async function(
 ): Promise<void> {
   context.log("HTTP trigger function processed a request.");
 
-  const timeStamp = context.bindingData.timeStamp;
+  context.res!.headers["Content-Type"] = "application/json";
 
-  const currentTimeStamp = new Date().valueOf();
+  const utcTime = new Date().toUTCString();
 
-  if (
-    timeStamp > currentTimeStamp ||
-    timeStamp < currentTimeStamp - 60 * 1000
-  ) {
+  // todo: use moment?
+  const submitTime = new Date(
+    new Date(context.bindingData.timeStamp).toUTCString()
+  ).getTime();
+
+  // add some skew
+  const futureDateLimit = new Date(utcTime).getTime() + 1000 * 60 * 5;
+
+  const pastDateLimit = new Date(utcTime).getTime() - 1000 * 60 * 5;
+
+  if (submitTime > futureDateLimit || submitTime < pastDateLimit) {
     context.res!.status = 400;
     context.res!.body = {
       message: "invalid request"
     };
   } else {
-    context.res!.headers["Content-Type"] = "application/json";
-
     const token = await formHelpers.createToken();
 
     context.res!.status = 200;
