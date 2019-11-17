@@ -1,0 +1,192 @@
+<div class="text-left blog-post-text">
+  <p class="mb-4">
+    Any form on a website, like a contact form, will most likely receieve many
+    spam submissions. The intent of the spammer is most likely a malicious
+    attempt to carry out a form of
+    <a href="https://en.wikipedia.org/wiki/Cross-site_scripting"
+      >cross-site scripting</a
+    >
+    or
+    <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery"
+      >cross-site requrest forgery</a
+    >
+    attack. Counter measures to these types of attacks, such as properly
+    sanitzing all input data and anti-forgery tokens are usually included with
+    common
+    <a
+      href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks"
+      >server-side frameworks</a
+    >, but what about sites build with the
+    <a href="https://jamstack.org/">JAMstack</a>? Let's explore a solution to
+    this common problem, with a statically generated site utilizing serverless
+    functions to verify each form submission.
+  </p>
+
+  <div class="mb-5">
+    <ins
+      class="adsbygoogle"
+      style="display:block; text-align:center;"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client="ca-pub-6747903070938911"
+      data-ad-slot="5663209858"
+    ></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <h2>Decoy HTML Form Field (honeypot field)</h2>
+
+  <p>
+    Adding a hidden form field, sometimes called a honeypot field, is one way to
+    defend against spam. Usually a honeypot field will be included as a text
+    field and either css or JavaScript will be used to hide it from a typical
+    user. This way the user experience is not affected, but a spam bot will
+    crawl the form, see the field and attempt to submit it with a value.
+  </p>
+
+  <p>
+    Below is an example form with a honeypot field added. You can copy the field
+    into your form if you already have one created, or if you are interested in
+    creating an HTML form please check out my post showing how to
+    <a href="ejs-render-file">render an EJS template to HTML with Node.js</a>.
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    &lt;form
+      id="form"
+      action="formAction"
+      method="post"      
+    &gt;
+      &lt;input
+        id="firstName"
+        type="text"
+        name="firstName"        
+      /&gt;
+
+      &lt;button class="btn btn-primary" type="submit"&gt;Submit&lt;/button&gt;
+
+      &lt;!-- honeypot field --&gt;
+      &lt;div style="position: absolute; left: -5000px;" aria-hidden="true"&gt;
+        &lt;input
+          id="honeypot"
+          type="text"
+          name="honeypot"
+          tabindex="-1"
+          value=""
+          autocomplete="off"
+        /&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+    </code>
+  </pre>
+
+  <p>
+    With the honeypot form field positioned off the page it shouldn't be visible
+    to the typical user. The tabindex for the field is also set to
+    <kbd>tabindex="-1"</kbd> so that is it is ignored by screen readers. By
+    making these changes we have created a form field that only bots will
+    notice, and will not have a negative affect on the user experience.
+  </p>
+
+  <h2>Submit Form Data</h2>
+
+  <p>
+    The form is now ready to submit as a standard form submission or as an AJAX
+    request. The example below assumes we are sending the form data as a
+    querystring in the request body. For more information on AJAX form
+    submissions please see my post showing how to
+    <a href="fetch-api-post-formdata-object"
+      >submit FormData object using Fetch API </a
+    >. The technique shown in that post will match up with the example below.
+  </p>
+
+  <h2>Verify request Server-side</h2>
+  <p>
+    In order to verify whether the form should be processed or was submitted by
+    a spam bot and should be ignored, some additional changes are needed to the
+    <a href="https://en.wikipedia.org/wiki/Server-side">server-side</a> code
+    that processes the form submission. In the following example, a
+    <a
+      href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-node"
+      >JavaScript Azure Function</a
+    >
+    using TypeScript, will be used. This should be fairly similiar to using
+    <a href="https://expressjs.com/">Express</a>, and like Express, JavaScript
+    Azure Functions rely on Node.js for the JavaScript runtime. Node.js and
+    TypeScript are being used for this example, but the concept should readily
+    transfer to another server environment.
+  </p>
+
+  <pre class="border rounded bg-light">
+    <code>
+    import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+    import * as querystring from "querystring";
+
+    const httpTrigger: AzureFunction = async function(
+      context: Context,
+      req: HttpRequest
+    ): Promise&lt;void&gt; {
+      context.log("HTTP trigger function processed a request.");
+
+      // form data submitted as query string in request body
+      const body = querystring.parse(req.body);
+
+      const isSpamSubmission = body.honeypot === undefined 
+        || body.honeypot.length;
+        
+      if(isSpamSubmission){
+      // failed verification
+      context.res!.status = 400;      
+      }else{
+      // not a bot! 
+      // process form submission
+      context.res!.status = 200;
+      }           
+    };
+
+    export default httpTrigger;
+    </code>
+  </pre>
+
+  <div class="mb-5">
+    <ins
+      class="adsbygoogle"
+      style="display:block; text-align:center;"
+      data-ad-layout="in-article"
+      data-ad-format="fluid"
+      data-ad-client="ca-pub-6747903070938911"
+      data-ad-slot="5663209858"
+    ></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <p>
+    Before processing the form the additional validation will check to see if
+    the form data includes a key matching the form we created. In this example
+    the form data should be submitted with a key named <kbd>honeypot</kbd> and
+    it should be an empty string. If the field honeypot is missing (undefined)
+    or if it is submitted with any value, we can reasonably assume the form was
+    not submitted by a typical user. In this case the form processing is stopped
+    and an response with error code 400 is returned. If the honeypot field is
+    submitted as we expect the normal form submission process can continue.
+  </p>
+
+  <p>
+    With the extra validation added to the form submission process this should
+    reduce the amount of spam submissions that are actually processed. The steps
+    above show how to mitigate spam on a site built with the JAMstack, or
+    otherwise without a standard server setup. Besides preventing the annoyance
+    of bot attacks we can also be more sure of the integrity of the data
+    collected by forms.
+  </p>
+
+  <p>
+    Interested in seeing a more elaborate multi-step (more bot traps) approach
+    to preventing spam submissions with a JAMstack site?
+  </p>
+</div>
