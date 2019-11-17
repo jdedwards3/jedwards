@@ -14,21 +14,22 @@ export class FormHandler {
       const formData = new FormData(form);
 
       const result = await fetch(
-        `${form.dataset.formToken}/${new Date(
+        `${form.action}/formToken/${new Date(
           new Date().toUTCString()
-        ).getTime()}`
+        ).getTime()}/${form.dataset.type}`
       )
         .then(errorHandler)
         .then((response: Response) => response.json())
         .then(data => {
           // anti-forgery
           formData.append("_csrf", data.token);
+          return data.type;
         })
         .then(
-          async () =>
+          async type =>
             // casting to any here to satisfy tsc
             // sending body as x-www-form-url-encoded
-            await fetch(form.action, {
+            await fetch(`${form.action}/${type}`, {
               method: form.method,
               body: new URLSearchParams(formData as any)
             })

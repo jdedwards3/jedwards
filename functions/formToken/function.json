@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["get"],
-      "route": "formToken/{timeStamp:long}"
+      "route": "formToken/{timeStamp:long}/{formType:alpha}"
     },
     {
       "type": "http",
