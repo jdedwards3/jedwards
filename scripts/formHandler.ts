@@ -29,9 +29,10 @@ export class FormHandler {
           async type =>
             // casting to any here to satisfy tsc
             // sending body as x-www-form-url-encoded
+            // formData convert to array for edge browser support
             await fetch(`${form.action}/${type}`, {
               method: form.method,
-              body: new URLSearchParams(formData as any)
+              body: new URLSearchParams([...(formData as any)])
             })
         )
         .then(errorHandler)
