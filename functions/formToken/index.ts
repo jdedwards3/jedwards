@@ -22,15 +22,14 @@ const httpTrigger: AzureFunction = async function(
   const pastDateLimit = new Date(utcTime).getTime() - 1000 * 60 * 5;
 
   if (submitTime > futureDateLimit || submitTime < pastDateLimit) {
-    context.res!.status = 400;
-    context.res!.body = {
-      message: "invalid request"
-    };
+    // don't create token but also don't return error
+    context.res!.status = 200;
+    context.res!.body = { message: "success" };
   } else {
     const token = await formHelpers.createToken();
 
     context.res!.status = 200;
-    context.res!.body = { token };
+    context.res!.body = { token: token, type: context.bindingData.formType };
   }
 };
 

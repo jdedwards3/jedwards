@@ -19,10 +19,9 @@ const httpTrigger: AzureFunction = async function(
 
   if (req.method == "POST") {
     if (!formHelpers.verifiedRequestBody(body)) {
-      context.res!.status = 400;
-      context.res!.body = {
-        message: "invalid request"
-      };
+      // failed verification
+      context.res!.status = 200;
+      context.res!.body = { message: "success" };
       return;
     }
 
