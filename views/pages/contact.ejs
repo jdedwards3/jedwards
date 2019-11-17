@@ -1,9 +1,9 @@
 <div class="text-left pt-4">
   <form
     id="contactForm"
-    action="<%= model.environment[Object.keys(model.environment)].functionsUrl %>/contact"
+    action="<%= model.environment[Object.keys(model.environment)].functionsUrl %>"
     method="post"
-    data-form-token="<%= model.environment[Object.keys(model.environment)].functionsUrl %>/formToken"
+    data-type="contact"
   >
     <div class="form-group">
       <label for="firstName">first name</label>

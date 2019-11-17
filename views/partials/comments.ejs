@@ -16,9 +16,9 @@
   <h3 class="pt-3 mb-4 border-top">Leave a Reply</h3>
   <form
     id="commentForm"
-    action="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>/comment"
+    action="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>"
     method="post"
-    data-form-token="<%= pageModel.environment[Object.keys(pageModel.environment)].functionsUrl %>/formToken"
+    data-type="comment"
   >
     <input
       id="postGuid"
