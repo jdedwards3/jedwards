@@ -5,15 +5,19 @@
       href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
       >Fetch</a
     >
-    API provides a utility to make asynchronous
+    API provides a utility to make
     <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX">AJAX</a>
-    requests. This post will show how ES6 syntax can be used to submit
+    requests. This post will show how ES6 syntax can be used with Typescript and
+    the Fetch API to submit an HTML form. Using the Fetch API in conjunction
+    with other
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API">Web API's</a> a
+    post request can be sent, containing
     <a
       href="https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects"
       >FormData Objects</a
     >
-    with TypeScript. If you are unfamiliar with Typescript please read my post
-    describing how to
+    in the body of the request. If you would like more infomration about
+    Typescript please read my post describing how to
     <a href="npm-compile-typescript">compile TypeScript with npm</a>.
   </p>
 
@@ -169,7 +173,7 @@
     </script>
   </div>
 
-  <h2>Await Fetch API Post</h2>
+  <h2>Fetch API Post Form Data</h2>
 
   <p>
     Then the result variable is created and it is used to store the response
@@ -193,7 +197,7 @@
         // sending body as x-www-form-url-encoded
         const result = await fetch(form.action, {
           method: form.method,
-          body: new URLSearchParams(new FormData(form) as any)
+          body: new URLSearchParams([...(new FormData(form) as any)])
         })        
         .then((response: Response) => response.json())
         .then(json => json)
@@ -203,22 +207,37 @@
   </pre>
 
   <p>
-    Interestingly the current TypeScript definition for
-    <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams"
-      >URLSearchParams</a
+    Notice the use of
+    <a
+      href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax"
+      >spread syntax</a
     >
-    does not permit a
+    to transform the
     <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData"
       >FormData</a
     >
-    object to be passed into the constructor, however this is valid JavaScript.
-    To satisfy the TypeScript compiler the FormData object is cast to
-    <kbd>any</kbd>. This allows a URLSearchParams object to be constructed from
-    the FormData object which itself is constructed from the HTMLFormElement.
-    Since the body of the Fetch request is of the type URLSearchParams (hint: it
-    looks like a ?query=string) the resulting Content-Type of the request body
-    will be <kbd>x-www-form-url-encoded</kbd>. This allows for the server to
-    parse it as it would a normal form submission.
+    into an array of key-value pairs. This may seem redudant, but the Edge
+    browser cannot iterate over FormData objects. By transforming the object
+    into an array, Edge is able to successfully construct the
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams"
+      >URLSearchParams</a
+    >
+    object.
+  </p>
+  <p>
+    Interestingly the current
+    <a
+      href="https://github.com/microsoft/TypeScript/blob/75301c8e2ce498359a6b33c3f9c9a6a1bd5980c0/lib/lib.dom.d.ts#L16109"
+      >TypeScript definition for URLSearchParams</a
+    >
+    does not permit a FormData object to be passed into the constructor, however
+    this is valid JavaScript. To satisfy the TypeScript compiler the FormData
+    object is cast to <kbd>any</kbd>. This allows a URLSearchParams object to be
+    constructed from the FormData object which itself is constructed from the
+    HTMLFormElement. Since the body of the Fetch request is of the type
+    URLSearchParams (hint: it looks like a ?query=string) the resulting
+    Content-Type of the request body will be <kbd>x-www-form-url-encoded</kbd>.
+    This allows for the server to parse it as it would a normal form submission.
   </p>
 
   <p>
