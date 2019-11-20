@@ -10,17 +10,15 @@ const verifiedRequestBody = async (body: ParsedUrlQuery) => {
       body.password_honeyBadger.length ||
       !(await verifyToken(body)))
   ) {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 };
 
 const createToken = async () => {
   const tokens = new csrf();
 
   const secret = await tokens.secret();
-
-  await storageHelpers.createTableIfNotExists(csrfTable);
 
   const token = tokens.create(secret);
 
@@ -30,6 +28,8 @@ const createToken = async () => {
     secret: secret
   };
 
+  await storageHelpers.createTableIfNotExists(csrfTable);
+
   // todo: check successful insert
   await storageHelpers.insertEntity(csrfTable, csrfEntity);
 
@@ -38,20 +38,32 @@ const createToken = async () => {
 
 // tokens are only good once
 const verifyToken = async (body: ParsedUrlQuery) => {
-  const csrfEntity = await storageHelpers.retrieveEntity(
-    csrfTable,
-    "csrf",
-    body._csrf as string
-  );
+  // todo: create interface
+  let csrfEntity = null;
 
-  if (new csrf().verify(csrfEntity.secret["_"], csrfEntity.RowKey["_"])) {
-    // todo: check successful delete
+  let tokenStatus = false;
+
+  try {
+    csrfEntity = await storageHelpers.retrieveEntity(
+      csrfTable,
+      "csrf",
+      body._csrf as string
+    );
+
+    if (
+      new csrf().verify(csrfEntity.secret["_"], csrfEntity.RowKey["_"]) &&
+      new Date(csrfEntity.Timestamp["_"]).getTime() >
+        new Date(new Date().toUTCString()).getTime() - 1000 * 60 * 5
+    ) {
+      tokenStatus = true;
+    }
     await storageHelpers.deleteEntity(csrfTable, csrfEntity);
-
-    return true;
+  } catch (error) {
+    throw error;
+    // todo: if token not in request it is stuck storage
+    // get tokens older than 5 mins old and delete?
   }
-
-  return false;
+  return tokenStatus;
 };
 
 const formHelpers = { verifiedRequestBody, createToken, verifyToken };

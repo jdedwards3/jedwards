@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function(
   const body = querystring.parse(req.body);
 
   if (req.method == "POST") {
-    if (!formHelpers.verifiedRequestBody(body)) {
+    if (!(await formHelpers.verifiedRequestBody(body))) {
       // failed verification
       context.res!.status = 200;
       context.res!.body = { message: "success" };
