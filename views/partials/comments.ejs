@@ -1,12 +1,10 @@
 <div class="text-left pt-4">
   <% if(model.comments.length){ %>
-  <h3 class="pt-3 mb-4 border-top border-secondary">Comments</h3>
+  <h3 class="pt-3 mb-4 border-top">Comments</h3>
 
   <ul class="list-group">
     <% model.comments.forEach(function(comment){ %>
-    <li
-      class="bg-transparent list-group-item px-3 py-3 mb-5 border border-secondary rounded"
-    >
+    <li class="bg-transparent list-group-item px-3 py-3 mb-5 border rounded">
       <h3 class="mb-4"><%= comment.authorName %></h3>
       <p><%= comment.bodyText %></p>
     </li>
