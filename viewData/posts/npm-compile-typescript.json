@@ -1,4 +1,5 @@
 {
   "title": "Compile TypeScript with npm",
-  "guid": "f8337fe4-34a7-4809-8b18-ea8cf207b129"
+  "guid": "f8337fe4-34a7-4809-8b18-ea8cf207b129",
+  "metaDescription": "You can use npm's package.json to run various commands! This post will describe how to run the TypeScript compiler to generate JavaScript output from TypeScript source files. Please make sure you have Node.js and npm installed first."
 }

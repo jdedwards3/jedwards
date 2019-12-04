@@ -1,4 +1,5 @@
 {
   "title": "Submit FormData object using Fetch API",
-  "guid": "09a94c34-c0f5-4b36-8e7c-5d2817bbd2c9"
+  "guid": "09a94c34-c0f5-4b36-8e7c-5d2817bbd2c9",
+  "metaDescription": "The JavaScript Fetch API provides a utility to make AJAX requests. This post will show how ES6 syntax can be used with Typescript and the Fetch API to submit an HTML form. Using the Fetch API in conjunction with other Web API's a post request can be sent, containing FormData Objects in the body of the request. "
 }
