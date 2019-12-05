@@ -6,7 +6,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
-  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
   <title><%= model.title %></title>
   <link rel="canonical" href="<%= model.canonical %>/<%= model.slug %>" />
   <% if (model.environment.production) { %>
@@ -42,22 +42,22 @@
     crossorigin="anonymous"
   />
   <!-- Custom styles -->
-  <link href="styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
+  <link href="/styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
   <link
     rel="preload"
-    href="scripts/<%= model.version %>/script.js"
+    href="/scripts/<%= model.version %>/script.js"
     as="script"
     crossorigin="anonymous"
   />
   <link
     rel="preload"
-    href="scripts/<%= model.version %>/formHandler.js"
+    href="/scripts/<%= model.version %>/formHandler.js"
     as="script"
     crossorigin="anonymous"
   />
   <link
     rel="preload"
-    href="scripts/<%= model.version %>/errorHandler.js"
+    href="/scripts/<%= model.version %>/errorHandler.js"
     as="script"
     crossorigin="anonymous"
   />
