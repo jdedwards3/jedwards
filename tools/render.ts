@@ -27,10 +27,23 @@ async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
     paths
-      .map(path =>
-        path.indexOf("index") > 0
-          ? `${config[environment].domain}/`
-          : `${config[environment].domain}/${path.split("/")[1]}`
+      .map(
+        path =>
+          `${config[environment].domain}/${
+            path.indexOf("index") > 0
+              ? `${
+                  path.replace("/index", "").indexOf("/") > 0
+                    ? path.replace("/index", "").split("/")[1]
+                    : ""
+                }`
+              : `${
+                  path
+                    .split("/")
+                    .slice(1)
+                    .join("/")
+                    .split(".")[0]
+                }`
+          }`
       )
       .join("\n"),
     "utf8"
@@ -40,7 +53,7 @@ async function writeSiteMap(paths: string[]) {
 async function getPaths() {
   return Promise.all([
     glob("index.ejs", { cwd: `${viewsPath}` }),
-    glob("pages/*.ejs", {
+    glob("pages/**/*.ejs", {
       cwd: `${viewsPath}`,
       ignore: ["partials/**/*.ejs", "index.ejs", "layout.ejs"]
     }),
@@ -118,8 +131,18 @@ async function getComments() {
 
         pageModel.slug =
           path.indexOf(index[0]) > 0
-            ? ""
-            : `${path.split("/")[1].split(".")[0]}`;
+            ? `${
+                path.replace("/index.ejs", "").indexOf("/") > 0
+                  ? path.replace("/index.ejs", "").split("/")[1]
+                  : ""
+              }`
+            : `${
+                path
+                  .split("/")
+                  .slice(1)
+                  .join("/")
+                  .split(".")[0]
+              }`;
 
         pageModel.footerYear = new Date().getFullYear();
 
@@ -164,6 +187,9 @@ async function getComments() {
 
         pageModel.partialHtml = partialHtml;
 
+        //todo: dynamically create page subdirectories
+        await mkdir("built/legal", { recursive: true });
+
         await Promise.all([
           // this is writing the original json file to include partial html to built
           writeFile(
@@ -173,7 +199,13 @@ async function getComments() {
           ),
           // this is writing the actual html file
           writeFile(
-            `built/${path.split("/")[1].split(".")[0]}.html`,
+            `built/${
+              path
+                .split("/")
+                .slice(1)
+                .join("/")
+                .split(".")[0]
+            }.html`,
             renderedFile,
             "utf8"
           )
