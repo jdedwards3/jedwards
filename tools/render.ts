@@ -33,7 +33,7 @@ async function writeSiteMap(paths: string[]) {
             path.indexOf("index") > 0
               ? `${
                   path.replace("/index", "").indexOf("/") > 0
-                    ? path.replace("/index", "").split("/")[1]
+                    ? `${path.replace("/index", "").split("/")[1]}/`
                     : ""
                 }`
               : `${
