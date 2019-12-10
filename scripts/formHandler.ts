@@ -5,6 +5,12 @@ export class FormHandler {
     document.body.addEventListener("submit", async function(event) {
       event.preventDefault();
 
+      const submitButton = document.querySelector(
+        "button[type=submit]"
+      ) as HTMLInputElement;
+
+      submitButton.disabled = true;
+
       const statusMsgElement = document.getElementById("form-submit-msg");
 
       statusMsgElement!.innerText = "Submitting reply... Please wait.";
@@ -41,6 +47,7 @@ export class FormHandler {
         .catch(errorLogger);
 
       statusMsgElement!.innerText = result.message;
+      submitButton.disabled = false;
     });
   }
 }
