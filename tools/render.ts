@@ -6,6 +6,8 @@ import globstd = require("glob");
 import fetch from "node-fetch";
 import util = require("util");
 import uuidv4 = require("uuid/v4");
+import * as simpleGit from "simple-git/promise";
+const git = simpleGit();
 const glob = util.promisify(globstd);
 const mkdir = util.promisify(fs.mkdir);
 const readFile = util.promisify(fs.readFile);
@@ -147,6 +149,22 @@ async function getComments() {
         pageModel.footerYear = new Date().getFullYear();
 
         pageModel.version = config.version;
+
+        const log = await git.log({
+          file: `${viewsPath}/${path}`
+        });
+
+        const pageMetaModel = {
+          createdDate: new Date(log.all.slice(-1)[0].date).toLocaleDateString(),
+          modifiedDate: new Date(log.latest.date).toLocaleDateString()
+        };
+
+        const pageMetaTemplate = await ejs
+          .renderFile(`${viewsPath}/partials/pageMeta.ejs`, {
+            model: pageMetaModel
+          })
+          .then(output => output);
+
         // reverse assuming comments are in chronological order
         // todo: sort by timestamp
         const commentModel = {
@@ -170,10 +188,15 @@ async function getComments() {
           .then(output => output);
 
         // only want a comment form on non-index posts
+        // todo: yes only pageMeta on posts but remove duplicate check
         const renderedFile = await ejs
           .renderFile(
             `${viewsPath}/${index[0]}`,
             {
+              pageMeta:
+                path.indexOf(index[0]) < 0 && posts.indexOf(path) > -1
+                  ? pageMetaTemplate
+                  : null,
               mainContent: partialHtml,
               comments:
                 path.indexOf(index[0]) < 0 && posts.indexOf(path) > -1
@@ -188,12 +211,21 @@ async function getComments() {
         pageModel.partialHtml = partialHtml;
 
         //todo: dynamically create page subdirectories
-        await mkdir("built/legal", { recursive: true });
+        await Promise.all([
+          await mkdir("built/legal", { recursive: true }),
+          await mkdir("built/api/legal", { recursive: true })
+        ]);
 
         await Promise.all([
           // this is writing the original json file to include partial html to built
           writeFile(
-            `built/api/${path.split("/")[1].split(".")[0]}.json`,
+            `built/api/${
+              path
+                .split("/")
+                .slice(1)
+                .join("/")
+                .split(".")[0]
+            }.json`,
             JSON.stringify(pageModel),
             "utf8"
           ),
