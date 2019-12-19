@@ -88,11 +88,33 @@ async function getComments() {
   }
 }
 
+async function getViewData(paths: string[]) {
+  return paths.reduce(
+    async (viewData: any, path) => ({
+      ...(await viewData),
+      [path]: await readFile(
+        `${viewDataPath}/${path.split(".")[0]}.json`,
+        "utf8"
+      ).then(async model => {
+        const log = await git.log({ file: `${viewsPath}/${path}` });
+        return {
+          ...JSON.parse(model),
+          createdDate: new Date(log.all.slice(-1)[0].date).toLocaleDateString(),
+          modifiedDate: new Date(log.latest.date).toLocaleDateString()
+        };
+      })
+    }),
+    Promise.resolve({})
+  );
+}
+
 (async function initialize() {
   const [comments, [index, pages, posts]]: [
     IComment[],
     [string[], string[], string[]]
   ] = await Promise.all([getComments(), getPaths()]);
+
+  const viewData = await getViewData([...posts, ...pages]);
 
   await mkdir("built/api", { recursive: true });
 
@@ -110,10 +132,7 @@ async function getComments() {
     Promise.all(
       [...pages, ...posts].map(async path => {
         // todo: create json file with default props if not exists
-        const pageModel = await readFile(
-          `${viewDataPath}/${path.split(".")[0]}.json`,
-          "utf8"
-        ).then(model => JSON.parse(model));
+        const pageModel = viewData[path];
 
         if (!pageModel.guid) {
           // add guid to any new pages/posts
