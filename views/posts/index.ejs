@@ -1,38 +1,24 @@
-<section class="col-10 mx-auto text-center blog-links">
+<% if(model.posts && model.posts.length) { %>
+<section class="mx-auto text-center blog-links">
+  <% model.posts.forEach(function(post,index) { %>
   <div class="card bg-light mb-3">
     <div class="card-body">
-      <a href="/npm-compile-sass" class="d-block mb-3 card-title">
-        <h2>Compile SASS with npm</h2></a
+      <a href="<%= post.slug %>" class="d-block mb-3 card-title">
+        <h2><%= post.title %></h2></a
       >
+      <div class="d-flex justify-content-center">
+        <p class="mx-1">created: <%= post.createdDate %></p>
+        <p class="mx-1">updated: <%= post.modifiedDate %></p>
+      </div>
       <p class="card-text">
-        Use npm package.json scripts with node-sass to compile SCSS files
+        <%= post.metaDescription.slice(0,post.metaDescription.indexOf(" ", 140))
+        %>...
       </p>
-      <a href="/npm-compile-sass">Read Post</a>
+      <a href="<%= post.slug %>">Read Post</a>
     </div>
   </div>
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <a
-        href="/prevent-spam-bot-form-submission"
-        class="d-block mb-3 card-title"
-      >
-        <h2>Prevent Spam Form Submission</h2></a
-      >
-      <p class="card-text">
-        Reduce form spam with a decoy (honeypot) field
-      </p>
-      <a href="/prevent-spam-bot-form-submission">Read Post</a>
-    </div>
-  </div>
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <a href="/asus-pb278q-monitor-review" class="d-block mb-3 card-title">
-        <h2>ASUS PB278Q Monitor</h2>
-      </a>
-      <p class="card-text">Monitor Review</p>
-      <a href="/asus-pb278q-monitor-review">Read Review</a>
-    </div>
-  </div>
+  <!-- only show sometimes -->
+  <% if(index % 3 == 0 ) { %>
   <div class="mb-5">
     <ins
       class="adsbygoogle"
@@ -46,48 +32,6 @@
       (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   </div>
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <a href="/fetch-api-post-formdata-object" class="d-block mb-3 card-title">
-        <h2>
-          Submit FormData object using Fetch API
-        </h2></a
-      >
-      <p class="card-text">AJAX Form submit with Typescript</p>
-      <a href="/fetch-api-post-formdata-object">Read Post</a>
-    </div>
-  </div>
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <a href="/ejs-render-file" class="d-block mb-3 card-title">
-        <h2>Render EJS file with Node.js</h2></a
-      >
-      <p class="card-text">HTML generation using EJS and Node.js</p>
-      <a href="/ejs-render-file">Read Post</a>
-    </div>
-  </div>
-  <div class="mb-5">
-    <ins
-      class="adsbygoogle"
-      style="display:block; text-align:center;"
-      data-ad-layout="in-article"
-      data-ad-format="fluid"
-      data-ad-client="ca-pub-6747903070938911"
-      data-ad-slot="5663209858"
-    ></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-  </div>
-  <div class="card bg-light mb-3">
-    <div class="card-body">
-      <a href="/npm-compile-typescript" class="d-block mb-3 card-title">
-        <h2>Compile TypeScript with npm</h2>
-      </a>
-      <p class="card-text">
-        TypeScript compilation using npm package.json scripts
-      </p>
-      <a href="/npm-compile-typescript" class="mb-3">Read Post</a>
-    </div>
-  </div>
+  <% } %> <% }); %>
 </section>
+<% } %>
