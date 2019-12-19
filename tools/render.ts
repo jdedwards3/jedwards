@@ -164,18 +164,14 @@ async function getViewData(paths: string[]) {
 
         pageModel.version = config.version;
 
-        const log = await git.log({
-          file: `${viewsPath}/${path}`
-        });
-
-        const pageMetaModel = {
-          createdDate: new Date(log.all.slice(-1)[0].date).toLocaleDateString(),
-          modifiedDate: new Date(log.latest.date).toLocaleDateString()
+        const postMetaModel = {
+          createdDate: viewData[path].createdDate,
+          modifiedDate: viewData[path].modifiedDate
         };
 
-        const pageMetaTemplate = await ejs
-          .renderFile(`${viewsPath}/partials/pageMeta.ejs`, {
-            model: pageMetaModel
+        const postMetaTemplate = await ejs
+          .renderFile(`${viewsPath}/partials/postMeta.ejs`, {
+            model: postMetaModel
           })
           .then(output => output);
 
@@ -197,19 +193,31 @@ async function getViewData(paths: string[]) {
           })
           .then(output => output);
 
+        // only need post data on post index
+        if (path.indexOf(index[0]) > 0 && posts.indexOf(path) > -1) {
+          pageModel.posts = Object.keys(viewData)
+            .filter(key => key.indexOf(index[0]) < 0 && posts.indexOf(key) > -1)
+            .map(key => ({ ...viewData[key], slug: pathClean(key) }))
+            .sort(
+              (first, second) =>
+                new Date(second.createdDate).getTime() -
+                new Date(first.createdDate).getTime()
+            );
+        }
+
         const partialHtml = await ejs
           .renderFile(`${viewsPath}/${path}`, { model: pageModel })
           .then(output => output);
 
         // only want a comment form on non-index posts
-        // todo: yes only pageMeta on posts but remove duplicate check
+        // todo: yes only postMeta on posts but remove duplicate check
         const renderedFile = await ejs
           .renderFile(
             `${viewsPath}/${index[0]}`,
             {
-              pageMeta:
+              postMeta:
                 path.indexOf(index[0]) < 0 && posts.indexOf(path) > -1
-                  ? pageMetaTemplate
+                  ? postMetaTemplate
                   : null,
               mainContent: partialHtml,
               comments:
@@ -224,7 +232,7 @@ async function getViewData(paths: string[]) {
 
         pageModel.partialHtml = partialHtml;
 
-        //todo: dynamically create page subdirectories
+        // todo: dynamically create page subdirectories
         await Promise.all([
           await mkdir("built/legal", { recursive: true }),
           await mkdir("built/api/legal", { recursive: true })
