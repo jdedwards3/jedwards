@@ -25,6 +25,13 @@ interface IComment {
   status: number;
 }
 
+const pathClean = (path: string) =>
+  path
+    .split("/")
+    .slice(1)
+    .join("/")
+    .split(".")[0];
+
 async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
@@ -38,13 +45,7 @@ async function writeSiteMap(paths: string[]) {
                     ? `${path.replace("/index", "").split("/")[1]}/`
                     : ""
                 }`
-              : `${
-                  path
-                    .split("/")
-                    .slice(1)
-                    .join("/")
-                    .split(".")[0]
-                }`
+              : `${pathClean(path)}`
           }`
       )
       .join("\n"),
@@ -138,13 +139,7 @@ async function getComments() {
                   ? path.replace("/index.ejs", "").split("/")[1]
                   : ""
               }`
-            : `${
-                path
-                  .split("/")
-                  .slice(1)
-                  .join("/")
-                  .split(".")[0]
-              }`;
+            : `${pathClean(path)}`;
 
         pageModel.footerYear = new Date().getFullYear();
 
@@ -219,28 +214,12 @@ async function getComments() {
         await Promise.all([
           // this is writing the original json file to include partial html to built
           writeFile(
-            `built/api/${
-              path
-                .split("/")
-                .slice(1)
-                .join("/")
-                .split(".")[0]
-            }.json`,
+            `built/api/${pathClean(path)}.json`,
             JSON.stringify(pageModel),
             "utf8"
           ),
           // this is writing the actual html file
-          writeFile(
-            `built/${
-              path
-                .split("/")
-                .slice(1)
-                .join("/")
-                .split(".")[0]
-            }.html`,
-            renderedFile,
-            "utf8"
-          )
+          writeFile(`built/${pathClean(path)}.html`, renderedFile, "utf8")
         ]);
       })
     )
