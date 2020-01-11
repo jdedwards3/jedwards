@@ -21,7 +21,8 @@
           </main>
           <!-- aside -->
           <aside class="col-md-4">
-            <div class="mb-5">
+            <% if(model.showAds) { %>
+            <div class="mb-3 ad-unit">
               <!-- aside1 -->
               <ins
                 class="adsbygoogle"
@@ -35,7 +36,7 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
               </script>
             </div>
-            <div class="mb-5">
+            <div class="mb-3 ad-unit">
               <!-- aside2 -->
               <ins
                 class="adsbygoogle"
@@ -49,14 +50,61 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
               </script>
             </div>
+            <% } %>
+            <div class="d-none d-md-block">
+              <!-- Begin Mailchimp Signup Form -->
+              <p>Subscribe and get updates</p>
+              <div id="mc_embed_signup" class="text-left">
+                <form
+                  action="https://gmail.us20.list-manage.com/subscribe/post?u=48f9d601f289f111d7d4142b0&amp;id=83e92b8630"
+                  method="post"
+                  id="mc-embedded-subscribe-form"
+                  name="mc-embedded-subscribe-form"
+                  class="validate"
+                  target="_blank"
+                  novalidate
+                >
+                  <div id="mc_embed_signup_scroll" class="mb-5 text-center">
+                    <div class="mc-field-group mb-3">
+                      <input
+                        type="email"
+                        value=""
+                        name="EMAIL"
+                        class="required email form-control"
+                        id="mce-EMAIL"
+                        placeholder="email address"
+                      />
+                    </div>
+                    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                    <div
+                      style="position: absolute; left: -5000px;"
+                      aria-hidden="true"
+                    >
+                      <input
+                        type="text"
+                        name="b_48f9d601f289f111d7d4142b0_83e92b8630"
+                        tabindex="-1"
+                        value=""
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      value="Subscribe"
+                      name="subscribe"
+                      id="mc-embedded-subscribe"
+                      class="btn btn-success"
+                    >
+                      Subscribe
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!--End mc_embed_signup-->
+            </div>
           </aside>
         </div>
-        <div class="row mb-5">
-          <div class="col-md-8">
-            <!-- comments -->
-            <%- comments %>
-          </div>
-        </div>
+        <!-- comments -->
+        <%- comments %>
       </div>
       <!-- footer -->
       <%- include('partials/footer'); -%>
