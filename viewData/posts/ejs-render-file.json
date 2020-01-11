@@ -1,5 +1,6 @@
 {
   "title": "Render EJS file with Node.js",
   "guid": "db30b131-1eea-434a-a06e-054ec2ee7ffd",
-  "metaDescription": "EJS is a templating language that uses JavaScript to generate HTML. This post will illustrate how to use Node.js with TypeScript to render an EJS file into HTML markup. Please make sure you have Node.js and npm installed first."
+  "metaDescription": "EJS is a templating language that uses JavaScript to generate HTML. This post will illustrate how to use Node.js with TypeScript to render an EJS file into HTML markup. Please make sure you have Node.js and npm installed first.",
+  "showAds": true
 }
