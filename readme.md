@@ -1,4 +1,4 @@
-production build status (click to see automated builds): [![Build Status](https://dev.azure.com/jamesdedwards3/jamesdedwards3/_apis/build/status/jamesdedwards3-CI?branchName=master)](https://dev.azure.com/jamesdedwards3/jamesdedwards3/_build/latest?definitionId=1&branchName=master)
+production build status (click to see automated builds): [![Build Status](https://dev.azure.com/jamesdedwards3/jamesdedwards3/_apis/build/status/jamesdedwards3-CI?branchName=master)](https://dev.azure.com/jamesdedwards3/jamesdedwards3/_build)
 
 Welcome! This is my personal website/blog. I hope you will find something of interest.
 
