@@ -13,15 +13,18 @@
       <div class="container">
         <div class="row">
           <!-- main -->
-          <main class="col-md-8">
+          <main
+            class="<%= model.showAds ? 'col-md-8' : 'col-md-8 offset-md-2' %>"
+          >
             <!-- pageMeta -->
             <%- postMeta %>
             <!-- mainContent-->
             <%- mainContent %>
           </main>
+          <% if(model.showAds) { %>
+
           <!-- aside -->
           <aside class="col-md-4">
-            <% if(model.showAds) { %>
             <div class="mb-3 ad-unit">
               <!-- aside1 -->
               <ins
@@ -50,8 +53,8 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
               </script>
             </div>
-            <% } %>
           </aside>
+          <% } %>
         </div>
         <!-- comments -->
         <%- comments %>
