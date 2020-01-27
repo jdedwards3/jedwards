@@ -14,7 +14,8 @@
     "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
     "render": "node built/tools/render.js",
     "serve": "http-server \"./built\" -c-1 -o",
-    "watch": "npm run build:local && concurrently \"npm run serve\" \"npm run watch-styles\" \"npm run watch-build-tools\" \"npm run watch-client\" \"npm run watch-ejs\" \"npm run watch-view-data\"",
+    "sync": "browser-sync built --extensions html -w",
+    "watch": "npm run build:local && concurrently \"npm run sync\" \"npm run watch-styles\" \"npm run watch-build-tools\" \"npm run watch-client\" \"npm run watch-ejs\" \"npm run watch-view-data\"",
     "watch-build-tools": "nodemon --watch tools/ --ext ts --exec \"npm run compile-build-tools\"",
     "watch-client": "nodemon --watch scripts/ --ext ts --exec \"npm run compile-client && cross-env environment=local npm run render\"",
     "watch-ejs": "nodemon --watch views/ --ext ejs --exec \"cross-env environment=local npm run render\"",
@@ -28,6 +29,7 @@
     "@types/node": "^11.15.4",
     "@types/node-fetch": "^2.5.4",
     "@types/uuid": "^3.4.6",
+    "browser-sync": "^2.26.7",
     "clean-css-cli": "^4.3.0",
     "concurrently": "^4.1.2",
     "cross-env": "^5.2.1",
@@ -36,12 +38,12 @@
     "glob": "^7.1.6",
     "http-server": "^0.12.1",
     "node-fetch": "^2.6.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.19.4",
     "rimraf": "^2.7.1",
     "shx": "^0.3.2",
     "simple-git": "^1.129.0",
-    "typescript": "^3.7.4",
-    "uuid": "^3.3.3"
+    "typescript": "^3.7.5",
+    "uuid": "^3.4.0"
   }
 }
