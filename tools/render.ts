@@ -99,8 +99,12 @@ async function getViewData(paths: string[]) {
         const log = await git.log({ file: `${viewsPath}/${path}` });
         return {
           ...JSON.parse(model),
-          createdDate: new Date(log.all.slice(-1)[0].date).toLocaleDateString(),
-          modifiedDate: new Date(log.latest.date).toLocaleDateString()
+          createdDate: log.all.slice(-1)[0]
+            ? new Date(log.all.slice(-1)[0].date).toLocaleDateString()
+            : "new",
+          modifiedDate: log.latest
+            ? new Date(log.latest.date).toLocaleDateString()
+            : "new"
         };
       })
     }),
