@@ -11,7 +11,7 @@
         <p class="mx-1">updated: <%= post.modifiedDate %></p>
       </div>
       <p class="card-text">
-        <%= post.metaDescription.slice(0,post.metaDescription.indexOf(" ", 140))
+        <%= post.metaDescription.slice(0,post.metaDescription.indexOf(" ", 120))
         %>...
       </p>
       <a href="<%= post.slug %>">Read Post</a>
