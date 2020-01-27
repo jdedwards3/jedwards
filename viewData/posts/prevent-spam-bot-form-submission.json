@@ -1,6 +1,6 @@
 {
   "title": "Prevent Spam Form Submission",
   "guid": "eaf82daa-e08b-47cb-b007-0b4cb6df7f25",
-  "metaDescription": "Any form on a website, like a contact form, will most likely receieve many spam submissions. The intent of the spammer is most likely a malicious attempt to carry out a form of cross-site scripting or cross-site requrest forgery attack. Counter measures to these types of attacks, such as properly sanitzing all input data and anti-forgery tokens are usually included with common server-side frameworks, but what about sites build with the JAMstack? Let's explore a solution to this common problem, with a statically generated site utilizing serverless functions to verify each form submission.",
+  "metaDescription": "Any form on a website, like a contact form, will most likely receieve many spam submissions. The intent of the spammer is most likely a malicious attempt to carry out a form of cross-site scripting or cross-site requrest forgery attack. Counter measures to these types of attacks, such as properly sanitzing all input data and anti-forgery tokens are usually included with common server-side frameworks, but what about sites build with the Jamstack? Let's explore a solution to this common problem, with a statically generated site utilizing serverless functions to verify each form submission.",
   "showAds": true
 }

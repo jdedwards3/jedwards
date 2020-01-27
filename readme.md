@@ -2,7 +2,7 @@ production build status (click to see automated builds): [![Build Status](https:
 
 Welcome! This is my personal website/blog. I hope you will find something of interest.
 
-This site is built with the [JAMstack](https://jamstack.org/) using [Node.js](https://nodejs.org/en/) and [TypeScript](https://www.typescriptlang.org/).
+This site is built with the [Jamstack](https://jamstack.org/) using [Node.js](https://nodejs.org/en/) and [TypeScript](https://www.typescriptlang.org/).
 
 In the tools folder you will see the main file which does the rendering of [EJS](https://ejs.co/) templates into HTML with Node.js.
 
