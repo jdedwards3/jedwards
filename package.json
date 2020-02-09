@@ -26,9 +26,9 @@
     "@types/ejs": "^2.7.0",
     "@types/fs-extra": "^8.0.1",
     "@types/glob": "^7.1.1",
-    "@types/node": "^11.15.4",
+    "@types/node": "^11.15.5",
     "@types/node-fetch": "^2.5.4",
-    "@types/uuid": "^3.4.6",
+    "@types/uuid": "^3.4.7",
     "browser-sync": "^2.26.7",
     "clean-css-cli": "^4.3.0",
     "concurrently": "^4.1.2",
@@ -42,7 +42,7 @@
     "nodemon": "^1.19.4",
     "rimraf": "^2.7.1",
     "shx": "^0.3.2",
-    "simple-git": "^1.129.0",
+    "simple-git": "^1.131.0",
     "typescript": "^3.7.5",
     "uuid": "^3.4.0"
   }
