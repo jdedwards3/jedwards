@@ -36,7 +36,7 @@
     </script>
   </div>
 
-  <h2>Decoy HTML Form Field (honeypot field)</h2>
+  <h2>Use a Decoy HTML Form Field to Prevent Form Spam</h2>
 
   <p>
     Adding a hidden form field, sometimes called a honeypot field, is one way to
@@ -103,12 +103,12 @@
     >. The technique shown in that post will match up with the example below.
   </p>
 
-  <h2>Verify request Server-side</h2>
+  <h2>Verify Request with a Serverless Function</h2>
   <p>
     In order to verify whether the form should be processed or was submitted by
     a spam bot and should be ignored, some additional changes are needed to the
-    <a href="https://en.wikipedia.org/wiki/Server-side">server-side</a> code
-    that processes the form submission. In the following example, a
+    <a href="https://en.wikipedia.org/wiki/Serverless_computing">serverless</a>
+    code that processes the form submission. In the following example, a
     <a
       href="https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-node"
       >JavaScript Azure Function</a
@@ -117,7 +117,7 @@
     <a href="https://expressjs.com/">Express</a>, and like Express, JavaScript
     Azure Functions rely on Node.js for the JavaScript runtime. Node.js and
     TypeScript are being used for this example, but the concept should readily
-    transfer to another server environment.
+    transfer to another serverless function provider.
   </p>
 
   <pre class="border rounded bg-light">
