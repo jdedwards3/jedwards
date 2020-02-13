@@ -13,18 +13,11 @@
       <div class="container">
         <div class="row">
           <!-- main -->
-          <main
-            class="<%= model.showAds ? 'col-md-8' : 'col-md-8 offset-md-2' %>"
-          >
+          <main class="col-md-8 offset-md-2">
             <!-- pageMeta -->
             <%- postMeta %>
             <!-- mainContent-->
-            <%- mainContent %>
-          </main>
-          <% if(model.showAds) { %>
-
-          <!-- aside -->
-          <aside class="col-md-4">
+            <%- mainContent %> <% if(model.showAds) { %>
             <div class="mb-3 ad-unit">
               <!-- aside1 -->
               <ins
@@ -39,22 +32,8 @@
                 (adsbygoogle = window.adsbygoogle || []).push({});
               </script>
             </div>
-            <div class="mb-3 ad-unit">
-              <!-- aside2 -->
-              <ins
-                class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-6747903070938911"
-                data-ad-slot="6448282379"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              ></ins>
-              <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
-            </div>
-          </aside>
-          <% } %>
+            <% } %>
+          </main>
         </div>
         <!-- comments -->
         <%- comments %>
