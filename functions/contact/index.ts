@@ -4,6 +4,7 @@ import uuidv4 = require("uuid/v4");
 import * as SendGrid from "@sendgrid/mail";
 import { formHelpers } from "../common/formHelpers";
 import { storageHelpers } from "../common/storageHelpers";
+SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
 const tableName = "contactForm";
 
 const httpTrigger: AzureFunction = async function(
