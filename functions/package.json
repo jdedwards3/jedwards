@@ -13,14 +13,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@azure/functions": "^1.0.2-beta2",
-    "@sendgrid/mail": "^6.4.0",
+    "@azure/functions": "^1.2.0",
+    "@sendgrid/mail": "^6.5.3",
     "@types/csrf": "^1.3.2",
-    "@types/node": "^12.12.11",
-    "@types/uuid": "^3.4.6",
+    "@types/node": "^12.12.28",
+    "@types/uuid": "^3.4.7",
     "azure-storage": "^2.10.3",
     "csrf": "^3.1.0",
-    "typescript": "^3.7.2",
-    "uuid": "^3.3.3"
+    "typescript": "^3.8.2",
+    "uuid": "^3.4.0"
   }
 }

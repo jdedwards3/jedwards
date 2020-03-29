@@ -24,9 +24,9 @@
   },
   "devDependencies": {
     "@types/ejs": "^2.7.0",
-    "@types/fs-extra": "^8.0.1",
+    "@types/fs-extra": "^8.1.0",
     "@types/glob": "^7.1.1",
-    "@types/node": "^11.15.5",
+    "@types/node": "^11.15.7",
     "@types/node-fetch": "^2.5.4",
     "@types/uuid": "^3.4.7",
     "browser-sync": "^2.26.7",
@@ -43,7 +43,7 @@
     "rimraf": "^2.7.1",
     "shx": "^0.3.2",
     "simple-git": "^1.131.0",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.2",
     "uuid": "^3.4.0"
   }
 }
