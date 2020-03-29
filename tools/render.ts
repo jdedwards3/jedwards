@@ -36,18 +36,18 @@ async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
     paths
-      .map(
-        path =>
-          `${config[environment].domain}/${
-            path.indexOf("index") > 0
-              ? `${
-                  path.replace("/index", "").indexOf("/") > 0
-                    ? `${path.replace("/index", "").split("/")[1]}/`
-                    : ""
-                }`
-              : `${pathClean(path)}`
-          }`
-      )
+      .map(path => {
+        path = path.split(".")[0];
+        return `${config[environment].domain}/${
+          path.indexOf("index") > 0
+            ? `${
+                path.replace("/index", "").indexOf("/") > 0
+                  ? `${path.replace("/index", "").split("/")[1]}/`
+                  : ""
+              }`
+            : `${pathClean(path)}`
+        }`;
+      })
       .join("\n"),
     "utf8"
   );
@@ -97,14 +97,15 @@ async function getViewData(paths: string[]) {
         "utf8"
       ).then(async model => {
         const log = await git.log({ file: `${viewsPath}/${path}` });
+        const today = new Date().toLocaleDateString();
         return {
           ...JSON.parse(model),
           createdDate: log.all.slice(-1)[0]
             ? new Date(log.all.slice(-1)[0].date).toLocaleDateString()
-            : "new",
+            : today,
           modifiedDate: log.latest
             ? new Date(log.latest.date).toLocaleDateString()
-            : "new"
+            : today
         };
       })
     }),
@@ -132,7 +133,7 @@ async function getViewData(paths: string[]) {
   }
 
   await Promise.all([
-    writeSiteMap([...pages, ...posts].map(item => item.split(".")[0])),
+    writeSiteMap([...pages, ...posts]),
     Promise.all(
       [...pages, ...posts].map(async path => {
         // todo: create json file with default props if not exists
@@ -143,9 +144,10 @@ async function getViewData(paths: string[]) {
           pageModel.guid = uuidv4();
 
           // keep this json formatted same as on save b/c stored in git
+          const { createdDate, modifiedDate, ...store } = pageModel;
           await writeFile(
             `${viewDataPath}/${path.split(".")[0]}.json`,
-            JSON.stringify(pageModel, null, 2),
+            JSON.stringify(store, null, 2),
             "utf8"
           );
         }
