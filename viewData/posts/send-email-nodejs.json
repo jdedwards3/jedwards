@@ -1,0 +1,6 @@
+{
+  "title": "Send emails with Node.js",
+  "guid": "2c0173b1-182c-4776-aa82-82a55ae7c0b3",
+  "metaDescription": "There are a variety of ways to send an email with Node.js. One way is to utilize the email service offered by SendGrid. The email API has a free plan, which does have a usage limit, specified on their website, but it should be enough for example purposes. To use the SendGrid Mail Service npm package, an API key is required which can be obtained by creating a new SendGrid account.",
+  "showAds": true
+}
