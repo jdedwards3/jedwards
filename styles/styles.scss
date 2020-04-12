@@ -19,7 +19,10 @@ body {
 $primary: #003bff;
 $success: #155724;
 
-a {
+a,
+a:hover,
+a:active,
+a:focus {
   color: $primary;
 }
 
