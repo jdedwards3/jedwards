@@ -16,6 +16,27 @@ body {
   line-height: 1.8;
 }
 
+$primary: #003bff;
+$success: #155724;
+
+a {
+  color: $primary;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: $primary;
+}
+
+.btn-success,
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  background-color: $success;
+}
+
 .cover-container {
   max-width: 42em;
 }
