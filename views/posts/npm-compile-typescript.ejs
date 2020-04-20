@@ -1,13 +1,13 @@
 <div class="text-left blog-post-text">
   <p class="mb-4">
-    You can use npm's package.json to run various commands! This post will
-    describe how to run the TypeScript compiler to generate JavaScript output
-    from TypeScript source files. Please make sure you have
+    Did you know you can use npm's package.json to run commands? Here, we will
+    learn how to run the TypeScript compiler to generate JavaScript output from
+    TypeScript source files. Before we start, make sure you have
     <a href="https://nodejs.org/en/">Node.js</a> and
     <a href="https://docs.npmjs.com/downloading-and-installing-node-js-and-npm"
       >npm</a
     >
-    installed first.
+    installed.
   </p>
 
   <div class="mb-3 ad-unit">
@@ -27,21 +27,21 @@
   <h2>TypeScript</h2>
 
   <p>
-    In a new folder create a file named script.ts. Then add some sample code so
-    we can test whether the JavaScript output is being generated properly.
+    In a new folder, create a file named script.ts. Then, add some sample code
+    so we can test whether the JavaScript output is being generated properly.
   </p>
 
   <pre class="border rounded bg-light">
-    <code>
-    const msg: string = "Hello World!";
-    console.log(msg);
-    </code>
+  <code>
+  const msg: string = "Hello World!";
+  console.log(msg);
+  </code>
   </pre>
 
   <h2>TypeScript Compiler</h2>
 
   <p>
-    In the same folder create a new file named tsconfig.json. Here is the
+    In the same folder, create a new file named tsconfig.json. Here is the
     TypeScript official documentation for configuring
     <a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html">
       tsconfig.json</a
@@ -63,10 +63,10 @@
   </pre>
 
   <p>
-    This configuration instructs the TypeScript compiler to look for source
-    files in the root of your project (where your tsconfig.json is located) and
-    for any TypeScript files found there it will copy their javascript output to
-    a new folder named output.
+    This configuration tells the TypeScript compiler to look for source files in
+    the root of your project, where your tsconfig.json is located. For any
+    TypeScript files it finds there, it will output the compiled JavaScript to a
+    new folder named <kbd>output</kbd>.
   </p>
 
   <h2>package.json</h2>
@@ -81,12 +81,12 @@
   </p>
 
   <p>
-    Then add the name and version properties that are required. Additionally you
-    need to add another property called scripts. This will contain the script
-    instructions that we can use to compile the TypeScript we created. In this
-    case our compilation script is named compile-typescript, and it runs the
-    command tsc. This is the default TypeScript command and it will utilize the
-    tsconfig.json we created.
+    Then, add the name and version properties required. You will also need to
+    add a property called <kbd>scripts</kbd>. This property contains the script
+    instructions that we will use to compile the TypeScript we created. In this
+    case, our compilation script is named compile-typescript, and it runs the
+    command tsc. This is the default TypeScript command, and it will utilize the
+    tsconfig.json we created
   </p>
 
   <p>Your package.json file should look like this:</p>
@@ -104,14 +104,16 @@
   </pre>
 
   <p>
-    With package.json created and the TypeScript compilation step listed the
-    last step is saving TypeScript as a dev dependency so that the npm task has
-    access.
+    Now that package.json is created and the TypeScript compilation step is
+    listed, we must save TypeScript as a dev dependency. This will give the npm
+    task access.
   </p>
+
   <h2>npm Install TypeScript</h2>
 
   <p>
-    To install TypeScript for this project in a terminal window run the command:
+    To install TypeScript for this project in a terminal window, run the
+    command:
   </p>
 
   <pre class="border rounded bg-light">
@@ -120,7 +122,7 @@
     </code>
   </pre>
 
-  <p>After installing TypeScript your package.json should look like this:</p>
+  <p>After installing TypeScript, your package.json should look like this:</p>
 
   <pre class="border rounded bg-light">
     <code>
@@ -154,7 +156,7 @@
   <h2>JavaScript</h2>
 
   <p>
-    In a terminal window navigate to the source code folder you created. Then
+    In a terminal window, navigate to the source code folder you created. Then,
     run the following command:
   </p>
 
@@ -165,12 +167,13 @@
   </pre>
 
   <p>
-    You should now see a new folder created named output, containing one file
-    named script.js. Notice how the output has defaulted to es5 javascript, and
-    is compatible with most any browser.
+    Now, you should now see a new folder created named <kbd>output</kbd>, that
+    contains one file named script.js. Notice how the output has defaulted to
+    ES5 JavaScript, which is compatible with all major browsers.
   </p>
 
   <p>Your script.js file should look like this:</p>
+
   <pre class="border rounded bg-light">
     <code>
     var msg = "Hello World";
@@ -178,5 +181,7 @@
     </code>
   </pre>
 
-  <p>Congratulations on succesfully compiling TypeScript with npm!</p>
+  <p>
+    Congratulations! You have successfully compiled TypeScript with npm.
+  </p>
 </div>
