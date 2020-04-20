@@ -3,3 +3,5 @@ built
 node_modules
 *.css
 *.js
+
+*.DS_Store
