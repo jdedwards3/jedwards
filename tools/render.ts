@@ -26,17 +26,13 @@ interface IComment {
 }
 
 const pathClean = (path: string) =>
-  path
-    .split("/")
-    .slice(1)
-    .join("/")
-    .split(".")[0];
+  path.split("/").slice(1).join("/").split(".")[0];
 
 async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
     paths
-      .map(path => {
+      .map((path) => {
         path = path.split(".")[0];
         return `${config[environment].domain}/${
           path.indexOf("index") > 0
@@ -58,29 +54,29 @@ async function getPaths() {
     glob("index.ejs", { cwd: `${viewsPath}` }),
     glob("pages/**/*.ejs", {
       cwd: `${viewsPath}`,
-      ignore: ["partials/**/*.ejs", "index.ejs", "layout.ejs"]
+      ignore: ["partials/**/*.ejs", "index.ejs", "layout.ejs"],
     }),
     glob("posts/*.ejs", {
       cwd: `${viewsPath}`,
-      ignore: ["partials/**/*.ejs", "index.ejs", "layout.ejs"]
-    })
-  ]).then(paths => paths);
+      ignore: ["partials/**/*.ejs", "index.ejs", "layout.ejs"],
+    }),
+  ]).then((paths) => paths);
 }
 
 async function getComments() {
   try {
     const data = await fetch(`${config[environment].functionsUrl}/comment`)
-      .then(response => response.json())
-      .then(json => json);
+      .then((response) => response.json())
+      .then((json) => json);
 
     return fetch(data.sasUrl, {
       headers: {
         Accept: "application/json;odata=nometadata",
-        "Accept-Charset": "UTF-8"
-      }
+        "Accept-Charset": "UTF-8",
+      },
     })
-      .then(response => response.json())
-      .then(json => json.value);
+      .then((response) => response.json())
+      .then((json) => json.value);
   } catch (error) {
     // let everything continue
     console.warn("warning: no comments returned from api because of error!");
@@ -95,7 +91,7 @@ async function getViewData(paths: string[]) {
       [path]: await readFile(
         `${viewDataPath}/${path.split(".")[0]}.json`,
         "utf8"
-      ).then(async model => {
+      ).then(async (model) => {
         const log = await git.log({ file: `${viewsPath}/${path}` });
         const today = new Date().toLocaleDateString();
         return {
@@ -105,9 +101,9 @@ async function getViewData(paths: string[]) {
             : today,
           modifiedDate: log.latest
             ? new Date(log.latest.date).toLocaleDateString()
-            : today
+            : today,
         };
-      })
+      }),
     }),
     Promise.resolve({})
   );
@@ -126,7 +122,7 @@ async function getViewData(paths: string[]) {
   try {
     // cache bust es modules
     await fsExtra.move(`built/dist`, `built/scripts/${config.version}`, {
-      overwrite: true
+      overwrite: true,
     });
   } catch (error) {
     console.warn("warning: scripts already processed");
@@ -135,7 +131,7 @@ async function getViewData(paths: string[]) {
   await Promise.all([
     writeSiteMap([...pages, ...posts]),
     Promise.all(
-      [...pages, ...posts].map(async path => {
+      [...pages, ...posts].map(async (path) => {
         // todo: create json file with default props if not exists
         const pageModel = viewData[path];
 
@@ -172,14 +168,14 @@ async function getViewData(paths: string[]) {
 
         const postMetaModel = {
           createdDate: viewData[path].createdDate,
-          modifiedDate: viewData[path].modifiedDate
+          modifiedDate: viewData[path].modifiedDate,
         };
 
         const postMetaTemplate = await ejs
           .renderFile(`${viewsPath}/partials/postMeta.ejs`, {
-            model: postMetaModel
+            model: postMetaModel,
           })
-          .then(output => output);
+          .then((output) => output);
 
         // reverse assuming comments are in chronological order
         // todo: sort by timestamp
@@ -187,23 +183,25 @@ async function getViewData(paths: string[]) {
           comments: comments
             .reverse()
             .filter(
-              comment =>
+              (comment) =>
                 comment.PartitionKey == pageModel.guid && comment.status == 1
-            )
+            ),
         };
 
         const commentsTemplate = await ejs
           .renderFile(`${viewsPath}/partials/comments.ejs`, {
             model: commentModel,
-            pageModel: pageModel
+            pageModel: pageModel,
           })
-          .then(output => output);
+          .then((output) => output);
 
         // only need post data on post index
         if (path.indexOf(index[0]) > 0 && posts.indexOf(path) > -1) {
           pageModel.posts = Object.keys(viewData)
-            .filter(key => key.indexOf(index[0]) < 0 && posts.indexOf(key) > -1)
-            .map(key => ({ ...viewData[key], slug: pathClean(key) }))
+            .filter(
+              (key) => key.indexOf(index[0]) < 0 && posts.indexOf(key) > -1
+            )
+            .map((key) => ({ ...viewData[key], slug: pathClean(key) }))
             .sort(
               (first, second) =>
                 new Date(second.createdDate).getTime() -
@@ -213,7 +211,7 @@ async function getViewData(paths: string[]) {
 
         const partialHtml = await ejs
           .renderFile(`${viewsPath}/${path}`, { model: pageModel })
-          .then(output => output);
+          .then((output) => output);
 
         // only want a comment form on non-index posts
         // todo: yes only postMeta on posts but remove duplicate check
@@ -230,18 +228,18 @@ async function getViewData(paths: string[]) {
                 path.indexOf(index[0]) < 0 && posts.indexOf(path) > -1
                   ? commentsTemplate
                   : null,
-              model: pageModel
+              model: pageModel,
             },
             { rmWhitespace: true }
           )
-          .then(output => output);
+          .then((output) => output);
 
         pageModel.partialHtml = partialHtml;
 
         // todo: dynamically create page subdirectories
         await Promise.all([
           await mkdir("built/legal", { recursive: true }),
-          await mkdir("built/api/legal", { recursive: true })
+          await mkdir("built/api/legal", { recursive: true }),
         ]);
 
         await Promise.all([
@@ -252,9 +250,9 @@ async function getViewData(paths: string[]) {
             "utf8"
           ),
           // this is writing the actual html file
-          writeFile(`built/${pathClean(path)}.html`, renderedFile, "utf8")
+          writeFile(`built/${pathClean(path)}.html`, renderedFile, "utf8"),
         ]);
       })
-    )
+    ),
   ]);
 })();
