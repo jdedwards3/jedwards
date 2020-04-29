@@ -7,9 +7,7 @@
     <div class="d-flex w-100 p-3 mx-auto flex-column">
       <!-- header -->
       <%- include('partials/header'); -%>
-
       <h1 class="cover-heading mb-5"><%= model.title %></h1>
-
       <div class="container">
         <div class="row">
           <!-- main -->
@@ -17,22 +15,9 @@
             <!-- pageMeta -->
             <%- postMeta %>
             <!-- mainContent-->
-            <%- mainContent %> <% if(model.showAds) { %>
-            <div class="mb-3 ad-unit">
-              <!-- aside1 -->
-              <ins
-                class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-6747903070938911"
-                data-ad-slot="4081932233"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              ></ins>
-              <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
-            </div>
-            <% } %>
+            <%- mainContent %>
+            <!-- ad unit-->
+            <%- include('partials/ad-unit'); -%>
           </main>
         </div>
         <!-- comments -->
