@@ -11,19 +11,26 @@
       <div class="container">
         <div class="row">
           <!-- main -->
-          <main class="col-md-10 offset-md-1">
-            <!-- ad unit-->
-            <%- include('partials/ad-unit'); -%>
+          <main class="col-md-8">
             <!-- pageMeta -->
             <%- postMeta %>
             <!-- mainContent-->
             <%- mainContent %>
+
+            <!-- comments -->
+            <%- comments %>
+          </main>
+          <aside class="col-md-4">
             <!-- ad unit-->
             <%- include('partials/ad-unit'); -%>
-          </main>
+            <!-- ad unit-->
+            <%- include('partials/ad-unit'); -%>
+            <!-- ad unit-->
+            <%- include('partials/ad-unit'); -%>
+            <!-- subscribe -->
+            <%- include('partials/subscribe-form'); -%>
+          </aside>
         </div>
-        <!-- comments -->
-        <%- comments %>
       </div>
       <!-- footer -->
       <%- include('partials/footer'); -%>
