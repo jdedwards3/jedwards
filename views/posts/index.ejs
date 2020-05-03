@@ -3,7 +3,7 @@
   <% model.posts.forEach(function(post,index) { %>
   <div class="card bg-light mb-3">
     <div class="card-body">
-      <a href="<%= post.slug %>" class="d-block mb-3 card-title">
+      <a tabindex="-1" href="<%= post.slug %>" class="d-block mb-3 card-title">
         <h2><%= post.title %></h2></a
       >
       <div class="d-flex justify-content-center">
