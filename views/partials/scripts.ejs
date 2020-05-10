@@ -22,7 +22,7 @@
   src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"
 ></script>
 <script type="text/javascript">
-  (function($) {
+  (function ($) {
     window.fnames = new Array();
     window.ftypes = new Array();
     fnames[0] = "EMAIL";
@@ -43,3 +43,17 @@
 
 <!-- Custom scripts -->
 <script type="module" src="/scripts/<%= model.version %>/script.js"></script>
+<!-- show previously hidden ads on window resize -->
+<script>
+  window.onresize = function () {
+    var emptyAds = Array.from(document.querySelectorAll("ins")).filter(
+      function (elem) {
+        return !elem.children.length && elem.offsetHeight > 0;
+      }
+    );
+    emptyAds.forEach(function (elem) {
+      delete elem.dataset.adsbygoogleStatus;
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+  };
+</script>
