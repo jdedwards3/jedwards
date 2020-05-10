@@ -17,6 +17,8 @@
       <a href="<%= post.slug %>">Read Post</a>
     </div>
   </div>
-  <% }); %>
+  <% if(index < 2) { %>
+  <!-- ad unit-->
+  <%- include('../partials/ad-unit'); -%> <% } %> <% }); %>
 </section>
 <% } %>

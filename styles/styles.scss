@@ -111,9 +111,16 @@ pre {
 .adslot_1 {
   display: block;
   width: 320px;
+  height: 250px;
+  margin: 0 auto;
 }
-@media (max-width: 768px) {
-  .adslot_1 {
+@media (max-width: 767px) {
+  .sidebar .adslot_1 {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  .blog-post-text .adslot_1 {
     display: none;
   }
 }
