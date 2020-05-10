@@ -1,13 +1,23 @@
 <% if (model.environment.production && model.showAds) { %>
-<div class="mb-3">
+<style>
+  .adslot_1 {
+    display: block;
+    width: 320px;
+  }
+  @media (max-width: 768px) {
+    .adslot_1 {
+      display: none;
+    }
+  }
+</style>
+<div>
   <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
   ></script>
   <!-- display1 -->
   <ins
-    class="adsbygoogle"
-    style="display: block;"
+    class="adsbygoogle adslot_1 mb-3"
     data-ad-client="ca-pub-6747903070938911"
     data-ad-slot="4081932233"
     data-ad-format="auto"
