@@ -107,3 +107,13 @@ pre {
     flex: 0 0 350px;
   }
 }
+
+.adslot_1 {
+  display: block;
+  width: 320px;
+}
+@media (max-width: 768px) {
+  .adslot_1 {
+    display: none;
+  }
+}
