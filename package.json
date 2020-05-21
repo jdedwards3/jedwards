@@ -24,11 +24,11 @@
   },
   "devDependencies": {
     "@types/ejs": "^2.7.0",
-    "@types/fs-extra": "^8.1.0",
+    "@types/fs-extra": "^8.1.1",
     "@types/glob": "^7.1.1",
-    "@types/node": "^11.15.7",
+    "@types/node": "^11.15.12",
     "@types/node-fetch": "^2.5.4",
-    "@types/uuid": "^3.4.7",
+    "@types/uuid": "^3.4.9",
     "browser-sync": "^2.26.7",
     "clean-css-cli": "^4.3.0",
     "concurrently": "^4.1.2",
@@ -36,14 +36,14 @@
     "ejs": "^2.7.4",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
-    "http-server": "^0.12.1",
+    "http-server": "^0.12.3",
     "node-fetch": "^2.6.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "nodemon": "^1.19.4",
     "rimraf": "^2.7.1",
     "shx": "^0.3.2",
-    "simple-git": "^1.131.0",
-    "typescript": "^3.8.2",
+    "simple-git": "^1.132.0",
+    "typescript": "^3.9.2",
     "uuid": "^3.4.0"
   }
 }
