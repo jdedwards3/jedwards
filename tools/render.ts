@@ -117,7 +117,11 @@ async function getViewData(paths: string[]) {
 
   const viewData = await getViewData([...posts, ...pages]);
 
-  await mkdir("built/api", { recursive: true });
+  // todo: dynamically create page subdirectories
+  await Promise.all([
+    await mkdir("built/legal", { recursive: true }),
+    await mkdir("built/api/legal", { recursive: true }),
+  ]);
 
   try {
     // cache bust es modules
@@ -235,12 +239,6 @@ async function getViewData(paths: string[]) {
           .then((output) => output);
 
         pageModel.partialHtml = partialHtml;
-
-        // todo: dynamically create page subdirectories
-        await Promise.all([
-          await mkdir("built/legal", { recursive: true }),
-          await mkdir("built/api/legal", { recursive: true }),
-        ]);
 
         await Promise.all([
           // this is writing the original json file to include partial html to built
