@@ -96,10 +96,19 @@ pre {
   top: 2rem;
 }
 
-.sidebar {
-  flex: 0 0 100%;
+.main {
+  padding: 0 15px;
+  width: 100%;
   @media (min-width: 768px) {
-    flex: 0 0 350px;
+    max-width: calc(100% - 350px);
+  }
+}
+
+.sidebar {
+  padding: 0 15px;
+  width: 100%;
+  @media (min-width: 768px) {
+    max-width: 350px;
   }
 }
 

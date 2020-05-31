@@ -1,4 +1,14 @@
 <head>
+  <% if (model.environment.production) { %>
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+  ></script>
+  <meta
+    name="monetization"
+    content="$coil.xrptipbot.com/8BGyFhsLTwOgFEG0vXOGEw"
+  />
+  <% } %>
   <!-- meta tags -->
   <meta charset="utf-8" />
   <meta name="description" content="<%= model.metaDescription %>" />
@@ -9,30 +19,6 @@
   <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
   <title><%= model.title %></title>
   <link rel="canonical" href="<%= model.canonical %>/<%= model.slug %>" />
-  <% if (model.environment.production) { %>
-  <script
-    async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-  ></script>
-  <meta
-    name="monetization"
-    content="$coil.xrptipbot.com/8BGyFhsLTwOgFEG0vXOGEw"
-  />
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=UA-141231909-1"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-
-    gtag("config", "UA-141231909-1");
-  </script>
-  <% } %>
   <!-- Bootstrap CSS -->
   <link
     rel="stylesheet"
@@ -60,4 +46,20 @@
     as="script"
     crossorigin="anonymous"
   />
+  <% if (model.environment.production) { %>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=UA-141231909-1"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "UA-141231909-1");
+  </script>
+  <% } %>
 </head>
