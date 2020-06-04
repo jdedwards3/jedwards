@@ -104,12 +104,12 @@
 
   <pre class="border rounded bg-light">
     <code>
-      // form.ts
+    // form.ts
 
-      // listen for any form submit event 
-      document.body.addEventListener("submit", async function(event) {
-            
-      });      
+    // listen for any form submit event 
+    document.body.addEventListener("submit", async function(event) {
+          
+    });      
     </code>
   </pre>
 
@@ -121,12 +121,12 @@
 
   <pre class="border rounded bg-light">
     <code>
-      // form.ts
+    // form.ts
 
-      // listen for any form submit event 
-      document.body.addEventListener("submit", async function(event) {
-        event.preventDefault();
-      });      
+    // listen for any form submit event 
+    document.body.addEventListener("submit", async function(event) {
+      event.preventDefault();
+    });      
     </code>
   </pre>
 
@@ -140,14 +140,14 @@
 
   <pre class="border rounded bg-light">
     <code>
-      // form.ts
+    // form.ts
 
-      // listen for any form submit event 
-      document.body.addEventListener("submit", async function(event) {
-        event.preventDefault();
-        
-        const form = event.target as HTMLFormElement;
-      });      
+    // listen for any form submit event 
+    document.body.addEventListener("submit", async function(event) {
+      event.preventDefault();
+      
+      const form = event.target as HTMLFormElement;
+    });      
     </code>
   </pre>
 
@@ -164,23 +164,22 @@
 
   <pre class="border rounded bg-light">
     <code>
-      // listen for any form submit event 
-      document.body.addEventListener("submit", async function(event) {
+    // listen for any form submit event 
+    document.body.addEventListener("submit", async function(event) {
+      event.preventDefault();
 
-        event.preventDefault();
-
-        const form = event.target as HTMLFormElement;
-
-        // casting to any here to satisfy tsc
-        // sending body as x-www-form-url-encoded
-        const result = await fetch(form.action, {
-          method: form.method,
-          body: new URLSearchParams([...(new FormData(form) as any)])
-        })        
-        .then((response: Response) => response.json())
-        .then(json => json)
-        .catch(error => console.log(error));        
-      });      
+      const form = event.target as HTMLFormElement;
+      
+      // casting to any here to satisfy tsc
+      // sending body as x-www-form-url-encoded
+      const result = await fetch(form.action, {
+        method: form.method,
+        body: new URLSearchParams([...(new FormData(form) as any)])
+      })        
+      .then((response: Response) => response.json())
+      .then(json => json)
+      .catch(error => console.log(error));        
+    });      
     </code>
   </pre>
 

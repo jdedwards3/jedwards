@@ -58,28 +58,29 @@
 
     // some nesting
     nav {
-        ul {
-          margin: 0;
-          padding: 0;
-          list-style: none;
-        }
-      
-        li { display: inline-block; }
-      
-        a {
-          display: block;
-          padding: 6px 12px;
-          text-decoration: none;
-        }
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
       }
+    
+      li { display: inline-block; }
+    
+      a {
+        display: block;
+        padding: 6px 12px;
+        text-decoration: none;
+      }
+    }
 
-      // a mixin
-      @mixin transform($property) {
-        -webkit-transform: $property;
-        -ms-transform: $property;
-        transform: $property;
-      }
-      .box { @include transform(rotate(30deg)); }
+    // a mixin
+    @mixin transform($property) {
+      -webkit-transform: $property;
+      -ms-transform: $property;
+      transform: $property;
+    }
+
+    .box { @include transform(rotate(30deg)); }
     </code>    
   </pre>
 
@@ -312,20 +313,20 @@
   </p>
 
   <pre class="border rounded bg-light">
-      <code>
-      {
-        "name": "npmcompilesass",
-        "scripts": {
-          "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 styles.scss dist/styles.css",
-          "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output dist/styles.min.css dist/styles.css",
-          "process-styles": "npm run compile-styles && npm run css-minify"
-        },
-        "devDependecies": {
-          "clean-css-cli": "^4.3.0",
-          "node-sass": "^4.12.0"
-        }
-      }              
-      </code>
+    <code>
+    {
+      "name": "npmcompilesass",
+      "scripts": {
+        "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 styles.scss dist/styles.css",
+        "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output dist/styles.min.css dist/styles.css",
+        "process-styles": "npm run compile-styles && npm run css-minify"
+      },
+      "devDependecies": {
+        "clean-css-cli": "^4.3.0",
+        "node-sass": "^4.12.0"
+      }
+    }              
+    </code>
   </pre>
 
   <p>
