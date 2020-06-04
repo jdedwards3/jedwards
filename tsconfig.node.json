@@ -7,7 +7,7 @@
     "outDir": "built/",
     "sourceMap": true
   },
-  "include": ["tools/**/*.ts"],
+  "include": ["tools/**/*.ts", "config.ts"],
   "exclude": [
     "*.ts",
     "scripts/**/*.ts",
