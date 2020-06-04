@@ -129,8 +129,20 @@ async function getViewData(paths: string[]) {
       [...pagePaths, ...postPaths].map(async (path) => {
         // create output folders
         await Promise.all([
-          mkdir(`built/api/${pathPretty(path)}`, { recursive: true }),
-          mkdir(`built/${pathPretty(path)}`, { recursive: true }),
+          mkdir(
+            `built/api/${
+              pathPretty(path).indexOf("404") < 0 ? pathPretty(path) : ""
+            }`,
+            { recursive: true }
+          ),
+          mkdir(
+            `built/${
+              pathPretty(path).indexOf("404") < 0
+                ? pathPretty(path) + "/index"
+                : ""
+            }`,
+            { recursive: true }
+          ),
         ]);
         // todo: create json file with default props if not exists
         const pageModel = viewData[path];
@@ -176,9 +188,13 @@ async function getViewData(paths: string[]) {
         pageModel.slug = pathPretty(path);
 
         const { posts, ...publicStore } = pageModel;
-        // this is writing the original json file to include partial html to built
+        // create static api json file
         await writeFile(
-          `built/api/${pathPretty(path)}/index.json`,
+          `built/api/${
+            pathPretty(path).indexOf("404") < 0
+              ? pathPretty(path) + "/index"
+              : pathPretty(path)
+          }.json`,
           JSON.stringify(publicStore),
           "utf8"
         );
@@ -244,7 +260,11 @@ async function getViewData(paths: string[]) {
 
         // this is writing the actual html file
         await writeFile(
-          `built/${pathPretty(path)}/index.html`,
+          `built/${
+            pathPretty(path).indexOf("404") < 0
+              ? pathPretty(path) + "/index"
+              : pathPretty(path)
+          }.html`,
           renderedFile,
           "utf8"
         );
