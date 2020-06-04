@@ -28,22 +28,18 @@ interface IComment {
 const pathClean = (path: string) =>
   path.split("/").slice(1).join("/").split(".")[0];
 
+const pathPretty = (path: string) => `${pathClean(path.replace("/index", ""))}`;
+
 async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
     paths
-      .map((path) => {
-        path = path.split(".")[0];
-        return `${config[environment].domain}/${
-          path.indexOf("index") > 0
-            ? `${
-                path.replace("/index", "").indexOf("/") > 0
-                  ? `${path.replace("/index", "").split("/")[1]}/`
-                  : ""
-              }`
-            : `${pathClean(path)}`
-        }`;
-      })
+      .map(
+        (path) =>
+          `${config[environment].domain}/${
+            pathPretty(path) ? pathPretty(path) + "/" : ""
+          }`
+      )
       .join("\n"),
     "utf8"
   );
@@ -110,18 +106,12 @@ async function getViewData(paths: string[]) {
 }
 
 (async function initialize() {
-  const [comments, [index, pages, posts]]: [
+  const [comments, [indexPath, pagePaths, postPaths]]: [
     IComment[],
     [string[], string[], string[]]
   ] = await Promise.all([getComments(), getPaths()]);
 
-  const viewData = await getViewData([...posts, ...pages]);
-
-  // todo: dynamically create page subdirectories
-  await Promise.all([
-    await mkdir("built/legal", { recursive: true }),
-    await mkdir("built/api/legal", { recursive: true }),
-  ]);
+  const viewData = await getViewData([...postPaths, ...pagePaths]);
 
   try {
     // cache bust es modules
@@ -133,9 +123,14 @@ async function getViewData(paths: string[]) {
   }
 
   await Promise.all([
-    writeSiteMap([...pages, ...posts]),
+    writeSiteMap([...pagePaths, ...postPaths]),
     Promise.all(
-      [...pages, ...posts].map(async (path) => {
+      [...pagePaths, ...postPaths].map(async (path) => {
+        // create output folders
+        await Promise.all([
+          mkdir(`built/api/${pathPretty(path)}`, { recursive: true }),
+          mkdir(`built/${pathPretty(path)}`, { recursive: true }),
+        ]);
         // todo: create json file with default props if not exists
         const pageModel = viewData[path];
 
@@ -145,6 +140,7 @@ async function getViewData(paths: string[]) {
 
           // keep this json formatted same as on save b/c stored in git
           const { createdDate, modifiedDate, ...store } = pageModel;
+
           await writeFile(
             `${viewDataPath}/${path.split(".")[0]}.json`,
             JSON.stringify(store, null, 2),
@@ -152,19 +148,42 @@ async function getViewData(paths: string[]) {
           );
         }
 
-        pageModel.environment = { [environment]: config[environment] };
+        // only need post data on post index
+        if (path.indexOf(indexPath[0]) > 0 && postPaths.indexOf(path) > -1) {
+          pageModel.posts = Object.keys(viewData)
+            .filter(
+              (key) =>
+                key.indexOf(indexPath[0]) < 0 && postPaths.indexOf(key) > -1
+            )
+            .map((key) => ({ ...viewData[key], slug: pathClean(key) }))
+            .sort(
+              (first, second) =>
+                new Date(second.createdDate).getTime() -
+                new Date(first.createdDate).getTime()
+            );
+        }
+
+        pageModel.partialHtml = await ejs
+          .renderFile(`${viewsPath}/${path}`, {
+            model: {
+              ...pageModel,
+              environment: { [environment]: config[environment] },
+            },
+          })
+          .then((output) => output);
+
+        pageModel.slug = pathPretty(path);
+
+        const { posts, ...publicStore } = pageModel;
+        // this is writing the original json file to include partial html to built
+        await writeFile(
+          `built/api/${pathPretty(path)}/index.json`,
+          JSON.stringify(publicStore),
+          "utf8"
+        );
 
         // prevent duplicate content
         pageModel.canonical = config.production.domain;
-
-        pageModel.slug =
-          path.indexOf(index[0]) > 0
-            ? `${
-                path.replace("/index.ejs", "").indexOf("/") > 0
-                  ? path.replace("/index.ejs", "").split("/")[1]
-                  : ""
-              }`
-            : `${pathClean(path)}`;
 
         pageModel.footerYear = new Date().getFullYear();
 
@@ -195,61 +214,39 @@ async function getViewData(paths: string[]) {
         const commentsTemplate = await ejs
           .renderFile(`${viewsPath}/partials/comments.ejs`, {
             model: commentModel,
-            pageModel: pageModel,
+            pageModel: {
+              ...pageModel,
+              environment: { [environment]: config[environment] },
+            },
           })
-          .then((output) => output);
-
-        // only need post data on post index
-        if (path.indexOf(index[0]) > 0 && posts.indexOf(path) > -1) {
-          pageModel.posts = Object.keys(viewData)
-            .filter(
-              (key) => key.indexOf(index[0]) < 0 && posts.indexOf(key) > -1
-            )
-            .map((key) => ({ ...viewData[key], slug: pathClean(key) }))
-            .sort(
-              (first, second) =>
-                new Date(second.createdDate).getTime() -
-                new Date(first.createdDate).getTime()
-            );
-        }
-
-        const partialHtml = await ejs
-          .renderFile(`${viewsPath}/${path}`, { model: pageModel })
           .then((output) => output);
 
         // only want a comment form on non-index posts
         // todo: yes only postMeta on posts but remove duplicate check
         const renderedFile = await ejs
-          .renderFile(
-            `${viewsPath}/${index[0]}`,
-            {
-              postMeta:
-                path.indexOf(index[0]) < 0 && posts.indexOf(path) > -1
-                  ? postMetaTemplate
-                  : null,
-              mainContent: partialHtml,
-              comments:
-                path.indexOf(index[0]) < 0 && posts.indexOf(path) > -1
-                  ? commentsTemplate
-                  : null,
-              model: pageModel,
+          .renderFile(`${viewsPath}/${indexPath[0]}`, {
+            postMeta:
+              path.indexOf(indexPath[0]) < 0 && postPaths.indexOf(path) > -1
+                ? postMetaTemplate
+                : null,
+            mainContent: pageModel.partialHtml,
+            comments:
+              path.indexOf(indexPath[0]) < 0 && postPaths.indexOf(path) > -1
+                ? commentsTemplate
+                : null,
+            model: {
+              ...pageModel,
+              environment: { [environment]: config[environment] },
             },
-            { rmWhitespace: true }
-          )
+          })
           .then((output) => output);
 
-        pageModel.partialHtml = partialHtml;
-
-        await Promise.all([
-          // this is writing the original json file to include partial html to built
-          writeFile(
-            `built/api/${pathClean(path)}.json`,
-            JSON.stringify(pageModel),
-            "utf8"
-          ),
-          // this is writing the actual html file
-          writeFile(`built/${pathClean(path)}.html`, renderedFile, "utf8"),
-        ]);
+        // this is writing the actual html file
+        await writeFile(
+          `built/${pathPretty(path)}/index.html`,
+          renderedFile,
+          "utf8"
+        );
       })
     ),
   ]);
