@@ -137,9 +137,7 @@ async function getViewData(paths: string[]) {
           ),
           mkdir(
             `built/${
-              pathPretty(path).indexOf("404") < 0
-                ? pathPretty(path) + "/index"
-                : ""
+              pathPretty(path).indexOf("404") < 0 ? pathPretty(path) : ""
             }`,
             { recursive: true }
           ),
