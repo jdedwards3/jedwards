@@ -18,7 +18,10 @@
   />
   <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
   <title><%= model.title %></title>
-  <link rel="canonical" href="<%= model.canonical %>/<%= model.slug %>" />
+  <link
+    rel="canonical"
+    href="<%= model.canonical %>/<% if(model.slug){ %><%= model.slug %>/<% } %>"
+  />
   <!-- Bootstrap CSS -->
   <link
     rel="stylesheet"
