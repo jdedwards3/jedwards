@@ -35,12 +35,7 @@ async function writeSiteMap(paths: string[]) {
     "built/sitemap.txt",
     paths
       .filter((path) => path.indexOf("/404") < 0)
-      .map(
-        (path) =>
-          `${config[environment].domain}/${
-            pathPretty(path) ? pathPretty(path) + "/" : ""
-          }`
-      )
+      .map((path) => `${config[environment].domain}/${pathPretty(path)}`)
       .join("\n"),
     "utf8"
   );
