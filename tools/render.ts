@@ -175,6 +175,7 @@ async function getViewData(paths: string[]) {
               ...pageModel,
               environment: { [environment]: config[environment] },
             },
+            rmwhitespace: true,
           })
           .then((output) => output);
 
@@ -251,6 +252,7 @@ async function getViewData(paths: string[]) {
               ...pageModel,
               environment: { [environment]: config[environment] },
             },
+            rmwhitespace: true,
           })
           .then((output) => output);
 
