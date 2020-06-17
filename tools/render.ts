@@ -181,6 +181,7 @@ async function getViewData(paths: string[]) {
         pageModel.slug = pathPretty(path);
 
         const { posts, ...publicStore } = pageModel;
+
         // create static api json file
         await writeFile(
           `built/api/${
@@ -188,7 +189,9 @@ async function getViewData(paths: string[]) {
               ? pathPretty(path) + "/index"
               : pathPretty(path)
           }.json`,
-          JSON.stringify(publicStore),
+          path.indexOf(indexPath[0]) > 0 && postPaths.indexOf(path) > -1
+            ? JSON.stringify(pageModel)
+            : JSON.stringify(publicStore),
           "utf8"
         );
 
