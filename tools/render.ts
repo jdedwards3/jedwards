@@ -30,6 +30,12 @@ const pathClean = (path: string) =>
 
 const pathPretty = (path: string) => `${pathClean(path.replace("/index", ""))}`;
 
+const isNonIndexPost = (
+  path: string,
+  indexPath: string[],
+  postPaths: string[]
+) => path.indexOf(indexPath[0]) < 0 && postPaths.indexOf(path) > -1;
+
 async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
@@ -39,6 +45,21 @@ async function writeSiteMap(paths: string[]) {
       .join("\n"),
     "utf8"
   );
+}
+
+async function createOutputFolders(path: string) {
+  await Promise.all([
+    mkdir(
+      `built/api/${
+        pathPretty(path).indexOf("404") < 0 ? pathPretty(path) : ""
+      }`,
+      { recursive: true }
+    ),
+    mkdir(
+      `built/${pathPretty(path).indexOf("404") < 0 ? pathPretty(path) : ""}`,
+      { recursive: true }
+    ),
+  ]);
 }
 
 async function getPaths() {
@@ -76,38 +97,141 @@ async function getComments() {
   }
 }
 
-async function getViewData(paths: string[]) {
-  return paths.reduce(
+async function buildPageModel(model: any, path: string) {
+  const today = new Date().toLocaleDateString();
+
+  const log = await git.log({ file: `${viewsPath}/${path}` });
+
+  const pageModel = {
+    ...JSON.parse(model),
+    createdDate: log.all.slice(-1)[0]
+      ? new Date(log.all.slice(-1)[0].date).toLocaleDateString()
+      : today,
+    modifiedDate: log.latest
+      ? new Date(log.latest.date).toLocaleDateString()
+      : today,
+  };
+
+  if (!pageModel.guid) {
+    // add guid to any new pages/posts
+    pageModel.guid = uuidv4();
+
+    // keep this json formatted same as on save b/c stored in git
+    const { createdDate, modifiedDate, ...store } = pageModel;
+
+    await writeFile(
+      `${viewDataPath}/${path.split(".")[0]}.json`,
+      JSON.stringify(store, null, 2),
+      "utf8"
+    );
+  }
+
+  if (path != "posts/index.ejs") {
+    pageModel.partialHtml = await ejs.renderFile(`${viewsPath}/${path}`, {
+      model: {
+        ...pageModel,
+        environment: { [environment]: config[environment] },
+      },
+    });
+  }
+
+  pageModel.slug = pathPretty(path);
+
+  return pageModel;
+}
+
+async function getViewData(
+  indexPath: string[],
+  postPaths: string[],
+  pagePaths: string[]
+) {
+  const viewData = await [...postPaths, ...pagePaths].reduce(
     async (viewData: any, path) => ({
       ...(await viewData),
       [path]: await readFile(
         `${viewDataPath}/${path.split(".")[0]}.json`,
         "utf8"
       ).then(async (model) => {
-        const log = await git.log({ file: `${viewsPath}/${path}` });
-        const today = new Date().toLocaleDateString();
-        return {
-          ...JSON.parse(model),
-          createdDate: log.all.slice(-1)[0]
-            ? new Date(log.all.slice(-1)[0].date).toLocaleDateString()
-            : today,
-          modifiedDate: log.latest
-            ? new Date(log.latest.date).toLocaleDateString()
-            : today,
-        };
+        return await buildPageModel(model, path);
       }),
     }),
     Promise.resolve({})
   );
+
+  viewData["posts/index.ejs"].posts = Object.keys(viewData)
+    .filter(
+      (key) => key.indexOf(indexPath[0]) < 0 && postPaths.indexOf(key) > -1
+    )
+    .map((key) => ({ ...viewData[key], slug: pathClean(key) }))
+    .sort(
+      (first, second) =>
+        new Date(second.createdDate).getTime() -
+        new Date(first.createdDate).getTime()
+    );
+
+  viewData["posts/index.ejs"].partialHtml = await ejs.renderFile(
+    `${viewsPath}/posts/index.ejs`,
+    {
+      model: {
+        ...viewData["posts/index.ejs"],
+        environment: { [environment]: config[environment] },
+      },
+    }
+  );
+
+  return viewData;
 }
 
-(async function initialize() {
+async function getPostmetaTemplate(
+  pageModel: any,
+  path: string,
+  indexPath: string[],
+  postPaths: string[],
+  pagePaths: string[]
+) {
+  const postmetaTemplate = ejs.renderFile(
+    `${viewsPath}/partials/postMeta.ejs`,
+    {
+      model: {
+        createdDate: pageModel.createdDate,
+        modifiedDate: pageModel.modifiedDate,
+      },
+    }
+  );
+  return isNonIndexPost(path, indexPath, postPaths) ? postmetaTemplate : null;
+}
+
+async function getCommentTemplate(
+  pageModel: any,
+  comments: IComment[],
+  path: string,
+  indexPath: string[],
+  postPaths: string[],
+  pagePaths: string[]
+) {
+  // reverse assuming comments are in chronological order
+  // todo: sort by timestamp
+  const commentTemplate = ejs.renderFile(`${viewsPath}/partials/comments.ejs`, {
+    model: {
+      comments: comments
+        .reverse()
+        .filter(
+          (comment) =>
+            comment.PartitionKey == pageModel.guid && comment.status == 1
+        ),
+    },
+    pageModel: pageModel,
+  });
+  return isNonIndexPost(path, indexPath, postPaths) ? commentTemplate : null;
+}
+
+(async function main() {
   const [comments, [indexPath, pagePaths, postPaths]]: [
     IComment[],
     [string[], string[], string[]]
   ] = await Promise.all([getComments(), getPaths()]);
 
-  const viewData = await getViewData([...postPaths, ...pagePaths]);
+  const viewData = await getViewData(indexPath, postPaths, pagePaths);
 
   try {
     // cache bust es modules
@@ -122,66 +246,10 @@ async function getViewData(paths: string[]) {
     writeSiteMap([...pagePaths, ...postPaths]),
     Promise.all(
       [...pagePaths, ...postPaths].map(async (path) => {
-        // create output folders
-        await Promise.all([
-          mkdir(
-            `built/api/${
-              pathPretty(path).indexOf("404") < 0 ? pathPretty(path) : ""
-            }`,
-            { recursive: true }
-          ),
-          mkdir(
-            `built/${
-              pathPretty(path).indexOf("404") < 0 ? pathPretty(path) : ""
-            }`,
-            { recursive: true }
-          ),
-        ]);
+        await createOutputFolders(path);
+
         // todo: create json file with default props if not exists
         const pageModel = viewData[path];
-
-        if (!pageModel.guid) {
-          // add guid to any new pages/posts
-          pageModel.guid = uuidv4();
-
-          // keep this json formatted same as on save b/c stored in git
-          const { createdDate, modifiedDate, ...store } = pageModel;
-
-          await writeFile(
-            `${viewDataPath}/${path.split(".")[0]}.json`,
-            JSON.stringify(store, null, 2),
-            "utf8"
-          );
-        }
-
-        // only need post data on post index
-        if (path.indexOf(indexPath[0]) > 0 && postPaths.indexOf(path) > -1) {
-          pageModel.posts = Object.keys(viewData)
-            .filter(
-              (key) =>
-                key.indexOf(indexPath[0]) < 0 && postPaths.indexOf(key) > -1
-            )
-            .map((key) => ({ ...viewData[key], slug: pathClean(key) }))
-            .sort(
-              (first, second) =>
-                new Date(second.createdDate).getTime() -
-                new Date(first.createdDate).getTime()
-            );
-        }
-
-        pageModel.partialHtml = await ejs
-          .renderFile(`${viewsPath}/${path}`, {
-            model: {
-              ...pageModel,
-              environment: { [environment]: config[environment] },
-            },
-            rmwhitespace: true,
-          })
-          .then((output) => output);
-
-        pageModel.slug = pathPretty(path);
-
-        const { posts, ...publicStore } = pageModel;
 
         // create static api json file
         await writeFile(
@@ -190,9 +258,7 @@ async function getViewData(paths: string[]) {
               ? pathPretty(path) + "/index"
               : pathPretty(path)
           }.json`,
-          path.indexOf(indexPath[0]) > 0 && postPaths.indexOf(path) > -1
-            ? JSON.stringify(pageModel)
-            : JSON.stringify(publicStore),
+          JSON.stringify(pageModel),
           "utf8"
         );
 
@@ -203,58 +269,33 @@ async function getViewData(paths: string[]) {
 
         pageModel.version = config.version;
 
-        const postMetaModel = {
-          createdDate: viewData[path].createdDate,
-          modifiedDate: viewData[path].modifiedDate,
-        };
-
-        const postMetaTemplate = await ejs
-          .renderFile(`${viewsPath}/partials/postMeta.ejs`, {
-            model: postMetaModel,
-          })
-          .then((output) => output);
-
-        // reverse assuming comments are in chronological order
-        // todo: sort by timestamp
-        const commentModel = {
-          comments: comments
-            .reverse()
-            .filter(
-              (comment) =>
-                comment.PartitionKey == pageModel.guid && comment.status == 1
-            ),
-        };
-
-        const commentsTemplate = await ejs
-          .renderFile(`${viewsPath}/partials/comments.ejs`, {
-            model: commentModel,
-            pageModel: {
-              ...pageModel,
-              environment: { [environment]: config[environment] },
-            },
-          })
-          .then((output) => output);
+        pageModel.environment = { [environment]: config[environment] };
 
         // only want a comment form on non-index posts
         // todo: yes only postMeta on posts but remove duplicate check
-        const renderedFile = await ejs
-          .renderFile(`${viewsPath}/${indexPath[0]}`, {
-            postMeta:
-              path.indexOf(indexPath[0]) < 0 && postPaths.indexOf(path) > -1
-                ? postMetaTemplate
-                : null,
+        const renderedFile = await ejs.renderFile(
+          `${viewsPath}/${indexPath[0]}`,
+          {
+            postMeta: await getPostmetaTemplate(
+              pageModel,
+              path,
+              indexPath,
+              postPaths,
+              pagePaths
+            ),
             mainContent: pageModel.partialHtml,
-            comments:
-              path.indexOf(indexPath[0]) < 0 && postPaths.indexOf(path) > -1
-                ? commentsTemplate
-                : null,
-            model: {
-              ...pageModel,
-              environment: { [environment]: config[environment] },
-            },
+            comments: await getCommentTemplate(
+              pageModel,
+              comments,
+              path,
+              indexPath,
+              postPaths,
+              pagePaths
+            ),
+            model: pageModel,
             rmwhitespace: true,
-          })
-          .then((output) => output);
+          }
+        );
 
         // this is writing the actual html file
         await writeFile(
