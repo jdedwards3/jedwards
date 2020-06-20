@@ -3,6 +3,7 @@
   "compilerOptions": {
     "lib": ["es6", "dom"],
     "module": "esnext",
+    "target": "ES6",
     "sourceMap": true,
     "sourceRoot": "/scripts",
     "inlineSources": true,
