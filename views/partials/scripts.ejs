@@ -43,17 +43,3 @@
 
 <!-- Custom scripts -->
 <script type="module" src="/scripts/<%= model.version %>/script.js"></script>
-<!-- show previously hidden ads on window resize -->
-<script>
-  window.onresize = function () {
-    var emptyAds = Array.from(document.querySelectorAll("ins")).filter(
-      function (elem) {
-        return !elem.children.length && elem.offsetHeight > 0;
-      }
-    );
-    emptyAds.forEach(function (elem) {
-      delete elem.dataset.adsbygoogleStatus;
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    });
-  };
-</script>
