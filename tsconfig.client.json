@@ -2,17 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "lib": ["es6", "dom"],
-    "module": "es6",
-    "target": "es6",
-    "inlineSourceMap": true,
+    "module": "esnext",
+    "sourceMap": true,
+    "sourceRoot": "/scripts",
     "inlineSources": true,
-    "outDir": "built/dist"
+    "outDir": "built/dist",
+    "moduleResolution": "node",
+    "skipLibCheck": true
   },
-  "inclue": ["scripts/**/*.ts"],
-  "exclude": [
-    "*.ts",
-    "tools/**/*.ts",
-    "node_modules/**/*.ts",
-    "functions/**/*.ts"
-  ]
+  "inclue": ["scripts/**/*"],
+  "exclude": ["*.ts", "tools/**/*", "node_modules/**/*", "functions/**/*"]
 }
