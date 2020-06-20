@@ -1,14 +1,16 @@
 import { config } from "../config";
 import ejs = require("ejs");
+import fetch from "node-fetch";
 import fs = require("fs");
 import fsExtra = require("fs-extra");
 import globstd = require("glob");
-import fetch from "node-fetch";
+import htmlMinifier = require("html-minifier");
 import util = require("util");
 import uuidv4 = require("uuid/v4");
 import * as simpleGit from "simple-git/promise";
 const git = simpleGit();
 const glob = util.promisify(globstd);
+const htmlMinify = htmlMinifier.minify;
 const mkdir = util.promisify(fs.mkdir);
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
@@ -24,6 +26,8 @@ interface IComment {
   bodyText: string;
   status: number;
 }
+
+//todo: interface IViewModel {}
 
 const pathClean = (path: string) =>
   path.split("/").slice(1).join("/").split(".")[0];
@@ -73,7 +77,7 @@ async function getPaths() {
       cwd: `${viewsPath}`,
       ignore: ["partials/**/*.ejs", "index.ejs", "layout.ejs"],
     }),
-  ]).then((paths) => paths);
+  ]);
 }
 
 async function getComments() {
@@ -127,12 +131,18 @@ async function buildPageModel(model: any, path: string) {
   }
 
   if (path != "posts/index.ejs") {
-    pageModel.partialHtml = await ejs.renderFile(`${viewsPath}/${path}`, {
-      model: {
-        ...pageModel,
-        environment: { [environment]: config[environment] },
-      },
-    });
+    pageModel.partialHtml = htmlMinify(
+      await ejs.renderFile(`${viewsPath}/${path}`, {
+        model: {
+          ...pageModel,
+          environment: { [environment]: config[environment] },
+        },
+      }),
+      {
+        removeComments: true,
+        collapseWhitespace: true,
+      }
+    );
   }
 
   pageModel.slug = pathPretty(path);
@@ -169,26 +179,23 @@ async function getViewData(
         new Date(first.createdDate).getTime()
     );
 
-  viewData["posts/index.ejs"].partialHtml = await ejs.renderFile(
-    `${viewsPath}/posts/index.ejs`,
-    {
+  viewData["posts/index.ejs"].partialHtml = htmlMinify(
+    await ejs.renderFile(`${viewsPath}/posts/index.ejs`, {
       model: {
         ...viewData["posts/index.ejs"],
         environment: { [environment]: config[environment] },
       },
+    }),
+    {
+      removeComments: true,
+      collapseWhitespace: true,
     }
   );
 
   return viewData;
 }
 
-async function getPostmetaTemplate(
-  pageModel: any,
-  path: string,
-  indexPath: string[],
-  postPaths: string[],
-  pagePaths: string[]
-) {
+async function getPostmetaTemplate(pageModel: any) {
   const postmetaTemplate = ejs.renderFile(
     `${viewsPath}/partials/postMeta.ejs`,
     {
@@ -198,17 +205,10 @@ async function getPostmetaTemplate(
       },
     }
   );
-  return isNonIndexPost(path, indexPath, postPaths) ? postmetaTemplate : null;
+  return postmetaTemplate;
 }
 
-async function getCommentTemplate(
-  pageModel: any,
-  comments: IComment[],
-  path: string,
-  indexPath: string[],
-  postPaths: string[],
-  pagePaths: string[]
-) {
+async function getCommentTemplate(pageModel: any, comments: IComment[]) {
   // reverse assuming comments are in chronological order
   // todo: sort by timestamp
   const commentTemplate = ejs.renderFile(`${viewsPath}/partials/comments.ejs`, {
@@ -222,7 +222,7 @@ async function getCommentTemplate(
     },
     pageModel: pageModel,
   });
-  return isNonIndexPost(path, indexPath, postPaths) ? commentTemplate : null;
+  return commentTemplate;
 }
 
 (async function main() {
@@ -271,29 +271,24 @@ async function getCommentTemplate(
 
         pageModel.environment = { [environment]: config[environment] };
 
-        // only want a comment form on non-index posts
-        // todo: yes only postMeta on posts but remove duplicate check
-        const renderedFile = await ejs.renderFile(
-          `${viewsPath}/${indexPath[0]}`,
-          {
-            postMeta: await getPostmetaTemplate(
-              pageModel,
-              path,
-              indexPath,
-              postPaths,
-              pagePaths
-            ),
+        pageModel.isNonIndexPost = isNonIndexPost(path, indexPath, postPaths);
+
+        const renderedFile = htmlMinify(
+          await ejs.renderFile(`${viewsPath}/${indexPath[0]}`, {
+            postMeta: pageModel.isNonIndexPost
+              ? await getPostmetaTemplate(pageModel)
+              : null,
             mainContent: pageModel.partialHtml,
-            comments: await getCommentTemplate(
-              pageModel,
-              comments,
-              path,
-              indexPath,
-              postPaths,
-              pagePaths
-            ),
+            comments: pageModel.isNonIndexPost
+              ? await getCommentTemplate(pageModel, comments)
+              : null,
             model: pageModel,
-            rmwhitespace: true,
+          }),
+          {
+            collapseWhitespace: true,
+            removeComments: true,
+            minifyJS: true,
+            minifyCSS: true,
           }
         );
 
