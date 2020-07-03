@@ -1,12 +1,14 @@
 <head>
-  <% if (model.environment.production) { %>
+  <% if (model.environment.production && model.showAds) { %>
   <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
   ></script>
-  <meta name="monetization" content="$ilp.uphold.com/yDrzN2yznWZa" />
   <% } %>
   <!-- meta tags -->
+  <% if (model.environment.production) { %>
+  <meta name="monetization" content="$ilp.uphold.com/yDrzN2yznWZa" />
+  <% } %>
   <meta charset="utf-8" />
   <meta name="description" content="<%= model.metaDescription %>" />
   <meta
@@ -25,7 +27,7 @@
   />
   <!-- Custom styles -->
   <link href="/styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
-  <% if(model.showAds) { %>
+  <% if (model.environment.production && model.showAds) { %>
   <link
     rel="preload"
     href="/scripts/<%= model.version %>/emptyAdReloader.js"
