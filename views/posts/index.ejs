@@ -17,12 +17,30 @@
       <a href="<%= post.slug %>">Read Post</a>
     </div>
   </div>
-  <% if(index < 2) { %>
+  <% if (index == 0) { %>
   <!-- ad unit-->
-  <%- include('../partials/ad-unit'); -%> <% } %>
-  <!-- end forEach -->
-  <% }); %>
+  <%- include('../partials/media-net', {id: 740373428}); -%>
+  <!--  -->
+  <% } %>
+  <!--  -->
+  <% if (index == 1) { %>
   <!-- ad unit-->
   <%- include('../partials/ad-unit'); -%>
+  <!--  -->
+  <% } %>
+  <!--  -->
+  <% if (index == model.posts.length - 3) { %>
+  <!-- ad unit-->
+  <%- include('../partials/ad-unit'); -%>
+  <!--  -->
+  <% } %>
+  <!--  -->
+  <% if (index == model.posts.length - 2) { %>
+  <!-- ad unit-->
+  <%- include('../partials/ad-unit'); -%>
+  <!--  -->
+  <% } %>
+  <!-- end forEach -->
+  <% }); %>
 </section>
 <% } %>
