@@ -30,39 +30,11 @@
             <%- include('partials/ad-unit'); -%>
             <div class="position-sticky">
               <!-- ad unit-->
-              <div class="mb-2 ad-unit text-center">
-                <div id="253719207">
-                  <script type="text/javascript">
-                    try {
-                      window._mNHandle.queue.push(function () {
-                        window._mNDetails.loadTag(
-                          "253719207",
-                          "300x250",
-                          "253719207"
-                        );
-                      });
-                    } catch (error) {}
-                  </script>
-                </div>
-              </div>
+              <%- include('partials/media-net', {id: 253719207}); -%>
               <!-- subscribe -->
               <%- include('partials/subscribe-form'); -%>
               <!-- ad unit-->
-              <div class="mb-2 ad-unit text-center">
-                <div id="564003572">
-                  <script type="text/javascript">
-                    try {
-                      window._mNHandle.queue.push(function () {
-                        window._mNDetails.loadTag(
-                          "564003572",
-                          "300x250",
-                          "564003572"
-                        );
-                      });
-                    } catch (error) {}
-                  </script>
-                </div>
-              </div>
+              <%- include('partials/media-net', {id: 564003572}); -%>
             </div>
           </aside>
         </div>

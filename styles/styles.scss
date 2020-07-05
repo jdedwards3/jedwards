@@ -104,11 +104,12 @@ pre {
     max-width: 330px;
   }
   .position-sticky {
-    top: 1rem;
+    top: 0.5rem;
   }
 }
 
-.adslot_1 {
+.adslot_1,
+.media-net {
   display: block;
   width: 300px;
   height: 250px;

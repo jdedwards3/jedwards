@@ -1,0 +1,13 @@
+<% if (model.environment.production && model.showAds) { %>
+<div class="my-2 media-net text-center">
+  <div id="<%= id %>">
+    <script type="text/javascript">
+      try {
+        window._mNHandle.queue.push(function () {
+          window._mNDetails.loadTag("<%= id %>", "300x250", "740373428");
+        });
+      } catch (error) {}
+    </script>
+  </div>
+</div>
+<% } %>
