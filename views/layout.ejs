@@ -22,56 +22,48 @@
             </article>
           </main>
           <aside class="sidebar">
-            <% if (model.useMediaNet) { %>
-            <div id="740373428">
-              <script type="text/javascript">
-                try {
-                  window._mNHandle.queue.push(function () {
-                    window._mNDetails.loadTag(
-                      "740373428",
-                      "300x250",
-                      "740373428"
-                    );
-                  });
-                } catch (error) {}
-              </script>
-            </div>
-            <div id="253719207">
-              <script type="text/javascript">
-                try {
-                  window._mNHandle.queue.push(function () {
-                    window._mNDetails.loadTag(
-                      "253719207",
-                      "300x250",
-                      "253719207"
-                    );
-                  });
-                } catch (error) {}
-              </script>
-            </div>
-            <div id="564003572">
-              <script type="text/javascript">
-                try {
-                  window._mNHandle.queue.push(function () {
-                    window._mNDetails.loadTag(
-                      "564003572",
-                      "300x250",
-                      "564003572"
-                    );
-                  });
-                } catch (error) {}
-              </script>
-            </div>
-
-            <% } else { %>
             <!-- ad unit-->
             <%- include('partials/ad-unit'); -%>
             <!-- ad unit-->
             <%- include('partials/ad-unit'); -%>
             <!-- ad unit-->
-            <%- include('partials/ad-unit'); -%> <% } %>
-            <!-- subscribe -->
-            <%- include('partials/subscribe-form'); -%>
+            <%- include('partials/ad-unit'); -%>
+            <div class="position-sticky">
+              <!-- ad unit-->
+              <div class="mb-2 ad-unit text-center">
+                <div id="253719207">
+                  <script type="text/javascript">
+                    try {
+                      window._mNHandle.queue.push(function () {
+                        window._mNDetails.loadTag(
+                          "253719207",
+                          "300x250",
+                          "253719207"
+                        );
+                      });
+                    } catch (error) {}
+                  </script>
+                </div>
+              </div>
+              <!-- subscribe -->
+              <%- include('partials/subscribe-form'); -%>
+              <!-- ad unit-->
+              <div class="mb-2 ad-unit text-center">
+                <div id="564003572">
+                  <script type="text/javascript">
+                    try {
+                      window._mNHandle.queue.push(function () {
+                        window._mNDetails.loadTag(
+                          "564003572",
+                          "300x250",
+                          "564003572"
+                        );
+                      });
+                    } catch (error) {}
+                  </script>
+                </div>
+              </div>
+            </div>
           </aside>
         </div>
       </div>

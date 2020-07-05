@@ -13,7 +13,17 @@
   </p>
 
   <!-- ad unit-->
-  <%- include('../partials/ad-unit'); -%>
+  <div class="mb-3 text-center">
+    <div id="740373428">
+      <script type="text/javascript">
+        try {
+          window._mNHandle.queue.push(function () {
+            window._mNDetails.loadTag("740373428", "300x250", "740373428");
+          });
+        } catch (error) {}
+      </script>
+    </div>
+  </div>
 
   <h2>EJS</h2>
 
@@ -23,15 +33,13 @@
     template it will render the content as a paragraph.
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>    
-    &lt;p&gt;Sample Page&lt;/p&gt;
-    &lt;h1&gt;Index&lt;/h1&gt;
-    &lt;% if (model) { %&gt;        
-      &lt;p&gt;&lt;%= model.content %&gt;&lt;/p&gt; 
-    &lt;% } %&gt; 
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>    
+  &lt;p&gt;Sample Page&lt;/p&gt;
+  &lt;h1&gt;Index&lt;/h1&gt;
+  &lt;% if (model) { %&gt;        
+    &lt;p&gt;&lt;%= model.content %&gt;&lt;/p&gt; 
+  &lt;% } %&gt; 
+  </code></pre>
 
   <h2>package.json</h2>
 
@@ -42,20 +50,18 @@
 
   <p>You will need your package.json to include these packages:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    {
-      "name": "package-name-goes-here",
-      "version": "0.0.0",
-      "devDependencies": {
-        "@types/ejs": "^2.6.2",
-        "@types/node": "^11.9.4",
-        "ejs": "^2.6.1",
-        "typescript": "^3.3.3333"
-      }
+  <pre class="border rounded bg-light"><code>
+  {
+    "name": "package-name-goes-here",
+    "version": "0.0.0",
+    "devDependencies": {
+      "@types/ejs": "^2.6.2",
+      "@types/node": "^11.9.4",
+      "ejs": "^2.6.1",
+      "typescript": "^3.3.3333"
     }
-    </code>
-  </pre>
+  }
+  </code></pre>
 
   <p>
     You can also copy the devDependecies section and run
@@ -71,19 +77,17 @@
     import the modules that we'll use.
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    //imports
-    import util = require("util");
-    import fs = require("fs");
-    import ejs = require("ejs")
+  <pre class="border rounded bg-light"><code>
+  //imports
+  import util = require("util");
+  import fs = require("fs");
+  import ejs = require("ejs")
 
-    //promisify
-    const mkdir = util.promisify(fs.mkdir);
-    const readFile = util.promisify(fs.readFile);
-    const writeFile = util.promisify(fs.writeFile);
-    </code>
-  </pre>
+  //promisify
+  const mkdir = util.promisify(fs.mkdir);
+  const readFile = util.promisify(fs.readFile);
+  const writeFile = util.promisify(fs.writeFile);
+  </code></pre>
 
   <p>
     The first import is the
@@ -109,29 +113,25 @@
     about to be added will execute.
   </p>
 
-  <pre class="border rounded bg-light">
-    <code> 
-    async function render() {       
-      try{
-      
-      }catch(error){
-        console.log(error);
-      }    
-    }
-    render();
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code> 
+  async function render() {       
+    try{
+    
+    }catch(error){
+      console.log(error);
+    }    
+  }
+  render();
+  </code></pre>
 
   <p>
     Before rendering our EJS file we will need a folder to put the output. So
     add the following to our render function:
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    await mkdir("dist", {recursive: true});
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  await mkdir("dist", {recursive: true});
+  </code></pre>
 
   <p>
     This will create a new directory named dist where the html output will be
@@ -145,38 +145,35 @@
     At this point your index.ts file should look like this:
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    //imports
-    import util = require("util");
-    import fs = require("fs");
-    import ejs = require("ejs")
+  <pre class="border rounded bg-light"><code>
+  //imports
+  import util = require("util");
+  import fs = require("fs");
+  import ejs = require("ejs")
 
-    //promisify
-    const mkdir = util.promisify(fs.mkdir);
-    const readFile = util.promisify(fs.readFile);
-    const writeFile = util.promisify(fs.writeFile);
+  //promisify
+  const mkdir = util.promisify(fs.mkdir);
+  const readFile = util.promisify(fs.readFile);
+  const writeFile = util.promisify(fs.writeFile);
 
-    async function render() {
-      try{        
-        //create output directory
-        await mkdir("dist", {recursive: true});
-    
-        //render ejs template to html string
-        const html = await ejs
-          .renderFile("index.ejs", {model: false })
-          .then(output => output);
+  async function render() {
+    try{        
+      //create output directory
+      await mkdir("dist", {recursive: true});
+  
+      //render ejs template to html string
+      const html = await ejs
+        .renderFile("index.ejs", {model: false })
+        .then(output => output);
 
-        //create file and write html
-        await writeFile("dist/index.html", html, "utf8");
-
-      }catch(error){
-        console.log(error);
-      }
+      //create file and write html
+      await writeFile("dist/index.html", html, "utf8");
+    }catch(error){
+      console.log(error);
     }
-    render();
-    </code>
-  </pre>
+  }
+  render();
+  </code></pre>
 
   <p>
     In order to run this script we need to add a tsconfig.json file to configure
@@ -185,20 +182,18 @@
     the render.js script.
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    {
-      "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "rootDir": "./",
-        "outDir": "./dist",
-        "sourceMap": true
-      },
-      "inclue": ["render.js"],
-    }
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  {
+    "compilerOptions": {
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "rootDir": "./",
+      "outDir": "./dist",
+      "sourceMap": true
+    },
+    "inclue": ["render.js"],
+  }
+  </code></pre>
 
   <p>
     We also need to add a script to the package.json file created earlier. This
@@ -206,23 +201,21 @@
     should look like this:
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    {
-      "name": "package-name-goes-here",
-      "version": "0.0.0",
-      "scripts": {
-        "render": "tsc && node dist/render.js"
-      },
-      "devDependencies": {
-        "@types/ejs": "^2.6.2",
-        "@types/node": "^11.9.4",
-        "ejs": "^2.6.1",
-        "typescript": "^3.3.3333"
-      }
+  <pre class="border rounded bg-light"><code>
+  {
+    "name": "package-name-goes-here",
+    "version": "0.0.0",
+    "scripts": {
+      "render": "tsc && node dist/render.js"
+    },
+    "devDependencies": {
+      "@types/ejs": "^2.6.2",
+      "@types/node": "^11.9.4",
+      "ejs": "^2.6.1",
+      "typescript": "^3.3.3333"
     }
-    </code>
-  </pre>
+  }
+  </code></pre>
 
   <h2>EJS render HTML</h2>
 
@@ -235,11 +228,9 @@
 
   <p>The contents of index.html should look like this:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    &lt;p&gt;Sample Page&lt;/p&gt;     
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  &lt;p&gt;Sample Page&lt;/p&gt;     
+  </code></pre>
 
   <p>
     Notice that the conditional block containing the model content, in the
@@ -254,56 +245,51 @@
     to a sample of content.
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    const pageModel = {
-      content: "This is some sample content. Located on the sample page."
-    };
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  const pageModel = {
+    content: "This is some sample content. Located on the sample page."
+  };
+  </code></pre>
 
   <p>
     Then pass this object in to the ejs.renderFile function instead of false.
     The render.ts file should look like this:
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    //imports
-    import util = require("util");
-    import fs = require("fs");
-    import ejs = require("ejs")
+  <pre class="border rounded bg-light"><code>
+  //imports
+  import util = require("util");
+  import fs = require("fs");
+  import ejs = require("ejs")
 
-    //promisify
-    const mkdir = util.promisify(fs.mkdir);
-    const readFile = util.promisify(fs.readFile);
-    const writeFile = util.promisify(fs.writeFile);
-    
-    const pageModel = {
-      content: "This is some sample content. Located on the sample page."
-    };
+  //promisify
+  const mkdir = util.promisify(fs.mkdir);
+  const readFile = util.promisify(fs.readFile);
+  const writeFile = util.promisify(fs.writeFile);
+  
+  const pageModel = {
+    content: "This is some sample content. Located on the sample page."
+  };
 
-    async function render() {
-      try{        
-        //create output directory
-        await mkdir("dist", {recursive: true});
-    
-        //render ejs template to html string
-        //pass pageModel in to render content 
-        const html = await ejs
-          .renderFile("index.ejs", {model: pageModel })
-          .then(output => output);
+  async function render() {
+    try{        
+      //create output directory
+      await mkdir("dist", {recursive: true});
+  
+      //render ejs template to html string
+      //pass pageModel in to render content 
+      const html = await ejs
+        .renderFile("index.ejs", {model: pageModel })
+        .then(output => output);
 
-        //create file and write html
-        await writeFile("dist/index.html", html, "utf8");
-
-      }catch(error){
-        console.log(error);
-      }
+      //create file and write html
+      await writeFile("dist/index.html", html, "utf8");
+    }catch(error){
+      console.log(error);
     }
-    render();
-    </code>
-  </pre>
+  }
+  render();
+  </code></pre>
 
   <p>
     With the model object passed into the template we should now see the
@@ -313,12 +299,10 @@
 
   <p>The index.html file in the dist folder should now look like this:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    &lt;p&gt;Sample Page&lt;/p&gt;    
-    &lt;p&gt;This is some sample content. Located on the sample page.&lt;/p&gt;      
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  &lt;p&gt;Sample Page&lt;/p&gt;    
+  &lt;p&gt;This is some sample content. Located on the sample page.&lt;/p&gt;      
+  </code></pre>
 
   <p>
     The index.ejs template can now render dynamic HTML content according to the
@@ -326,6 +310,7 @@
     <kbd>npm run render</kbd> after each change to generate an updated
     index.html file.
   </p>
+
   <!-- ad unit-->
   <%- include('../partials/ad-unit'); -%>
 </div>

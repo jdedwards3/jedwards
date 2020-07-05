@@ -1,7 +1,5 @@
 <head>
   <% if (model.environment.production && model.showAds) { %>
-  <!-- media net -->
-  <% if (model.useMediaNet) { %>
   <script type="text/javascript">
     window._mNHandle = window._mNHandle || {};
     window._mNHandle.queue = window._mNHandle.queue || [];
@@ -11,7 +9,6 @@
     src="https://contextual.media.net/dmedianet.js?cid=8CUF477P7"
     async="async"
   ></script>
-  <% } %>
   <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"

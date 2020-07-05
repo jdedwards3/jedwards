@@ -11,7 +11,17 @@
   </p>
 
   <!-- ad unit-->
-  <%- include('../partials/ad-unit'); -%>
+  <div class="mb-3 text-center">
+    <div id="740373428">
+      <script type="text/javascript">
+        try {
+          window._mNHandle.queue.push(function () {
+            window._mNDetails.loadTag("740373428", "300x250", "740373428");
+          });
+        } catch (error) {}
+      </script>
+    </div>
+  </div>
 
   <h2>TypeScript</h2>
 
@@ -20,12 +30,10 @@
     so we can test whether the JavaScript output is being generated properly.
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    const msg: string = "Hello World!";
-    console.log(msg);
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  const msg: string = "Hello World!";
+  console.log(msg);
+  </code></pre>
 
   <h2>TypeScript Compiler</h2>
 
@@ -39,17 +47,15 @@
 
   <p>Your tsconfig.json file should look like this:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    {
-      "compilerOptions": {
-      "outDir": "./output"
-      },
-      "inclue": ["/*"],
-      "exclude": []
-    }
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  {
+    "compilerOptions": {
+    "outDir": "./output"
+    },
+    "inclue": ["/*"],
+    "exclude": []
+  }
+  </code></pre>
 
   <p>
     This configuration tells the TypeScript compiler to look for source files in
@@ -83,17 +89,15 @@
 
   <p>Your package.json file should look like this:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    {
-      "name": "package-name-goes-here",
-      "version": "0.0.0",
-      "scripts": {
-        "compile-typescript": "tsc"
-      }
+  <pre class="border rounded bg-light"><code>
+  {
+    "name": "package-name-goes-here",
+    "version": "0.0.0",
+    "scripts": {
+      "compile-typescript": "tsc"
     }
-    </code>
-  </pre>
+  }
+  </code></pre>
 
   <p>
     Now that package.json is created and the TypeScript compilation step is
@@ -108,28 +112,24 @@
     command:
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    npm install typescript --save-dev 
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  npm install typescript --save-dev 
+  </code></pre>
 
   <p>After installing TypeScript, your package.json should look like this:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    {
-      "name": "package-name-goes-here",
-      "version": "0.0.0",
-      "scripts": {
-        "compile-typescript": "tsc"
-      },
-      "devDependencies": {
-        "typescript": "^3.5.3"
-      }
-    }   
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  {
+    "name": "package-name-goes-here",
+    "version": "0.0.0",
+    "scripts": {
+      "compile-typescript": "tsc"
+    },
+    "devDependencies": {
+      "typescript": "^3.5.3"
+    }
+  }   
+  </code></pre>
 
   <h2>JavaScript</h2>
 
@@ -138,11 +138,9 @@
     run the following command:
   </p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    npm run compile-typescript
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  npm run compile-typescript
+  </code></pre>
 
   <p>
     Now, you should now see a new folder created named <kbd>output</kbd>, that
@@ -152,12 +150,10 @@
 
   <p>Your script.js file should look like this:</p>
 
-  <pre class="border rounded bg-light">
-    <code>
-    var msg = "Hello World";
-    console.log("msg");
-    </code>
-  </pre>
+  <pre class="border rounded bg-light"><code>
+  var msg = "Hello World";
+  console.log("msg");
+  </code></pre>
 
   <p>
     Congratulations! You have successfully compiled TypeScript with npm.
