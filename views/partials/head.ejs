@@ -1,14 +1,38 @@
 <head>
   <% if (model.environment.production && model.showAds) { %>
-  <script type="text/javascript">
-    window._mNHandle = window._mNHandle || {};
-    window._mNHandle.queue = window._mNHandle.queue || [];
-    medianet_versionId = "3121199";
-  </script>
   <script
-    src="https://contextual.media.net/dmedianet.js?cid=8CUF477P7"
-    async="async"
+    async
+    src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
   ></script>
+  <script>
+    window.googletag = window.googletag || { cmd: [] };
+    googletag.cmd.push(function () {
+      googletag
+        .defineSlot(
+          "/21824035744/ad1",
+          [300, 250],
+          "div-gpt-ad-1594590368753-0"
+        )
+        .addService(googletag.pubads());
+      googletag
+        .defineSlot(
+          "/21824035744/ad2",
+          [300, 250],
+          "div-gpt-ad-1594592993659-0"
+        )
+        .addService(googletag.pubads());
+      googletag
+        .defineSlot(
+          "/21824035744/ad3",
+          [300, 250],
+          "div-gpt-ad-1594593287536-0"
+        )
+        .addService(googletag.pubads());
+      googletag.pubads().enableSingleRequest();
+      googletag.enableServices();
+    });
+  </script>
+  <!--  -->
   <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
