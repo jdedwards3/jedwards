@@ -17,27 +17,21 @@
       <a href="<%= post.slug %>">Read Post</a>
     </div>
   </div>
-  <% if (index == 0) { %>
+  <% if (index == 2) { %>
   <!-- ad unit-->
   <%- include('../partials/media-net', {id: "1594590368753-0"}); -%>
   <!--  -->
   <% } %>
   <!--  -->
-  <% if (index == 1) { %>
+  <% if (index == 4) { %>
   <!-- ad unit-->
-  <%- include('../partials/ad-unit'); -%>
+  <%- include('../partials/media-net', {id: "1594592993659-0"}); -%>
   <!--  -->
   <% } %>
   <!--  -->
-  <% if (index == model.posts.length - 3) { %>
+  <% if (index == 6) { %>
   <!-- ad unit-->
-  <%- include('../partials/ad-unit'); -%>
-  <!--  -->
-  <% } %>
-  <!--  -->
-  <% if (index == model.posts.length - 2) { %>
-  <!-- ad unit-->
-  <%- include('../partials/ad-unit'); -%>
+  <%- include('../partials/media-net', {id: "1594593287536-0"}); -%>
   <!--  -->
   <% } %>
   <!-- end forEach -->
