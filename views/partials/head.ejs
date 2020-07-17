@@ -87,14 +87,6 @@
   />
   <!-- Custom styles -->
   <link href="/styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
-  <% if (model.environment.production && model.showAds) { %>
-  <link
-    rel="preload"
-    href="/scripts/<%= model.version %>/emptyAdReloader.js"
-    as="script"
-    crossorigin="anonymous"
-  />
-  <% } %>
   <link
     rel="preload"
     href="/scripts/<%= model.version %>/script.js"
