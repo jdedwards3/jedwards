@@ -108,21 +108,20 @@ pre {
   }
 }
 
-.adslot_1,
-.media-net {
+.ad-unit {
   display: block;
   width: 300px;
   height: 250px;
   margin: 0 auto;
 }
 @media (max-width: 767px) {
-  .sidebar .adslot_1 {
+  .sidebar .ad-unit {
     display: none;
   }
 }
 @media (min-width: 768px) {
-  .blog-links .adslot_1,
-  .blog-post-text .adslot_1 {
+  .blog-links .ad-unit,
+  .blog-post-text .ad-unit {
     display: none;
   }
 }
