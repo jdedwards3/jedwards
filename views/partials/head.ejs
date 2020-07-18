@@ -1,4 +1,31 @@
 <head>
+  <meta charset="utf-8" />
+  <meta name="description" content="<%= model.metaDescription %>" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+  <% if (model.environment.production) { %>
+  <meta name="monetization" content="$ilp.uphold.com/yDrzN2yznWZa" />
+  <% } %>
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
+  <title><%= model.title %></title>
+  <link
+    rel="preload"
+    href="/scripts/<%= model.version %>/script.js"
+    as="script"
+    crossorigin="anonymous"
+  />
+  <link rel="canonical" href="<%= model.canonical %>/<%= model.slug %>" />
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css"
+    integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA"
+    crossorigin="anonymous"
+  />
+  <!-- Custom styles -->
+  <link href="/styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
   <% if (model.environment.production && model.showAds) { %>
   <script
     async
@@ -59,42 +86,9 @@
       googletag.enableServices();
     });
   </script>
-  <!--  -->
-  <script
-    async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-  ></script>
   <% } %>
-  <!-- meta tags -->
-  <% if (model.environment.production) { %>
-  <meta name="monetization" content="$ilp.uphold.com/yDrzN2yznWZa" />
-  <% } %>
-  <meta charset="utf-8" />
-  <meta name="description" content="<%= model.metaDescription %>" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, shrink-to-fit=no"
-  />
-  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
-  <title><%= model.title %></title>
-  <link rel="canonical" href="<%= model.canonical %>/<%= model.slug %>" />
-  <!-- Bootstrap CSS -->
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css"
-    integrity="sha384-PDle/QlgIONtM1aqA2Qemk5gPOE7wFq8+Em+G/hmo5Iq0CCmYZLv3fVRDJ4MMwEA"
-    crossorigin="anonymous"
-  />
-  <!-- Custom styles -->
-  <link href="/styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
-  <link
-    rel="preload"
-    href="/scripts/<%= model.version %>/script.js"
-    as="script"
-    crossorigin="anonymous"
-  />
-  <% if (model.environment.production) { %>
   <!-- Global site tag (gtag.js) - Google Analytics -->
+  <% if (model.environment.production) { %>
   <script
     async
     src="https://www.googletagmanager.com/gtag/js?id=UA-141231909-1"
