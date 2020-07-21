@@ -114,14 +114,3 @@ pre {
   height: 250px;
   margin: 0 auto;
 }
-@media (max-width: 767px) {
-  .sidebar .ad-unit {
-    display: none;
-  }
-}
-@media (min-width: 768px) {
-  .blog-links .ad-unit,
-  .blog-post-text .ad-unit {
-    display: none;
-  }
-}
