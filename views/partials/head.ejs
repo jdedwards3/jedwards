@@ -1,4 +1,19 @@
 <head>
+  <% if (model.environment.production) { %>
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=UA-141231909-1"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "UA-141231909-1");
+  </script>
+  <% } %>
   <meta charset="utf-8" />
   <meta name="description" content="<%= model.metaDescription %>" />
   <meta
@@ -27,80 +42,70 @@
   <!-- Custom styles -->
   <link href="/styles/styles.min.css?v=<%= model.version %>" rel="stylesheet" />
   <% if (model.environment.production && model.showAds) { %>
+  <link
+    rel="preload"
+    href="/scripts/<%= model.version %>/adHandler.js"
+    as="script"
+    crossorigin="anonymous"
+  />
   <script
     async
     src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
   ></script>
   <script>
     window.googletag = window.googletag || { cmd: [] };
+    var ad1, ad2, ad3, ad4, ad5, ad6;
     googletag.cmd.push(function () {
-      //
-      googletag
+      ad1 = googletag
         .defineSlot(
           "/21824035744/ad1",
           [300, 250],
           "div-gpt-ad-1594590368753-0"
         )
         .addService(googletag.pubads());
-      //
-      googletag
+
+      ad2 = googletag
         .defineSlot(
           "/21824035744/ad2",
           [300, 250],
           "div-gpt-ad-1594592993659-0"
         )
         .addService(googletag.pubads());
-      //
-      googletag
+
+      ad3 = googletag
         .defineSlot(
           "/21824035744/ad3",
           [300, 250],
           "div-gpt-ad-1594593287536-0"
         )
         .addService(googletag.pubads());
-      //
-      googletag
+
+      ad4 = googletag
         .defineSlot(
           "/21824035744/default",
           [300, 250],
           "div-gpt-ad-1594948951800-0"
         )
         .addService(googletag.pubads());
-      //
-      googletag
+
+      ad5 = googletag
         .defineSlot(
           "/21824035744/default-2",
           [300, 250],
           "div-gpt-ad-1594949450110-0"
         )
         .addService(googletag.pubads());
-      //
-      googletag
+
+      ad6 = googletag
         .defineSlot(
           "/21824035744/default-3",
           [300, 250],
           "div-gpt-ad-1594949816248-0"
         )
         .addService(googletag.pubads());
-      googletag.pubads().enableSingleRequest();
+      googletag.pubads().disableInitialLoad();
       googletag.enableServices();
     });
-  </script>
-  <% } %>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <% if (model.environment.production) { %>
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=UA-141231909-1"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-
-    gtag("config", "UA-141231909-1");
   </script>
   <% } %>
 </head>
