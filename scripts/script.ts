@@ -11,10 +11,14 @@
   });
 
   let t: any = null;
+  let w = window.outerWidth;
   if (document.querySelectorAll(".ad-unit").length) {
     const { adReload } = await import("./adHandler.js");
     window.addEventListener("resize", function () {
-      t = adReload(t);
+      if (w != window.outerWidth) {
+        t = adReload(t);
+      }
+      w = window.outerWidth;
     });
   }
 })();
