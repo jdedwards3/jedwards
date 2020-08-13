@@ -40,6 +40,9 @@ const isNonIndexPost = (
   postPaths: string[]
 ) => path.indexOf(indexPath[0]) < 0 && postPaths.indexOf(path) > -1;
 
+const isPage = (path: string, pagePaths: string[]) =>
+  pagePaths.indexOf(path) > -1;
+
 async function writeSiteMap(paths: string[]) {
   writeFile(
     "built/sitemap.txt",
@@ -101,7 +104,13 @@ async function getComments() {
   }
 }
 
-async function buildPageModel(model: any, path: string) {
+async function buildPageModel(
+  model: any,
+  path: string,
+  indexPath: string[],
+  pagePaths: string[],
+  postPaths: string[]
+) {
   const today = new Date().toLocaleDateString();
 
   const log = await git.log({ file: `${viewsPath}/${path}` });
@@ -130,7 +139,7 @@ async function buildPageModel(model: any, path: string) {
     );
   }
 
-  if (path != "posts/index.ejs") {
+  if (isNonIndexPost(path, indexPath, postPaths) || isPage(path, pagePaths)) {
     pageModel.partialHtml = htmlMinify(
       await ejs.renderFile(`${viewsPath}/${path}`, {
         model: {
@@ -162,16 +171,20 @@ async function getViewData(
         `${viewDataPath}/${path.split(".")[0]}.json`,
         "utf8"
       ).then(async (model) => {
-        return await buildPageModel(model, path);
+        return await buildPageModel(
+          model,
+          path,
+          indexPath,
+          pagePaths,
+          postPaths
+        );
       }),
     }),
     Promise.resolve({})
   );
 
   viewData["posts/index.ejs"].posts = Object.keys(viewData)
-    .filter(
-      (key) => key.indexOf(indexPath[0]) < 0 && postPaths.indexOf(key) > -1
-    )
+    .filter((key) => isNonIndexPost(key, indexPath, postPaths))
     .map((key) => ({ ...viewData[key], slug: pathClean(key) }))
     .sort(
       (first, second) =>
