@@ -1,0 +1,14 @@
+[
+  {
+    "id": "a3fb0566-4d7f-4491-a2fa-073197bd5ebd",
+    "timestamp": 1598310951000,
+    "authorName": "Michael Easter",
+    "bodyText": "This helped me... thank you!"
+  },
+  {
+    "id": "b2b650e0-c697-47f4-ab04-c2b130e006dc",
+    "timestamp": 1591719443000,
+    "authorName": "Dani",
+    "bodyText": "This was useful, thanks! The instructions were clear and it worked perfectly.You might want to add a final step explaining how to run the compiled code - creating a new \"start\" script in package.json to run \"output/script.js\" and then run `npm start` in the terminal."
+  }
+]

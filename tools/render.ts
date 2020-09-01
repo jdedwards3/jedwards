@@ -1,6 +1,5 @@
 import { config } from "../config";
 import ejs = require("ejs");
-import fetch from "node-fetch";
 import fs = require("fs");
 import fsExtra = require("fs-extra");
 import globstd = require("glob");
@@ -20,11 +19,10 @@ const viewDataPath = "./viewData";
 const environment = process.env.environment as string;
 
 interface IComment {
-  PartitionKey: string;
-  RowKey: string;
+  id: string;
+  timestamp: number;
   authorName: string;
   bodyText: string;
-  status: number;
 }
 
 //todo: interface IViewModel {}
@@ -83,27 +81,6 @@ async function getPaths() {
   ]);
 }
 
-async function getComments() {
-  try {
-    const data = await fetch(`${config[environment].functionsUrl}/comment`)
-      .then((response) => response.json())
-      .then((json) => json);
-
-    return fetch(data.sasUrl, {
-      headers: {
-        Accept: "application/json;odata=nometadata",
-        "Accept-Charset": "UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => json.value);
-  } catch (error) {
-    // let everything continue
-    console.warn("warning: no comments returned from api because of error!");
-    return Promise.resolve([]);
-  }
-}
-
 async function buildPageModel(
   model: any,
   path: string,
@@ -137,6 +114,25 @@ async function buildPageModel(
       JSON.stringify(store, null, 2),
       "utf8"
     );
+  }
+
+  if (isNonIndexPost(path, indexPath, postPaths)) {
+    let comments: IComment[] = [];
+
+    try {
+      comments = [
+        ...JSON.parse(
+          await readFile(
+            `${viewDataPath}/comments/${pageModel.guid}.json`,
+            "utf8"
+          )
+        ),
+      ].sort((first, second) => second.timestamp - first.timestamp);
+    } catch (error) {
+      //there are no comments
+    }
+
+    pageModel.comments = comments;
   }
 
   if (isNonIndexPost(path, indexPath, postPaths) || isPage(path, pagePaths)) {
@@ -209,40 +205,29 @@ async function getViewData(
 }
 
 async function getPostmetaTemplate(pageModel: any) {
-  const postmetaTemplate = ejs.renderFile(
-    `${viewsPath}/partials/postMeta.ejs`,
-    {
-      model: {
-        createdDate: pageModel.createdDate,
-        modifiedDate: pageModel.modifiedDate,
-      },
-    }
-  );
-  return postmetaTemplate;
+  return ejs.renderFile(`${viewsPath}/partials/postMeta.ejs`, {
+    model: {
+      createdDate: pageModel.createdDate,
+      modifiedDate: pageModel.modifiedDate,
+    },
+  });
 }
 
-async function getCommentTemplate(pageModel: any, comments: IComment[]) {
-  // reverse assuming comments are in chronological order
-  // todo: sort by timestamp
-  const commentTemplate = ejs.renderFile(`${viewsPath}/partials/comments.ejs`, {
+async function getCommentTemplate(pageModel: any) {
+  return ejs.renderFile(`${viewsPath}/partials/comments.ejs`, {
     model: {
-      comments: comments
-        .reverse()
-        .filter(
-          (comment) =>
-            comment.PartitionKey == pageModel.guid && comment.status == 1
-        ),
+      comments: pageModel.comments,
     },
     pageModel: pageModel,
   });
-  return commentTemplate;
 }
 
 (async function main() {
-  const [comments, [indexPath, pagePaths, postPaths]]: [
-    IComment[],
-    [string[], string[], string[]]
-  ] = await Promise.all([getComments(), getPaths()]);
+  const [indexPath, pagePaths, postPaths]: [
+    string[],
+    string[],
+    string[]
+  ] = await getPaths();
 
   const viewData = await getViewData(indexPath, postPaths, pagePaths);
 
@@ -293,7 +278,7 @@ async function getCommentTemplate(pageModel: any, comments: IComment[]) {
               : null,
             mainContent: pageModel.partialHtml,
             comments: pageModel.isNonIndexPost
-              ? await getCommentTemplate(pageModel, comments)
+              ? await getCommentTemplate(pageModel)
               : null,
             model: pageModel,
           }),
