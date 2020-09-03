@@ -116,16 +116,6 @@ const httpTrigger: AzureFunction = async function (
 
       await git.push("private", `${commentId}`);
 
-      await new Octokit({
-        auth: process.env["GitHubUserPassword"],
-      }).pulls.create({
-        owner: `${process.env["GitHubUser"]}`,
-        repo: `${process.env["PrivateRepoName"]}`,
-        title: `${commentId}`,
-        head: `${commentId}`,
-        base: `${process.env["BaseBranch"]}`,
-      });
-
       await rimraf(`${tmpdir}/${tempRepo}/`);
 
       /* todo: remove */
@@ -159,7 +149,19 @@ const httpTrigger: AzureFunction = async function (
         Update status to approve.`,
       };
 
-      await Promise.all([SendGrid.send(userEmail), SendGrid.send(adminEmail)]);
+      await Promise.all([
+        SendGrid.send(userEmail),
+        SendGrid.send(adminEmail),
+        new Octokit({
+          auth: process.env["GitHubUserPassword"],
+        }).pulls.create({
+          owner: `${process.env["GitHubUser"]}`,
+          repo: `${process.env["PrivateRepoName"]}`,
+          title: `${commentId}`,
+          head: `${commentId}`,
+          base: `${process.env["BaseBranch"]}`,
+        }),
+      ]);
 
       context.res!.status = 200;
       context.res!.body = {
