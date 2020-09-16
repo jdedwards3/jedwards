@@ -4,7 +4,6 @@ import util = require("util");
 import uuidv4 = require("uuid/v4");
 import * as SendGrid from "@sendgrid/mail";
 import * as simpleGit from "simple-git/promise";
-import { storageHelpers } from "../common/storageHelpers";
 import { formHelpers } from "../common/formHelpers";
 import { Octokit } from "@octokit/rest";
 import fs = require("fs");
@@ -27,173 +26,143 @@ const httpTrigger: AzureFunction = async function (
 
   const body = querystring.parse(req.body);
 
-  if (req.method == "POST") {
-    if (!(await formHelpers.verifiedRequestBody(body))) {
-      // failed verification
-      context.res!.status = 200;
-      context.res!.body = { message: "success" };
-      return;
-    }
+  if (!(await formHelpers.verifiedRequestBody(body))) {
+    // failed verification
+    context.res!.status = 200;
+    context.res!.body = { message: "success" };
+    return;
+  }
 
-    if (
+  if (
+    !(
       body &&
       body.comment &&
       body.postGuid &&
       body.authorEmail &&
       body.authorName
-    ) {
-      const tempRepo = uuidv4();
+    )
+  ) {
+    context.res!.status = 400;
+    context.res!.body = {
+      message: "Comment invalid. Please correct errors and try again.",
+    };
+    return;
+  }
 
-      await mkdir(`${tmpdir}/${tempRepo}/viewData/comments`, {
-        recursive: true,
-      });
+  const tempRepo = uuidv4();
 
-      const git = simpleGit(`${tmpdir}/${tempRepo}`);
+  await mkdir(`${tmpdir}/${tempRepo}/viewData/comments`, {
+    recursive: true,
+  });
 
-      await git.init();
+  const git = simpleGit(`${tmpdir}/${tempRepo}`);
 
-      await git.addConfig("user.name", `${process.env["GitHubUser"]}`);
-      await git.addConfig("user.email", `${process.env["AdminEmail"]}`);
+  await git.init();
 
-      await git.addRemote(
-        "private",
-        `https://${process.env["GitHubUser"]}:${process.env["GitHubUserPassword"]}@${process.env["GitHubPrivateRepo"]}`
-      );
+  await Promise.all([
+    git.addConfig("user.name", `${process.env["GitHubUser"]}`),
+    git.addConfig("user.email", `${process.env["AdminEmail"]}`),
+  ]);
 
-      const commentId = uuidv4();
+  await git.addRemote(
+    "private",
+    `https://${process.env["GitHubUser"]}:${process.env["GitHubUserPassword"]}@${process.env["GitHubPrivateRepo"]}`
+  );
 
-      try {
-        await git.fetch("private", `${process.env["BaseBranch"]}`);
+  const commentId = uuidv4();
 
-        await git.checkout(`private/${process.env["BaseBranch"]}`, [
-          "--",
-          `viewData/comments/${body.postGuid}.json`,
-        ]);
+  try {
+    await git.fetch("private", `${process.env["BaseBranch"]}`);
 
-        await git.checkoutBranch(
-          `${commentId}`,
-          `private/${process.env["BaseBranch"]}`
-        );
-      } catch (error) {
-        await git.checkout(`private/${process.env["BaseBranch"]}`);
-        await git.checkoutLocalBranch(`${commentId}`);
-      }
+    await git.checkout(`private/${process.env["BaseBranch"]}`, [
+      "--",
+      `viewData/comments/${body.postGuid}.json`,
+    ]);
 
-      const comment = {
-        id: commentId,
-        timestamp: new Date(new Date().toUTCString()).getTime(),
-        authorEmail: body.authorEmail,
-        authorName: body.authorName,
-        bodyText: body.comment,
-      };
+    await git.checkoutBranch(
+      `${commentId}`,
+      `private/${process.env["BaseBranch"]}`
+    );
+  } catch (error) {
+    await git.checkout(`private/${process.env["BaseBranch"]}`);
+    await git.checkoutLocalBranch(`${commentId}`);
+  }
 
-      let comments = [];
+  const comment = {
+    id: commentId,
+    timestamp: new Date(new Date().toUTCString()).getTime(),
+    authorEmail: body.authorEmail,
+    authorName: body.authorName,
+    bodyText: body.comment,
+  };
 
-      try {
-        comments = JSON.parse(
-          await readFile(
-            `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`,
-            "utf8"
-          )
-        );
-      } catch (error) {
-        //no previous comments
-      }
+  let comments = [];
 
-      comments.push(comment);
-
-      await writeFile(
+  try {
+    comments = JSON.parse(
+      await readFile(
         `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`,
-        JSON.stringify(comments, null, 2),
         "utf8"
-      );
+      )
+    );
+  } catch (error) {
+    //no previous comments
+  }
 
-      await git.add(
-        `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`
-      );
+  comments.push(comment);
 
-      await git.commit(`adding comment ${commentId}`);
+  await writeFile(
+    `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`,
+    JSON.stringify(comments, null, 2),
+    "utf8"
+  );
 
-      await git.push("private", `${commentId}`);
+  await git.add(
+    `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`
+  );
 
-      await rimraf(`${tmpdir}/${tempRepo}/`);
+  await git.commit(`adding comment ${commentId}`);
 
-      /* todo: remove */
-      await storageHelpers.createTableIfNotExists(commentTable);
-      const commentEntity = {
-        PartitionKey: body.postGuid,
-        RowKey: uuidv4(),
-        status: 0,
-        authorEmail: body.authorEmail,
-        authorName: body.authorName,
-        bodyText: body.comment,
-      };
-      await storageHelpers.insertEntity(commentTable, commentEntity);
-      /* end remove */
+  await git.push("private", `${commentId}`);
 
-      const userEmail = {
-        to: body.authorEmail,
-        from: "noreply@jamesedwards.name",
-        subject: "Thank you for your comment!",
-        text: "It will be posted when approved.",
-      };
+  await rimraf(`${tmpdir}/${tempRepo}/`);
 
-      const adminEmail = {
-        to: process.env["AdminEmail"],
-        from: "noreply@jamesedwards.name",
-        subject: "New comment posted!",
-        html: `A new comment has been posted.
+  const userEmail = {
+    to: body.authorEmail,
+    from: "noreply@jamesedwards.name",
+    subject: "Thank you for your comment!",
+    text: "It will be posted when approved.",
+  };
+
+  const adminEmail = {
+    to: process.env["AdminEmail"],
+    from: "noreply@jamesedwards.name",
+    subject: "New comment posted!",
+    html: `A new comment has been posted.
         <div>from: ${body.authorName}</div>
         <div>email: ${body.authorEmail}</div>
         <div>comment: ${body.comment}</div>
         Update status to approve.`,
-      };
+  };
 
-      await Promise.all([
-        SendGrid.send(userEmail),
-        SendGrid.send(adminEmail),
-        new Octokit({
-          auth: process.env["GitHubUserPassword"],
-        }).pulls.create({
-          owner: `${process.env["GitHubUser"]}`,
-          repo: `${process.env["PrivateRepoName"]}`,
-          title: `${commentId}`,
-          head: `${commentId}`,
-          base: `${process.env["BaseBranch"]}`,
-        }),
-      ]);
+  await Promise.all([
+    SendGrid.send(userEmail),
+    SendGrid.send(adminEmail),
+    new Octokit({
+      auth: process.env["GitHubUserPassword"],
+    }).pulls.create({
+      owner: `${process.env["GitHubUser"]}`,
+      repo: `${process.env["PrivateRepoName"]}`,
+      title: `${commentId}`,
+      head: `${commentId}`,
+      base: `${process.env["BaseBranch"]}`,
+    }),
+  ]);
 
-      context.res!.status = 200;
-      context.res!.body = {
-        message: "Thank you for your comment. It will be posted when approved.",
-      };
-    } else {
-      context.res!.status = 400;
-      context.res!.body = {
-        message: "Comment invalid. Please correct errors and try again.",
-      };
-    }
-  } else if (req.method == "GET") {
-    await storageHelpers.createTableIfNotExists(commentTable);
-
-    //getting all comments for now since they are actually needed
-    const sasToken = storageHelpers
-      .tableService()
-      .generateSharedAccessSignature(
-        commentTable,
-        storageHelpers.getSharedAccessPolicy()
-      );
-
-    const sasUrl = storageHelpers.tableService().getUrl("comments", sasToken);
-
-    context.res!.status = 200;
-    context.res!.body = { sasUrl };
-  } else {
-    context.res!.status = 500;
-    context.res!.body = {
-      message: "An error occured. Please try again later.",
-    };
-  }
+  context.res!.status = 200;
+  context.res!.body = {
+    message: "Thank you for your comment. It will be posted when approved.",
+  };
 };
 
 export default httpTrigger;
