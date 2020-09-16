@@ -7,7 +7,7 @@ import { storageHelpers } from "../common/storageHelpers";
 SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
 const tableName = "contactForm";
 
-const httpTrigger: AzureFunction = async function(
+const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
@@ -24,41 +24,44 @@ const httpTrigger: AzureFunction = async function(
     return;
   }
 
-  if (body && body.firstName && body.lastName && body.email && body.message) {
-    await storageHelpers.createTableIfNotExists(tableName);
-
-    const contactFormEntity = {
-      PartitionKey: "contactForm",
-      RowKey: uuidv4(),
-      firstName: body.firstName,
-      lastName: body.lastName,
-      email: body.email,
-      message: body.message,
-      website: body.website
-    };
-
-    const adminEmail = {
-      to: process.env["AdminEmail"],
-      from: "noreply@jamesedwards.name",
-      subject: "New Contact Form Submission",
-      html: `<div>from: ${body.firstName} ${body.lastName}</div>
-      <div>message: ${body.message}</div>`
-    };
-
-    await Promise.all([
-      storageHelpers.insertEntity(tableName, contactFormEntity),
-      SendGrid.send(adminEmail)
-    ]);
-    context.res!.status = 200;
-    context.res!.body = {
-      message: "Thank you for contacting me! I will reply to you shortly."
-    };
-  } else {
+  if (
+    !(body && body.firstName && body.lastName && body.email && body.message)
+  ) {
     context.res!.status = 400;
     context.res!.body = {
-      message: "Contact form is invalid. Please correct errors and try again."
+      message: "Contact form is invalid. Please correct errors and try again.",
     };
+    return;
   }
+
+  await storageHelpers.createTableIfNotExists(tableName);
+
+  const contactFormEntity = {
+    PartitionKey: "contactForm",
+    RowKey: uuidv4(),
+    firstName: body.firstName,
+    lastName: body.lastName,
+    email: body.email,
+    message: body.message,
+    website: body.website,
+  };
+
+  const adminEmail = {
+    to: process.env["AdminEmail"],
+    from: "noreply@jamesedwards.name",
+    subject: "New Contact Form Submission",
+    html: `<div>from: ${body.firstName} ${body.lastName}</div>
+      <div>message: ${body.message}</div>`,
+  };
+
+  await Promise.all([
+    storageHelpers.insertEntity(tableName, contactFormEntity),
+    SendGrid.send(adminEmail),
+  ]);
+  context.res!.status = 200;
+  context.res!.body = {
+    message: "Thank you for contacting me! I will reply to you shortly.",
+  };
 };
 
 export default httpTrigger;
