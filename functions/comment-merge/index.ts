@@ -26,7 +26,8 @@ const httpTrigger: AzureFunction = async function (
   //todo: validate header secret
   if (
     payload.action != "closed" ||
-    payload.pull_request.base.ref != process.env["BaseBranch"]
+    payload.pull_request.base.ref != process.env["BaseBranch"] ||
+    !payload.pull_request.merged_at
   ) {
     return;
   }
