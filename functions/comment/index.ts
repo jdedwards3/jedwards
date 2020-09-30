@@ -14,7 +14,6 @@ const mkdir = util.promisify(fs.mkdir);
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
 SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
-const commentTable = "comments";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
