@@ -24,7 +24,10 @@ const httpTrigger: AzureFunction = async function (
   const payload = JSON.parse(querystring.parse(req.body).payload as string);
 
   //todo: validate header secret
-  if (payload.action != "closed") {
+  if (
+    payload.action != "closed" ||
+    payload.pull_request.base.ref != process.env["BaseBranch"]
+  ) {
     return;
   }
 
