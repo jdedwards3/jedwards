@@ -2,6 +2,7 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import util = require("util");
 import * as querystring from "querystring";
 import * as simpleGit from "simple-git/promise";
+import { Webhooks } from "@octokit/webhooks";
 import fs = require("fs");
 import { tmpdir } from "os";
 import uuidv4 = require("uuid/v4");
@@ -21,13 +22,15 @@ const httpTrigger: AzureFunction = async function (
 
   context.res!.headers["Content-Type"] = "application/json";
 
-  const payload = JSON.parse(querystring.parse(req.body).payload as string);
+  const payload = req.body;
 
-  //todo: validate header secret
   if (
     payload.action != "closed" ||
     payload.pull_request.base.ref != process.env["BaseBranch"] ||
-    !payload.pull_request.merged_at
+    !payload.pull_request.merged_at ||
+    !new Webhooks({
+      secret: process.env["GitHubWebhookSecret"],
+    }).verify(payload, req.headers["x-hub-signature"])
   ) {
     return;
   }
