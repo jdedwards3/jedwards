@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = async function (
     !payload.pull_request.merged_at ||
     !new Webhooks({
       secret: process.env["GitHubWebhookSecret"],
-    }).verify(payload, req.headers["x-hub-signature"])
+    }).verify(payload, req.headers["x-hub-signature-256"])
   ) {
     return;
   }
