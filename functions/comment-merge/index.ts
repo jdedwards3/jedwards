@@ -1,6 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import util = require("util");
-import * as querystring from "querystring";
 import * as simpleGit from "simple-git/promise";
 import { Webhooks } from "@octokit/webhooks";
 import fs = require("fs");
