@@ -11,6 +11,6 @@
     "moduleResolution": "node",
     "skipLibCheck": true
   },
-  "inclue": ["scripts/**/*"],
+  "include": ["scripts/**/*"],
   "exclude": ["*.ts", "tools/**/*", "node_modules/**/*", "functions/**/*"]
 }
