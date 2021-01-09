@@ -1,8 +1,0 @@
-[
-  {
-    "id": "e91a6c23-40ba-4c87-8af2-d93ba7b278b9",
-    "timestamp": 1594247424000,
-    "authorName": "Josh Habdas",
-    "bodyText": "Thanks for the post, James. It was very helpful and highly ranked in search. A couple of suggestions for improvement: (1) Handle the form submit event directly as it's valid HTML to have multiple forms on a page and (2) make a note about security somewhere with regard to how query strings attached to URLs can leak data if not sent encrypted. One more thing to note, I ended up simply passing a FormData instance without using URLSearchParams for my use case. This is worth covering with an example and it cleans up the code. I also think you might be able to do new URLSearchParams(new FormData(event.currentTarget)) and pass that straight into the body. Regardless, this was just what I was looking for. Many thanks for posting."
-  }
-]

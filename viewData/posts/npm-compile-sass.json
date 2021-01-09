@@ -1,6 +1,0 @@
-{
-  "title": "Compile Sass with npm",
-  "guid": "e1d6e9d2-c531-488a-bf07-200ada83a798",
-  "metaDescription": "There are many different ways to compile SCSS, one of the two syntaxes supported by SASS. In this post we will explore the utilization of the node-sass npm package. We'll also look at how we can use the clean-css npm package to minify and optimize the generated output after compiling SCSS into CSS. ",
-  "showAds": true
-}

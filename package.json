@@ -1,49 +1,13 @@
 {
   "name": "jedwards",
-  "dependencies": {},
-  "scripts": {
-    "build:base": "npm run clean && concurrently \"npm run compile-build-tools\" \"npm run compile-client\" && concurrently \"npm run copy-assets\" \"npm run compile-styles\" && npm run css-minify",
-    "build:local": "npm run build:base && cross-env environment=local npm run render",
-    "build:staging": "npm run build:base && cross-env environment=staging npm run render",
-    "build:production": "npm run build:base && cross-env environment=production npm run render",
-    "clean": "rimraf built",
-    "compile-styles": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 styles/styles.scss built/styles/styles.css",
-    "compile-build-tools": "cross-env-shell tsc --p tsconfig.node.json",
-    "compile-client": "cross-env-shell tsc --p tsconfig.client.json",
-    "copy-assets": "cross-env-shell shx mkdir -p built/assets/ && concurrently \"cross-env-shell shx cp -r assets/ built/\" \"cross-env-shell shx cp ads.txt built/\"",
-    "css-minify": "cleancss --level 1 --format breaksWith=lf --source-map --source-map-inline-sources --output built/styles/styles.min.css built/styles/styles.css",
-    "render": "node built/tools/render.js",
-    "serve": "http-server \"./built\" -c-1 -o",
-    "sync": "browser-sync built --extensions html -w",
-    "watch": "npm run build:local && concurrently \"npm run sync\" \"npm run watch-styles\" \"npm run watch-build-tools\" \"npm run watch-client\" \"npm run watch-ejs\" \"npm run watch-view-data\"",
-    "watch-build-tools": "nodemon --watch tools/ --ext ts --exec \"npm run compile-build-tools\"",
-    "watch-client": "nodemon --watch scripts/ --ext ts --exec \"npm run compile-client && cross-env environment=local npm run render\"",
-    "watch-ejs": "nodemon --watch views/ --ext ejs --exec \"cross-env environment=local npm run render\"",
-    "watch-styles": "nodemon --watch styles/ --ext scss --exec \"npm run compile-styles && npm run css-minify\"",
-    "watch-view-data": "nodemon --watch viewData/ --ext json --exec \"cross-env environment=local npm run render\""
+  "version": "0.0.0",
+  "dependencies": {
+    "@protolith/morphic": "0.0.20",
+    "highlight.js": "^10.5.0"
   },
-  "devDependencies": {
-    "@types/ejs": "^2.7.0",
-    "@types/fs-extra": "^8.1.1",
-    "@types/glob": "^7.1.3",
-    "@types/html-minifier": "^3.5.3",
-    "@types/node": "^11.15.25",
-    "@types/uuid": "^3.4.9",
-    "browser-sync": "^2.26.13",
-    "clean-css-cli": "^4.3.0",
-    "concurrently": "^5.3.0",
-    "cross-env": "^5.2.1",
-    "ejs": "^2.7.4",
-    "fs-extra": "^8.1.0",
-    "glob": "^7.1.6",
-    "html-minifier": "^4.0.0",
-    "http-server": "^0.12.3",
-    "node-sass": "^4.14.1",
-    "nodemon": "^2.0.5",
-    "rimraf": "^2.7.1",
-    "shx": "^0.3.2",
-    "simple-git": "^1.132.0",
-    "typescript": "^3.9.7",
-    "uuid": "^3.4.0"
+  "scripts": {
+    "dev": "cross-env morphicEnv=dev morphic",
+    "serve": "cross-env morphicEnv=dev morphic --serve",
+    "build": "npx morphic"
   }
 }

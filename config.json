@@ -1,0 +1,44 @@
+{
+  "version": "2.0.2",
+  "typescript": {
+    "enabled": true,
+    "ignoreGlobs": ["functions"]
+  },
+  "sass": { "enabled": true },
+  "folders": {
+    "content": { "rootFiles": { "copyToOutput": true } },
+    "images": { "path": "images", "copyToOutput": true },
+    "scripts": { "path": "scripts", "cacheBust": true }
+  },
+  "comments": { "enabled": true },
+  "environment": {
+    "dev": {
+      "domain": "localhost:3000",
+      "functionsUrl": "http://localhost:7071/api",
+      "googleAnalytics": { "enabled": false },
+      "monetization": { "enabled": false }
+    },
+    "staging": {
+      "domain": "https://jedwards-staging.azureedge.net",
+      "functionsUrl": "https://jedwards-staging.azurewebsites.net/api",
+      "googleAnalytics": { "enabled": false },
+      "monetization": { "enabled": false },
+      "sitemap": true,
+      "rssFeed": true,
+      "jsonApi": true,
+      "inlineSassOutput": true
+    },
+    "production": {
+      "domain": "https://www.jamesedwards.name",
+      "functionsUrl": "https://jedwards.azurewebsites.net/api",
+      "googleAnalytics": { "enabled": true },
+      "monetization": { "enabled": true },
+      "minifyHtml": true,
+      "minifyTypescriptOutput": true,
+      "sitemap": true,
+      "rssFeed": true,
+      "jsonApi": true,
+      "inlineSassOutput": true
+    }
+  }
+}

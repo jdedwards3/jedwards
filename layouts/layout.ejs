@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- head -->
+  <%- include(config.folders.layouts.path + '/partials/head') %>
+  <!-- body -->
+  <body class="d-flex">
+    <div class="d-flex w-100 p-3 mx-auto flex-column">
+      <!-- header -->
+      <%- include(config.folders.layouts.path + '/partials/header') %>
+      <!-- banners -->
+      <% if (config.environment.monetization.enabled && model.showAds) { %>
+      <ins
+        class="adsbygoogle banner-lg"
+        style="width: 728px; height: 90px"
+        data-ad-client="ca-pub-6747903070938911"
+        data-ad-slot="1389153429"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      <ins
+        class="adsbygoogle banner-sm"
+        style="width: 300px; height: 50px"
+        data-ad-client="ca-pub-6747903070938911"
+        data-ad-slot="4525371084"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      <% } %>
+      <div class="cover-container mx-auto w-100">
+        <!-- main -->
+        <main class="main py-4">
+          <article>
+            <h1 class="cover-heading mb-4 text-center"><%= model.title %></h1>
+            <!-- mainContent-->
+            <%- model.content %>
+          </article>
+        </main>
+      </div>
+      <!-- banners -->
+      <% if (config.environment.monetization.enabled) { %>
+      <ins
+        class="adsbygoogle banner-lg"
+        style="width: 728px; height: 90px"
+        data-ad-client="ca-pub-6747903070938911"
+        data-ad-slot="1389153429"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      <ins
+        class="adsbygoogle banner-sm"
+        style="width: 300px; height: 50px"
+        data-ad-client="ca-pub-6747903070938911"
+        data-ad-slot="4525371084"
+      ></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      <% } %>
+      <!-- footer -->
+      <%- include(config.folders.layouts.path + '/partials/footer') %>
+    </div>
+    <script
+      type="module"
+      src="/scripts/<%= config.version %>/script.js"
+    ></script>
+  </body>
+</html>
