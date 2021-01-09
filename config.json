@@ -29,7 +29,7 @@
       "inlineSassOutput": true
     },
     "production": {
-      "domain": "https://www.jamesedwards.name",
+      "domain": "https://www.jamesedwards.net",
       "functionsUrl": "https://jedwards.azurewebsites.net/api",
       "googleAnalytics": { "enabled": true },
       "monetization": { "enabled": true },
