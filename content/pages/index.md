@@ -1,6 +1,6 @@
 ---
 title: James Edwards
-metaDescription: James Edwards Freelance Web Developer Burlington Vermont
+metaDescription: <%= config.siteDescription %>
 ---
 
 - Please star [morphic](https://github.com/jdedwards3/morphic) on GitHub!
