@@ -33,6 +33,16 @@ jobs:
 
             az storage blob upload-batch -d '$web' -s _output --pattern '*.json' --connection-string '${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}'
 
+      - name: Purge CDN
+        uses: azure/cli@v1.0.0
+        with:
+          inlineScript: |
+            az login --service-principal -u http://myApp --password '${{ secrets.AZURE_LOGIN }}' --tenant '${{ secrets.AZURE_LOGIN_TENANT }}'
+
+            az cdn endpoint purge -g jedwards -n 'jedwards' --profile-name jedwards --content-paths '/*'
+
+            az logout
+
   deploy-functions:
     runs-on: ubuntu-latest
     steps:
