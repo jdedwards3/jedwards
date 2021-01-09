@@ -36,7 +36,7 @@ const httpTrigger: AzureFunction = async function (
 
   const tempRepo = uuidv4();
 
-  await mkdir(`${tmpdir}/${tempRepo}/viewData/comments`, {
+  await mkdir(`${tmpdir}/${tempRepo}/${process.env["CommentPath"]}`, {
     recursive: true,
   });
 
@@ -64,7 +64,7 @@ const httpTrigger: AzureFunction = async function (
 
   await git.checkout(`public/${process.env["BaseBranch"]}`, [
     "--",
-    "viewData/comments/",
+    `${process.env["CommentPath"]}/`,
   ]);
 
   await git.checkoutBranch(
@@ -76,24 +76,25 @@ const httpTrigger: AzureFunction = async function (
 
   await git.checkout(`private/${process.env["BaseBranch"]}`, [
     "--",
-    "viewData/comments/",
+    `${process.env["CommentPath"]}/`,
   ]);
 
-  const paths = await glob(`comments/**/*.json`, {
-    cwd: `${tmpdir}/${tempRepo}/viewData/`,
+  const paths = await glob(`*.json`, {
+    cwd: `${tmpdir}/${tempRepo}/${process.env["CommentPath"]}`,
   });
 
   await Promise.all(
     paths.map(async (path) => {
       let pathData = [];
 
-      pathData = [
-        ...JSON.parse(
-          await readFile(`${tmpdir}/${tempRepo}/viewData/${path}`, "utf8")
-        ),
-      ];
+      pathData = JSON.parse(
+        await readFile(
+          `${tmpdir}/${tempRepo}/${process.env["CommentPath"]}/${path}`,
+          "utf8"
+        )
+      );
 
-      const publicData = pathData.map((item) => {
+      const publicData = pathData.map((item: any) => {
         const { authorEmail, ...store } = item;
         return store;
       });
@@ -106,7 +107,7 @@ const httpTrigger: AzureFunction = async function (
     })
   );
 
-  await git.add(`${tmpdir}/${tempRepo}/viewData/comments/*.json`);
+  await git.add(`${tmpdir}/${tempRepo}/${process.env["CommentPath"]}/*.json`);
 
   await git.commit("approving comment");
 

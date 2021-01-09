@@ -50,7 +50,7 @@ const httpTrigger: AzureFunction = async function (
 
   const tempRepo = uuidv4();
 
-  await mkdir(`${tmpdir}/${tempRepo}/viewData/comments`, {
+  await mkdir(`${tmpdir}/${tempRepo}/${process.env["CommentPath"]}`, {
     recursive: true,
   });
 
@@ -75,7 +75,7 @@ const httpTrigger: AzureFunction = async function (
 
     await git.checkout(`private/${process.env["BaseBranch"]}`, [
       "--",
-      `viewData/comments/${body.postGuid}.json`,
+      `${process.env["CommentPath"]}/${body.postGuid}.json`,
     ]);
 
     await git.checkoutBranch(
@@ -100,7 +100,7 @@ const httpTrigger: AzureFunction = async function (
   try {
     comments = JSON.parse(
       await readFile(
-        `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`,
+        `${tmpdir}/${tempRepo}/${process.env["CommentPath"]}/${body.postGuid}.json`,
         "utf8"
       )
     );
@@ -111,13 +111,13 @@ const httpTrigger: AzureFunction = async function (
   comments.push(comment);
 
   await writeFile(
-    `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`,
+    `${tmpdir}/${tempRepo}/${process.env["CommentPath"]}/${body.postGuid}.json`,
     JSON.stringify(comments, null, 2),
     "utf8"
   );
 
   await git.add(
-    `${tmpdir}/${tempRepo}/viewData/comments/${body.postGuid}.json`
+    `${tmpdir}/${tempRepo}/${process.env["CommentPath"]}/${body.postGuid}.json`
   );
 
   await git.commit(`adding comment ${commentId}`);
