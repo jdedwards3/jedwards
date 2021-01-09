@@ -4,21 +4,24 @@
       const { FormHandler } = await import("./formHandler.js");
       new FormHandler();
     }
-    if (document.querySelectorAll(".ad-unit").length) {
-      const { adCheck } = await import("./adHandler.js");
-      adCheck();
-    }
   });
 
-  let t: any = null;
   let w = window.outerWidth;
-  if (document.querySelectorAll(".ad-unit").length) {
-    const { adReload } = await import("./adHandler.js");
-    window.addEventListener("resize", function () {
-      if (w != window.outerWidth) {
-        t = adReload(t);
+  window.addEventListener("resize", function () {
+    // show previously hidden ads on window resize
+    const emptyAds = Array.from(document.querySelectorAll("ins")).filter(
+      function (elem) {
+        return !elem.children.length && elem.offsetHeight > 0;
       }
-      w = window.outerWidth;
-    });
-  }
+    );
+
+    if (emptyAds && w != window.outerWidth) {
+      emptyAds.forEach(function (elem) {
+        delete elem.dataset.adsbygoogleStatus;
+        let adsbygoogle = (window as any).adsbygoogle || [];
+        adsbygoogle.push({});
+      });
+    }
+    w = window.outerWidth;
+  });
 })();
