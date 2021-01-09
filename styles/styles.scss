@@ -1,3 +1,5 @@
+@import "../node_modules/highlight.js/scss/vs2015.scss";
+
 /*
  * Base structure
  */
@@ -8,32 +10,24 @@ body {
   background-color: #eeeeee;
 }
 
+a {
+  color: #0032ff;
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.btn.btn-primary {
+  background-color: #0032ff;
+  &:hover,
+  &:focus {
+    background-color: #0056b3;
+  }
+}
+
 body {
   color: #212529;
-}
-
-$primary: #003bff;
-$success: #155724;
-
-a,
-a:hover,
-a:active,
-a:focus {
-  color: $primary;
-}
-
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active {
-  background-color: $primary;
-}
-
-.btn-success,
-.btn-success:hover,
-.btn-success:focus,
-.btn-success:active {
-  background-color: $success;
 }
 
 .cover-container {
@@ -43,16 +37,13 @@ a:focus {
 /*
  * Header
  */
-.masthead {
-  margin-bottom: 2rem;
-}
 
 .masthead-brand {
   margin-bottom: 0;
 }
 
 .nav-masthead .nav-link {
-  padding: 0.75rem 0.1rem;
+  padding: 1rem 0.1rem;
   font-weight: 700;
 }
 
@@ -69,60 +60,30 @@ a:focus {
   }
 }
 
-/*
- * Cover
- */
-.cover {
-  padding: 0 1.5rem;
-}
-
-.card {
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-.card-title,
-.card-title:hover {
-  color: #212529;
-}
-
-pre {
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-.main {
-  padding: 0 15px;
-  width: 100%;
-  @media (min-width: 768px) {
-    max-width: calc(100% - 330px);
-  }
-}
-
-.sidebar {
-  padding: 0 15px;
-  width: 100%;
-  @media (min-width: 768px) {
-    max-width: 330px;
-  }
-  .subscribe-container {
-    top: 2rem;
-  }
-}
-
-.ad-unit {
-  display: block;
-  width: 300px;
-  min-height: 250px;
-  margin: 0 auto;
-}
-
 @media (max-width: 767px) {
-  .sidebar .ad-unit {
-    display: none;
+  .adsbygoogle {
+    &.banner-lg {
+      display: none;
+    }
+    &.banner-sm {
+      display: block;
+      width: 300px;
+      height: 50px;
+      margin: 0 auto;
+    }
   }
 }
+
 @media (min-width: 768px) {
-  .blog-links .ad-unit,
-  .blog-post-text .ad-unit {
-    display: none;
+  .adsbygoogle {
+    &.banner-lg {
+      width: 728px;
+      height: 90px;
+      display: block;
+      margin: 0 auto;
+    }
+    &.banner-sm {
+      display: none;
+    }
   }
 }
