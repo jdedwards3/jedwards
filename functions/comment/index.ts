@@ -2,7 +2,6 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as querystring from "querystring";
 import util = require("util");
 import uuidv4 = require("uuid/v4");
-import * as SendGrid from "@sendgrid/mail";
 import * as simpleGit from "simple-git/promise";
 import { formHelpers } from "../common/formHelpers";
 import { Octokit } from "@octokit/rest";
@@ -13,7 +12,6 @@ const rimraf = util.promisify(rimrafstd);
 const mkdir = util.promisify(fs.mkdir);
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
-SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -124,39 +122,17 @@ const httpTrigger: AzureFunction = async function (
 
   await git.push("private", `${commentId}`);
 
+  await new Octokit({
+    auth: process.env["GitHubUserPassword"],
+  }).pulls.create({
+    owner: `${process.env["GitHubUser"]}`,
+    repo: `${process.env["PrivateRepoName"]}`,
+    title: `${commentId}`,
+    head: `${commentId}`,
+    base: `${process.env["BaseBranch"]}`,
+  });
+
   await rimraf(`${tmpdir}/${tempRepo}/`);
-
-  const userEmail = {
-    to: body.authorEmail,
-    from: "noreply@jamesedwards.name",
-    subject: "Thank you for your comment!",
-    text: "It will be posted when approved.",
-  };
-
-  const adminEmail = {
-    to: process.env["AdminEmail"],
-    from: "noreply@jamesedwards.name",
-    subject: "New comment posted!",
-    html: `A new comment has been posted.
-        <div>from: ${body.authorName}</div>
-        <div>email: ${body.authorEmail}</div>
-        <div>comment: ${body.comment}</div>
-        Update status to approve.`,
-  };
-
-  await Promise.all([
-    SendGrid.send(userEmail),
-    SendGrid.send(adminEmail),
-    new Octokit({
-      auth: process.env["GitHubUserPassword"],
-    }).pulls.create({
-      owner: `${process.env["GitHubUser"]}`,
-      repo: `${process.env["PrivateRepoName"]}`,
-      title: `${commentId}`,
-      head: `${commentId}`,
-      base: `${process.env["BaseBranch"]}`,
-    }),
-  ]);
 
   context.res!.status = 200;
   context.res!.body = {
