@@ -2,6 +2,7 @@
   "siteName": "James Edwards",
   "siteDescription": "James Edwards Freelance Web Developer Burlington Vermont",
   "version": "2.0.2",
+  "saveContentGuid": { "enabled": true },
   "typescript": {
     "enabled": true,
     "ignoreGlobs": ["functions"]
