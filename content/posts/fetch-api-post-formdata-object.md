@@ -8,8 +8,6 @@ tags:
   - ES6
   - TypeScript
   - Web API
-image: fetch-api-post-formdata-object.png
-imageAlt: Submit FormData with ES6 Fetch API
 showAds: true
 ---
 

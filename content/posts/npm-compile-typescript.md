@@ -8,8 +8,6 @@ author: James Edwards
 tags:
   - TypeScript
   - Node.js
-image: npm-compile-typescript.png
-imageAlt: Compile TypeScript into JavaScript
 showAds: true
 ---
 
