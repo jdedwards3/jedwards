@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- head -->
   <%- include(config.folders.layouts.path + '/partials/head') %>
-  <!-- body -->
-  <body class="d-flex">
-    <div class="d-flex w-100 p-3 mx-auto flex-column">
-      <!-- header -->
+  <body>
+    <div class="content-wrapper">
       <%- include(config.folders.layouts.path + '/partials/header') %>
       <!-- banners -->
       <% if (config.environment.monetization.enabled && model.showAds) { %>
@@ -28,11 +25,11 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
       <% } %>
-      <div class="cover-container mx-auto w-100">
+      <div class="cover-container">
         <!-- main -->
-        <main class="main py-4">
+        <main class="main">
           <article>
-            <h1 class="cover-heading mb-4 text-center"><%= model.title %></h1>
+            <h1><%= model.title %></h1>
             <!-- mainContent-->
             <%- model.content %>
           </article>
