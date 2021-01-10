@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "cross-env morphicEnv=dev morphic",
     "serve": "cross-env morphicEnv=dev morphic --serve",
+    "build:staging": "npx cross-env morphicEnv=staging morphic",
     "build": "npx morphic"
   }
 }
