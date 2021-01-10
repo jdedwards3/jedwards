@@ -28,8 +28,7 @@
       "monetization": { "enabled": false },
       "sitemap": true,
       "rssFeed": true,
-      "jsonApi": true,
-      "inlineSassOutput": true
+      "jsonApi": true
     },
     "production": {
       "domain": "https://www.jamesedwards.net",
