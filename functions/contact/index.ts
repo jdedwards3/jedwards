@@ -48,7 +48,7 @@ const httpTrigger: AzureFunction = async function (
 
   const adminEmail = {
     to: process.env["AdminEmail"],
-    from: "noreply@jamesedwards.name",
+    from: "noreply@jamesedwards.net",
     subject: "New Contact Form Submission",
     html: `<div>from: ${body.firstName} ${body.lastName}</div>
       <div>message: ${body.message}</div>`,
