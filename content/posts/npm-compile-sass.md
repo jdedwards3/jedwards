@@ -1,13 +1,10 @@
 ---
 title: Compile Sass with npm
+canonical: https://www.devextent.com/npm-compile-sass/
 metaDescription:
   Use npm package.json scripts, node-sass npm package cli and clean-css npm
   package cli to compile SCSS and minify the css output with Node.js
 guid: 99bf307e-00e5-4226-b919-a8a08f8301b6
-author: James Edwards
-tags:
-  - Node.js
-  - SASS
 showAds: true
 ---
 

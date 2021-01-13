@@ -1,14 +1,10 @@
 ---
 title: Run Git Commands with Node.js
+canonical: https://www.devextent.com/run-git-command-nodejs/
 metaDescription:
   Use the simple-git npm package and Node.js to run git commands and access git
   metadata programmatically with TypeScript.
 guid: 7422c6c0-840f-43cc-b590-462e72c53871
-author: James Edwards
-tags:
-  - Git
-  - Node.js
-  - TypeScript
 showAds: true
 ---
 

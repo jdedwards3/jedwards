@@ -1,14 +1,10 @@
 ---
 title: Render EJS file with Nodejs
+canonical: https://www.devextent.com/ejs-render-file/
 metaDescription:
   Generate an HTML file using Node.js, Typescript, and npm package.json scripts
   to render an EJS template file.
-author: James Edwards
 guid: 11478bbe-6200-4ad4-8bfe-10adb215f472
-tags:
-  - EJS
-  - Node.js
-  - TypeScript
 showAds: true
 ---
 
