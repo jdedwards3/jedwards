@@ -17,15 +17,11 @@
   "environment": {
     "dev": {
       "domain": "localhost:3000",
-      "functionsUrl": "http://localhost:7071/api",
-      "googleAnalytics": { "enabled": false },
-      "monetization": { "enabled": false }
+      "functionsUrl": "http://localhost:7071/api"
     },
     "staging": {
       "domain": "https://jedwards-staging.azureedge.net",
       "functionsUrl": "https://jedwards-staging.azurewebsites.net/api",
-      "googleAnalytics": { "enabled": false },
-      "monetization": { "enabled": false },
       "sitemap": true,
       "rssFeed": true,
       "jsonApi": true
@@ -33,8 +29,6 @@
     "production": {
       "domain": "https://www.jamesedwards.net",
       "functionsUrl": "https://jedwards.azurewebsites.net/api",
-      "googleAnalytics": { "enabled": true },
-      "monetization": { "enabled": true },
       "minifyHtml": true,
       "minifyTypescriptOutput": true,
       "sitemap": true,

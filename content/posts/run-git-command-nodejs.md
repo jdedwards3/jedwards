@@ -5,7 +5,6 @@ metaDescription:
   Use the simple-git npm package and Node.js to run git commands and access git
   metadata programmatically with TypeScript.
 guid: 7422c6c0-840f-43cc-b590-462e72c53871
-showAds: true
 ---
 
 If you're building a blog with the [Jamstack](https://jamstack.org/) your

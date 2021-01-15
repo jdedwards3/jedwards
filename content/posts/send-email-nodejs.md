@@ -5,7 +5,6 @@ canonical: https://www.devextent.com/send-email-nodejs/
 metaDescription:
   Use the SendGrid npm package and a SendGrid API key to send emails with
   Node.js and TypeScript.
-showAds: true
 ---
 
 There are a variety of ways to send an email with Node.js. One way is to utilize

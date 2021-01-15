@@ -4,7 +4,6 @@ canonical: https://www.devextent.com/fetch-api-post-formdata-object/
 metaDescription:
   Create an HTML form and post formdata with the ES6 Fetch API and TypeScript.
 guid: b0ef09d3-6b55-4af0-a911-0682b359aa0e
-showAds: true
 ---
 
 The JavaScript

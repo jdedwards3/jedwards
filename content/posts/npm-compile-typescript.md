@@ -5,7 +5,6 @@ metaDescription:
   Configure the TypeScript compiler with tsconfig.json, and compile TypeScript
   into JavaScript using tsc command, Node.js, and npm package.json scripts.
 guid: 5ae4feed-1cee-469b-837d-5dbe38ae0227
-showAds: true
 ---
 
 Npm package.json scripts can be used to run various commands. Here, we will
@@ -58,7 +57,7 @@ Then, add the name and version properties required. You will also need to add a
 property called scripts. This property contains the script instructions that we
 will use to compile the TypeScript we created. In this case, our compilation
 script is named compile-typescript, and it runs the command tsc. This is the
-default TypeScript command, and it will utilize the tsconfig.json we created
+default TypeScript command, and it will utilize the tsconfig.json we created.
 
 Your package.json file should look like this:
 

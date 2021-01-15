@@ -5,7 +5,6 @@ metaDescription:
   Use the html-minifier npm package cli to minify an HTML file with npm
   package.json scripts and Node.js
 guid: 28f35562-d544-4eea-ba10-05be8e09120a
-showAds: true
 ---
 
 The [html-minifier](https://www.npmjs.com/package/html-minifier) npm package
