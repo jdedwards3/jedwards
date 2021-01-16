@@ -1,9 +1,8 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { AzureFunction, Context } from "@azure/functions";
 import { formHelpers } from "../common/formHelpers";
 
-const httpTrigger: AzureFunction = async function(
-  context: Context,
-  req: HttpRequest
+const httpTrigger: AzureFunction = async function (
+  context: Context
 ): Promise<void> {
   context.log("HTTP trigger function processed a request.");
 
