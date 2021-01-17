@@ -97,19 +97,16 @@ a {
   text-align: center;
   .footer-list {
     padding: 0;
-    padding-top: 1rem;
     display: flex;
     list-style: none;
     justify-content: center;
-    li {
-      padding: 0 1rem;
+    a {
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
 }
 
-.footer-list a + a {
-  margin-left: 1rem;
-}
 .mastfoot-inner {
   padding-top: 1rem;
   border-top: 1px solid lightgray;
@@ -132,7 +129,6 @@ a {
     cursor: pointer;
     display: block;
     margin-top: 0.25rem;
-    height: 48x;
     width: 220px;
     margin-right: auto;
   }
