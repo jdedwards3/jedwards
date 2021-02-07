@@ -20,11 +20,7 @@
       "functionsUrl": "http://localhost:7071/api"
     },
     "staging": {
-      "domain": "https://jedwards-staging.azureedge.net",
-      "functionsUrl": "https://jedwards-staging.azurewebsites.net/api",
-      "sitemap": true,
-      "rssFeed": true,
-      "jsonApi": true
+      "domain": ""
     },
     "production": {
       "domain": "https://www.jamesedwards.net",
