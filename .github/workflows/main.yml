@@ -2,7 +2,7 @@ name: MAIN
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 env:
   AZURE_FUNCTIONAPP_NAME: jedwards
