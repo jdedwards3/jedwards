@@ -24,7 +24,7 @@
     },
     "production": {
       "domain": "https://www.jamesedwards.net",
-      "functionsUrl": "https://jedwards.azurewebsites.net/api",
+      "functionsUrl": "https://app.jamesedwards.net/api",
       "minifyHtml": true,
       "minifyTypescriptOutput": true,
       "sitemap": true,
