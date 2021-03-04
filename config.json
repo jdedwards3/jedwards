@@ -10,8 +10,9 @@
   "sass": { "enabled": true },
   "folders": {
     "content": { "rootFiles": { "copyToOutput": true } },
-    "images": { "path": "images", "copyToOutput": true },
-    "scripts": { "path": "scripts", "cacheBust": true }
+    "images": { "copyToOutput": true },
+    "scripts": { "cacheBust": true },
+    "styles": { "cacheBust": true }
   },
   "environment": {
     "dev": {
