@@ -1,11 +1,8 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as querystring from "querystring";
-import uuidv4 = require("uuid/v4");
 import * as SendGrid from "@sendgrid/mail";
 import { formHelpers } from "../common/formHelpers";
-import { storageHelpers } from "../common/storageHelpers";
-SendGrid.setApiKey(process.env["SendGridApiKey"] as string);
-const tableName = "contactForm";
+SendGrid.setApiKey(process.env["SENDGRID_API_KEY"] as string);
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -34,30 +31,19 @@ const httpTrigger: AzureFunction = async function (
     return;
   }
 
-  await storageHelpers.createTableIfNotExists(tableName);
-
-  const contactFormEntity = {
-    PartitionKey: "contactForm",
-    RowKey: uuidv4(),
-    firstName: body.firstName,
-    lastName: body.lastName,
-    email: body.email,
-    message: body.message,
-    website: body.website,
-  };
-
   const adminEmail = {
-    to: process.env["AdminEmail"],
-    from: "noreply@jamesedwards.net",
-    subject: "New Contact Form Submission",
-    html: `<div>from: ${body.firstName} ${body.lastName}</div>
-      <div>message: ${body.message}</div>`,
+    to: process.env["ADMIN_EMAIL"],
+    from: "admin@jamesedwards.net",
+    subject: `Message from ${body.firstName} ${body.lastName}`,
+    html: `<div>First Name: ${body.firstName}</div>
+           <div>Last Name: ${body.lastName}</div>
+           <div>Email: ${body.email}</div>
+           <div>Website: ${body.website}</div>
+           <div>Message: ${body.message}</div>`,
   };
 
-  await Promise.all([
-    storageHelpers.insertEntity(tableName, contactFormEntity),
-    SendGrid.send(adminEmail),
-  ]);
+  await SendGrid.send(adminEmail);
+
   context.res!.status = 200;
   context.res!.body = {
     message: "Thank you for contacting me! I will reply to you shortly.",

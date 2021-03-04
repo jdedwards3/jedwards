@@ -23,23 +23,20 @@ export class FormHandler {
 
       const formData = new FormData(form);
 
+      const timestamp = new Date(new Date().toUTCString()).getTime().toString();
+
       const result = await fetch(
-        `${form.action}/formToken/${new Date(
-          new Date().toUTCString()
-        ).getTime()}/${form.dataset.type}`
+        `${form.action}/formToken/${timestamp}/${form.dataset.type}`
       )
         .then(errorHandler)
         .then((response: Response) => response.json())
         .then((data) => {
-          // anti-forgery
           formData.append("_csrf", data.token);
+          formData.append("timestamp", timestamp);
           return data.type;
         })
         .then(
           async (type) =>
-            // casting to any here to satisfy tsc
-            // sending body as x-www-form-url-encoded
-            // formData convert to array for edge browser support
             await fetch(`${form.action}/${type}`, {
               method: form.method,
               body: new URLSearchParams([...(formData as any)]),

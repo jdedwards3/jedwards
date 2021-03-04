@@ -10,7 +10,6 @@ const httpTrigger: AzureFunction = async function (
 
   const utcTime = new Date().toUTCString();
 
-  // todo: use moment?
   const submitTime = new Date(
     new Date(context.bindingData.timeStamp).toUTCString()
   ).getTime();
