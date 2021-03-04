@@ -13,7 +13,6 @@
     "images": { "path": "images", "copyToOutput": true },
     "scripts": { "path": "scripts", "cacheBust": true }
   },
-  "comments": { "enabled": true },
   "environment": {
     "dev": {
       "domain": "localhost:3000",
