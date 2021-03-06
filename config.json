@@ -19,9 +19,6 @@
       "domain": "localhost:3000",
       "functionsUrl": "http://localhost:7071/api"
     },
-    "staging": {
-      "domain": ""
-    },
     "production": {
       "domain": "https://www.jamesedwards.net",
       "functionsUrl": "https://app.jamesedwards.net/api",
