@@ -28,7 +28,6 @@
       "minifyHtml": true,
       "minifyTypescriptOutput": true,
       "sitemap": true,
-      "rssFeed": true,
       "jsonApi": true,
       "inlineSassOutput": true
     }

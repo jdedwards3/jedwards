@@ -1,22 +1,20 @@
 <head>
   <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title><%= model.title %></title>
+  <link rel="canonical" href="<%= model.canonical %>" />
   <% if (model.metaDescription) { %>
   <meta name="description" content="<%= model.metaDescription %>" />
   <% } %>
   <meta
+    name="robots"
+    content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+  />
+  <meta
     name="viewport"
     content="width=device-width, initial-scale=1, shrink-to-fit=no"
   />
-  <%- model.styles %>
-  <meta name="monetization" content="$ilp.uphold.com/UHNWGWxfXkNk" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <title><%= model.title %></title>
-  <link rel="canonical" href="<%= model.canonical %>" />
-  <link
-    rel="alternate"
-    type="application/rss+xml"
-    title="RSS 2.0"
-    href="<%=  config.environment.domain + '/feed.rss' %>"
-  />
+  <%- model.styles %>
 </head>
