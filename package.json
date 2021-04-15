@@ -2,7 +2,7 @@
   "name": "jedwards",
   "version": "0.0.0",
   "dependencies": {
-    "@protolith/morphic": "0.0.32"
+    "@protolith/morphic": "^0.0.36"
   },
   "scripts": {
     "dev": "cross-env morphicEnv=dev morphic --typecheck",
