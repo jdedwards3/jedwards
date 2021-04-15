@@ -34,7 +34,7 @@ jobs:
 
             az storage blob upload-batch -d '$web' -s _output --pattern '*.json' --connection-string '${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}'
 
-      - name: Purge CDN
+      - name: Purge Azure CDN
         uses: azure/cli@v1.0.0
         with:
           inlineScript: |
@@ -43,6 +43,14 @@ jobs:
             az cdn endpoint purge -g jedwards -n 'jedwards' --profile-name jedwards --content-paths '/*' --no-wait
 
             az logout
+
+      - name: Purge CloudFlare
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+          -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_EMAIL }}" \
+          -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          --data '{"purge_everything":true}' \
 
   deploy-functions:
     runs-on: ubuntu-latest
