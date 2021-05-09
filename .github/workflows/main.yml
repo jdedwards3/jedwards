@@ -40,7 +40,7 @@ jobs:
           inlineScript: |
             az login --service-principal -u http://myApp --password '${{ secrets.AZURE_LOGIN }}' --tenant '${{ secrets.AZURE_LOGIN_TENANT }}'
 
-            az cdn endpoint purge -g jedwards -n 'jedwards' --profile-name jedwards --content-paths '/*' --no-wait
+            az cdn endpoint purge -g jedwards -n 'jedwards' --profile-name jedwards --content-paths '/*'
 
             az logout
 
